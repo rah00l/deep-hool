@@ -2,7 +2,7 @@ class ReportsController < ApplicationController
 
 layout 'adminlayout'
 require 'date'
-require 'facets'
+#require 'facets'
 before_filter :login_required
 
 def search
