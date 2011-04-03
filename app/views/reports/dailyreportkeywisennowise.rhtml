@@ -314,9 +314,8 @@
 
 <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="949" id="AutoNumber3" height="33">
 	<tr>
-
-			<td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">HCAVG</td>
-			<td width="102" height="19"  ALIGN="CENTER"><B>
+                    <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">HCAVG</td>
+			<td width="90" height="19"  ALIGN="CENTER"><B>
 			<% @hc= Counterdata.find_by_sql("select avg(HC) as 'HC'
 												from counterdatas
 												where ClusterName='#{@session[:rrclustername]}'
@@ -331,45 +330,51 @@
 								and Date='#{@session[:enddatehc]}'
 								and ShopName='#{@session[:shoparray1][i].to_s}'"])%>
 
-			<td bgcolor="#FFA500" width="75" height="19" ALIGN="CENTER">HC</td>
-			<td width="128" height="19" ALIGN="CENTER" ><B><%= data.HC%></B></td>
+			<td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">HC</td>
+			<td width="90" height="19" ALIGN="CENTER" ><B><%= data.HC%></B></td>
 
-
-                                                <td bgcolor="#FFA500" width="210" height="19" ALIGN="CENTER">Target </td>
-                        <% tar = Target.find(:first,:conditions => ["Shop_Name=?",@session[:shoparray1][i].to_s]) %>
+                        <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">Target </td>
+                        <% date_range = session[:dailyvalue].split('-') %>
+                        <% date_adj =  date_range[0].to_s + '-' + date_range[1].to_s + '-' + '%' %>
+                        <% tar = Target.find(:first,:conditions => ["Shop_Name=? and Date like ?",@session[:shoparray1][i].to_s,date_adj]) %>
                         <% if tar !=nil  %>
-                        <td width="150" height="19" ALIGN="CENTER"><B><%= tar.Target_value %></B></td>
+                        <td width="90" height="19" ALIGN="CENTER"><B><%= tar.Target_value %></B></td>
                         <%else%>
-                        <td width="150" height="19" ALIGN="CENTER">0</td>
+                        <td width="90" height="19" ALIGN="CENTER">0</td>
                         <%end%>
 
-
-            <td bgcolor="#FFA500" width="58" height="19" ALIGN="CENTER">EXPAVG</td>
-			<td width="157" height="19" ALIGN="CENTER" ><B><%= Counterdata.average(:Exp,
+            <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">EXPAVG</td>
+			<td width="90" height="19" ALIGN="CENTER" ><B><%= Counterdata.average(:Exp,
                                                                                   :conditions => ["ClusterName='#{@session[:rrclustername]}'
                                     												and ShopName='#{@session[:shoparray1][i].to_s}'
 									        			and Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}'"]).to_i%>
 
                         </B></td>
 
-            <td bgcolor="#FFA500" width="75" height="19" ALIGN="CENTER">EXP</td>
-			<td width="128" height="19" ALIGN="CENTER" ><B><%= data.Exp %>
+            <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">EXP</td>
+			<td width="90" height="19" ALIGN="CENTER" ><B><%= data.Exp %>
 
-            <td bgcolor="#FFA500" width="75" height="19" ALIGN="CENTER">CASH</td>
-			<td width="128" height="19" ALIGN="CENTER" ><B><%= data.Cash %> </B></td>
+            <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">CASH</td>
+			<td width="90" height="19" ALIGN="CENTER" ><B><%= data.Cash %> </B></td>
 
+        </tr></table>
 
-	<td bgcolor="#FFA500" width="133" height="19" ALIGN="CENTER">OS</td>
+<br></br>
+
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="949" id="AutoNumber3" height="33">
+  <tr>
+	<td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">OS</td>
 
 			<% os = Counterdata.find(:first,
                                     :conditions => ["ClusterName='#{@session[:rrclustername]}'
 							and Date='#{@session[:enddatehc]}' and
 							ShopName='#{@session[:shoparray1][i].to_s}'"])%>
-                                 <td width="200" height="19" ALIGN="CENTER" ><B><%= os.Outstanding %></B>
+                                 <td width="90" height="19" ALIGN="CENTER" ><B><%= os.Outstanding %></B>
 	</td>
 
-        <td bgcolor="#FFA500" width="75" height="19" ALIGN="CENTER">Y'CR</td>
-			<td width="117" height="19" ALIGN="CENTER" ><B>
+
+        <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">Y'CR</td>
+			<td width="90" height="19" ALIGN="CENTER" ><B>
 
 			<% @c1= Counterdata.find(:first,
 							:conditions=>["ClusterName='#{@session[:rrclustername]}'
@@ -383,15 +388,15 @@
 				<B><%= ycredit%></B>
 			</td>
 
-    <td bgcolor="#FFA500" width="75" height="19" ALIGN="CENTER">T'CR</td>
-			<td width="128" height="19" ALIGN="CENTER" ><B>
+    <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">T'CR</td>
+			<td width=90" height="19" ALIGN="CENTER" ><B>
 			<%= data.Credit%></B></td>
 
-	<td bgcolor="#FFA500" width="210" height="19" ALIGN="CENTER">DIFF CR</td>
-		<td width="200" height="19" ALIGN="CENTER" >
+	<td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">DIFF CR</td>
+		<td width="90" height="19" ALIGN="CENTER" >
 			<B><%= data.Credit.to_i-ycredit.to_i%></B>
 	</td>
-	<td bgcolor="#FFA500" width="210" height="19" ALIGN="CENTER">M/S </td>
+	<td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">M/S </td>
 
     <% @r=Machinedata.find_by_sql("select DISTINCT TRANS_DATE from Machinedatas where CLUSTER_NAME='#{@session[:clustarray]}'
 and TRANS_DATE>='#{session[:startdatehc]}'
@@ -472,9 +477,9 @@ and TRANS_DATE<='#{session[:enddatehc]}' and SHOP_NAME= '#{@session[:shoparray1]
 <% @totalREFUND+@totalADMIN+@totalCZ+@totalBONUS+@totalXYZ+@totalMF+@totalMT+@totalPF+@totalCE+@totalROK %>
 
 <%end%>
+<td width="90" height="19" ALIGN="CENTER"><B><%=(@totalBONUS1.to_i+@totalCE1.to_i+@totalXYZ1.to_i)%></b></td><td width="90" height="19" ALIGN="CENTER"> <b><%= @totalREFUND1.to_i+@totalADMIN1.to_i %></b></td>  <td width="90" height="19" ALIGN="CENTER"><b><%= @totalMF1.to_i+@totalMT1.to_i+@totalPF1.to_i+@totalCZ1.to_i+@totalROK1.to_i %></b></td>
 
-        <td width="150" height="19" ALIGN="CENTER"><b><%=(@totalBONUS1.to_i+@totalCE1.to_i+@totalXYZ1.to_i)%></b></td><td width="150" height="19" ALIGN="CENTER"> <b><%= @totalREFUND1.to_i+@totalADMIN1.to_i %></b></td>  <td width="150" height="19" ALIGN="CENTER"><b><%= @totalMF1.to_i+@totalMT1.to_i+@totalPF1.to_i+@totalCZ1.to_i+@totalROK1.to_i %></b></td>
-  </tr>
+                          </tr>
 </table>
 <!-- Shop's HC-TOT-CR-OS-M/S ------------------------------------------------------------------------------------------------>
 
@@ -1266,12 +1271,19 @@ and TRANS_DATE<='#{session[:enddatehc]}' and SHOP_NAME= '#{@session[:shoparray1]
     <% @mnamea[@counter]%>
             <%@machinecount=Machinedata.count(:conditions=>["CLUSTER_NAME in (?) and SHOP_NAME=? AND GROUP_ID=? and TRANS_DATE=?  and MACHINE_NAME=?",@session[:clustarray],@shp,key.GroupID,session[:dailyvalue],@mnamea[@counter]])%>
 
-            <%# avg = (((((@tsrin.to_f+@mtrpos.to_f)-(@tsrout.to_f-(@mtrneg.to_f)))/@machinecount)/@session[:datediff].to_i).round) %>
-            <%# if avg < 0 %>
-               <span><font color=red><%#= avg %></font></span>
-             <%# else %>
-                            <span><%#= avg %></span>
-             <%# end %>
+            <% if @machinecount!=0 %>
+                  <% avg = (((((@tsrin.to_f+@mtrpos.to_f)-(@tsrout.to_f-(@mtrneg.to_f)))/@machinecount)/@session[:datediff].to_i)).round %>
+              <%else%>
+              <%avg = 0%>
+              <% end %>
+
+            <% if avg < 0 %>
+               <span><font color=red><%= avg %></font></span>
+             <% elsif avg == 0 %>
+                            <span> - </span>
+             <%else%>
+                            <span><%= avg %></span>
+             <% end %>
             </B>
             </font>
             </td>

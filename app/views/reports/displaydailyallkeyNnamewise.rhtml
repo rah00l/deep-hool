@@ -578,12 +578,12 @@ and TRANS_DATE<='#{session[:enddatehc]}' and SHOP_NAME= '#{@session[:shoparray1]
                       <% @machinesdata=Machinedata.find(:all,
 				  :conditions=>["CLUSTER_NAME in (?) and SHOP_NAME=? and TRANS_DATE=?",
 				  @session[:clustarray],@session[:shoparray1][i].to_s,session[:dailyvalue]],
-				  :order => "digitno,charno") %>
+				  :order => "MACHINE_NAME,digitno,charno") %>
                               <% @machinesdata.each do |c| %>
 					<% @pmper=Machinedata.find(:all,
                                                                     :conditions=>["CLUSTER_NAME in (?) and SHOP_NAME=? and MACHINE_NO='#{c.MACHINE_NO}'",
                                                                     @session[:clustarray],@session[:shoparray1][i].to_s],
-                                                                    :order => "digitno,charno") %>
+                                                                    :order => "MACHINE_NAME,digitno,charno") %>
 					<% @tin=0%>
 															<% @tout=0%>
 															<% @coll=0%>
@@ -1050,7 +1050,7 @@ and TRANS_DATE<='#{session[:enddatehc]}' and SHOP_NAME= '#{@session[:shoparray1]
 	  																		where CLUSTER_NAME='#{@session[:clustarray]}'
 																			  and SHOP_NAME='#{@session[:shoparray1][i].to_s}'
 																				and machine_no='#{c.MACHINE_NO}'
-																			 
+
 																			  and TRANS_DATE<'#{session[:dailyvalue]}'
 																				 order by TRANS_DATE desc limit 1")%>
 
@@ -1190,12 +1190,12 @@ and TRANS_DATE<='#{session[:enddatehc]}' and SHOP_NAME= '#{@session[:shoparray1]
             <tr bgcolor="#E7CF7C">
     <% Machinedata.find(:all,:select=>'distinct MACHINE_NAME',:conditions=>["CLUSTER_NAME in (?)
                                                                     and SHOP_NAME =?
-                                                                    
+
                                                                     and TRANS_DATE>=?
 				                                                    and TRANS_DATE<=?",
                                                                     @session[:clustarray],
                                                                     @shp,
-                                                                    
+
                                                                     @session[:startdatehc],
                                                                     session[:dailyvalue]],
                                                                     :order=>'MACHINE_NAME').each do |mdata|%>

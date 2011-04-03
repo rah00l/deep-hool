@@ -280,7 +280,8 @@ def showdailyreport
         redirect_to :action=>'displaydailyreport'
       end
       if(params[:key]=="ALLKEYS" and params[:machine]=="NAMEWISE") 
-        redirect_to :action=>'displaydailyreportallkey'
+        #redirect_to :action=>'displaydailyreportallkey'
+        redirect_to :action => 'displaydailyallkeyNnamewise'
       end
       if(params[:key]=="ALLKEYS" and params[:machine]=="NOWISE") 
         #redirect_to :action=>'displaydailyreportnoall'
@@ -296,6 +297,11 @@ def showdailyreport
   end
   end
 end
+
+def displaydailyallkeyNnamewise
+
+end
+
       def dailyreportallkeyNnowise
 
       end
