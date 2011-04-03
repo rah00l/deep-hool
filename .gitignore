@@ -1,0 +1,7 @@
+nbproject/*
+log/*
+tmp/**/*
+config/database.yml
+db/schema.rb
+*.txt
+*.csv

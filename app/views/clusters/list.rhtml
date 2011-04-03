@@ -1,0 +1,74 @@
+
+<html>
+<head>
+</head>
+<body topmargin=0 bottommargin=0>
+<center>
+<table width=90% align=center height="400"><tr>
+  <td width="100%" height="300" align="center">
+<table width=100% align=center height="280">
+<tr><td width="100%" height="270" align="center">
+<!--fieldset style="width:90% ; height: 209 ; align:center;">-->
+<h2 align=center><font face="Arial">LISTING GROUP</font></h2>
+<!--<div class=clsDataGrid id=divList bgcolor=white>-->
+<div class=clsDataGrid id=divList bgcolor=white>
+<table border="1" width ="95%"  cellpadding="0"  cellspacing="0"  bordercolor="black" align=center  id="AutoNumber1"  height="24"  >  
+<tr>
+		<th  nowrap width="5%" height="20">
+     GROUP ID</font>
+      	<th  nowrap width="35%" height="20">
+      GROUP NAME</font>       
+        </th>
+       <!-- <th  scope=col nowrap  width="30%" height="20" >
+    SHOP NAME </font></th>
+		<th scope=col nowrap width="25%"  height="20">
+     ADDRESS </font></th>
+        <th scope=col nowrap width="130" height="1"  >
+        Zone Flag</font></th>
+        <th scope=col nowrap width="91" height="1"  >
+       User Type</font></th>
+        <th scope=col nowrap width="93" height="1"  >
+       Email ID</font></th>
+        <th scope=col nowrap width="72" height="1"  >
+        UserStatus</font></th>
+		<th nowrap width="72" height="1" >
+        LoginStatus</font></th>-->
+		<th  nowrap width="15%"  height="20" >
+        </font>Edit</th>
+        <th  nowrap width="15%"  height="20" >
+        </font>Delete</th>
+
+
+</tr>
+
+ <% @clusters = Cluster.find_by_sql("select * from clusters" ) %>
+<% @clusters.each do |c| %>
+  <tr>
+  	<td nowrap width="5%" height="5" align=center><%= c.id%></td>
+	<td nowrap width="35%" height="5" align=center><%= c.ClusterName%>&nbsp;</td>	
+	<!--<td nowrap width="30%" height="5" align=center>&nbsp;</td>
+	<td nowrap width="20%" height="5" align=center>&nbsp;</td>-->
+	
+	<td width="15%" height="5" align=center><%=link_to  image_tag("edit.gif", :border=>0), :action => 'edit', :id=>c.id %></td>
+    <td width="15%" height="5" align=center><%=link_to  image_tag("delete.gif", :border=>0),{ :action => 'destroy', :id => c.id }, :confirm => 'Are you sure?', :method => :post  %>
+</td>
+
+	</tr><% end %>	
+</table>
+</div>
+<%= link_to 'ADD NEW GROUP', :action => 'new' %>
+<br />
+<!--</fieldset>-->
+</td></tr></table>
+
+<%= link_to 'Previous page', { :page => @cluster_pages.current.previous } if @cluster_pages.current.previous %>
+<%= link_to 'Next page', { :page => @cluster_pages.current.next } if @cluster_pages.current.next %> 
+
+
+
+</td></tr></table>
+
+</center>
+<!--</div>-->
+</body>
+</html>
