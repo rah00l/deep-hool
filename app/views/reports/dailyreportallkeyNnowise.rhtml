@@ -566,13 +566,14 @@ and TRANS_DATE<='#{session[:enddatehc]}' and SHOP_NAME= '#{@session[:shoparray1]
 		<th scope=col nowrap width="7%" height="1"  >TSROUT</th>
 		<th scope=col nowrap width="7%" height="1"  >M/S</th>
 		<th scope=col nowrap width="7%" height="1"  >COLL</th>
+                <th scope=col nowrap width="7%" height="1"  >T SET</th>
+   		<th scope=col nowrap width="7%" height="1"  >P SET</th>
+		<th scope=col nowrap width="7%" height="1"  >PM %</th>
 		<th scope=col nowrap width="5%" height="1"  >LOSS</th>
 		<th scope=col nowrap width="7%" height="1"  >LOSS</th>
 		<th scope=col nowrap width="7%" height="1"  >10 AVG</th>
 		<th scope=col nowrap width="6%" height="1"  >SR AVG</th>
-		<th scope=col nowrap width="7%" height="1"  >T SET</th>
-   		<th scope=col nowrap width="7%" height="1"  >P SET</th>
-		<th scope=col nowrap width="7%" height="1"  >PM %</th>
+		
 
 </tr>
                       <% @machinesdata=Machinedata.find(:all,
@@ -704,6 +705,8 @@ and TRANS_DATE<='#{session[:enddatehc]}' and SHOP_NAME= '#{@session[:shoparray1]
 					<td nowrap height="10" align=center><font  size=3 color=red><b><%= @sr.to_i %></b></font></td>
 				<%end%>
 		<!--display Collection value end-->
+
+
 
 			<% olddate=Date.parse("#{session[:dailyvalue]}")-5%>
 				<% @flagval="false" %>
@@ -946,6 +949,44 @@ and TRANS_DATE<='#{session[:enddatehc]}' and SHOP_NAME= '#{@session[:shoparray1]
 				<%end%>
 		<!--display Collection value end-->
 
+                <% machinesetting  = Machinedata.find_by_sql("select setting from Machinedatas
+	  																		where CLUSTER_NAME='#{@session[:clustarray]}'
+																			  and SHOP_NAME='#{@session[:shoparray1][i].to_s}'
+																				and machine_no='#{c.MACHINE_NO}'
+
+																			  and TRANS_DATE<'#{session[:dailyvalue]}'
+																				 order by TRANS_DATE desc limit 1")%>
+
+
+													<% @pmper=Machinedata.find(:all,
+														:conditions=>["CLUSTER_NAME in (?) and SHOP_NAME=? and MACHINE_NO='#{c.MACHINE_NO}'and TRANS_DATE='#{session[:dailyvalue]}'",
+														@session[:clustarray],@session[:shoparray1][i].to_s],
+														:order => "MACHINE_NAME,digitno,charno") %>
+										<% for i1 in @pmper %>
+				<% if machinesetting[0].setting == i1.SETTING%>
+					<td nowrap height="10" align=left><font color=blue><b><%= c.SETTING%></b></font></td>
+				<% else %>
+					<td nowrap height="10" align=left bgcolor="pink"><font><b><%= c.SETTING%></b></font></td>
+				<% end %>
+				<%end %>
+				<td nowrap height="10" align=left><%= @pset %></td>
+					<!--<td nowrap height="10" align=center>
+							 @totalper=(@tout.to_f*100)/@tin.to_f
+							 @totalper.round
+							<% @mtrper%>%
+							</td>-->
+					<!-- display % start-->
+				<%if @mtrper.to_i <=59%>
+						<td nowrap height="10" align=center><font color= red><%= @mtrper %>%</font></td>
+				<%elsif @mtrper.to_i >59 and @mtrper.to_i <=69%>
+						<td nowrap height="10" align=center><font color= blue><%= @mtrper %>%</font></td>
+				<%elsif @mtrper.to_i >69 and @mtrper.to_i <=80%>
+						<td nowrap height="10" align=center><font color= green><%= @mtrper %>%</font></td>
+				<%elsif @mtrper.to_i >80%>
+						<td nowrap height="10" align=center><font color= red><%= @mtrper %>%</font></td>
+				<%end%>
+					<!-- display % end-->
+
 			<% olddate=Date.parse("#{session[:dailyvalue]}")-5%>
 				<% @flagval="false" %>
 				<% @totalval=0%>
@@ -1046,43 +1087,6 @@ and TRANS_DATE<='#{session[:enddatehc]}' and SHOP_NAME= '#{@session[:shoparray1]
 		<!--display  SR avg value end-->
 
 
-				<% machinesetting  = Machinedata.find_by_sql("select setting from Machinedatas
-	  																		where CLUSTER_NAME='#{@session[:clustarray]}'
-																			  and SHOP_NAME='#{@session[:shoparray1][i].to_s}'
-																				and machine_no='#{c.MACHINE_NO}'
-																			 
-																			  and TRANS_DATE<'#{session[:dailyvalue]}'
-																				 order by TRANS_DATE desc limit 1")%>
-
-
-													<% @pmper=Machinedata.find(:all,
-														:conditions=>["CLUSTER_NAME in (?) and SHOP_NAME=? and MACHINE_NO='#{c.MACHINE_NO}'and TRANS_DATE='#{session[:dailyvalue]}'",
-														@session[:clustarray],@session[:shoparray1][i].to_s],
-														:order => "MACHINE_NAME,digitno,charno") %>
-										<% for i1 in @pmper %>
-				<% if machinesetting[0].setting == i1.SETTING%>
-					<td nowrap height="10" align=left><font color=blue><b><%= c.SETTING%></b></font></td>
-				<% else %>
-					<td nowrap height="10" align=left bgcolor="pink"><font><b><%= c.SETTING%></b></font></td>
-				<% end %>
-				<%end %>
-				<td nowrap height="10" align=left><%= @pset %></td>
-					<!--<td nowrap height="10" align=center>
-							 @totalper=(@tout.to_f*100)/@tin.to_f
-							 @totalper.round
-							<% @mtrper%>%
-							</td>-->
-					<!-- display % start-->
-				<%if @mtrper.to_i <=59%>
-						<td nowrap height="10" align=center><font color= red><%= @mtrper %>%</font></td>
-				<%elsif @mtrper.to_i >59 and @mtrper.to_i <=69%>
-						<td nowrap height="10" align=center><font color= blue><%= @mtrper %>%</font></td>
-				<%elsif @mtrper.to_i >69 and @mtrper.to_i <=80%>
-						<td nowrap height="10" align=center><font color= green><%= @mtrper %>%</font></td>
-				<%elsif @mtrper.to_i >80%>
-						<td nowrap height="10" align=center><font color= red><%= @mtrper %>%</font></td>
-				<%end%>
-					<!-- display % end-->
 	  </tr>
 
 <%end%>
