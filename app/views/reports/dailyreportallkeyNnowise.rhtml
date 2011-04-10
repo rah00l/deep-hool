@@ -57,7 +57,9 @@
     <td width="45%" height="19" colspan="3"><% @cc= Counterdata.find_by_sql("select sum(HC) as 'totalHC' from counterdatas where  Date='#{session[:dailyvalue]}'")%>
 <%= @cc[0].totalHC %>&nbsp; - &nbsp;
     <% count = Counterdata.count(:shopname,:distinct => true,:conditions => ["date=? ",session[:dailyvalue]])%>
+<%unless count.to_i == 0%>
 <span align="right">(HC per Shop) <%= @cc[0].totalHC.to_i/count.to_i %></span>
+<%end%>
     </td>
 <!--    <td width="21%" height="19">
 
@@ -765,18 +767,6 @@ and TRANS_DATE<='#{session[:enddatehc]}' and SHOP_NAME= '#{@session[:shoparray1]
    <td nowrap height="10" align=left><font size=3><%= @lossval%></font></td>
    <% end %>
 <!--display Loss  value end-->
-	<% @lossval=0%>
-	<% @machinevalues=Machinedata.find(:all,:conditions=>['SHOP_NAME=?  and MACHINE_NO=? and TRANS_DATE<=?',@session[:shoparray1][i].to_s,c.MACHINE_NO,session[:dailyvalue]],:order => 'TRANS_DATE desc')%>
-				<%@machinevalues.each do |item|%>
-       					<% if c.SETTING!=item.SETTING %>
-								<% @mtrper=item.MTRPER %>
-			 		  			<% @pset=item.SETTING%>
-	 							<% break%>
-			 		  	<% else %>
-	 					  		<% @mtrper=0 %>
-	 		  					<% @pset='A'%>
-			 		  	<% end %>
-			    <% end %>
 
 	<!--display Loss AMT value start-->
 			<%if @totalval >=0 %>
@@ -824,7 +814,21 @@ and TRANS_DATE<='#{session[:enddatehc]}' and SHOP_NAME= '#{@session[:shoparray1]
 					<td nowrap height="10" align=left bgcolor="pink"><font><b><%= c.SETTING%></b></font></td>
 				<% end %>
 				<%end %>
-								<td nowrap height="10" align=left><%= @pset %></td>
+
+                                        	<% @lossval=0%>
+	<% @machinevalues=Machinedata.find(:all,:conditions=>['SHOP_NAME=?  and MACHINE_NO=? and TRANS_DATE<=?',@session[:shoparray1][i].to_s,c.MACHINE_NO,session[:dailyvalue]],:order => 'TRANS_DATE desc')%>
+				<%@machinevalues.each do |item|%>
+       					<% if c.SETTING!=item.SETTING %>
+								<% @mtrper=item.MTRPER %>
+			 		  			<% @pset=item.SETTING%>
+	 							<% break%>
+			 		  	<% else %>
+	 					  		<% @mtrper=0 %>
+	 		  					<% @pset='A'%>
+			 		  	<% end %>
+			    <% end %>
+
+                                        <td nowrap height="10" align=left><%= @pset %></td>
 					<!--<td nowrap height="10" align=center>
 							 @totalper=(@tout.to_f*100)/@tin.to_f
 							 @totalper.round
@@ -950,26 +954,39 @@ and TRANS_DATE<='#{session[:enddatehc]}' and SHOP_NAME= '#{@session[:shoparray1]
 		<!--display Collection value end-->
 
                 <% machinesetting  = Machinedata.find_by_sql("select setting from Machinedatas
-	  																		where CLUSTER_NAME='#{@session[:clustarray]}'
-																			  and SHOP_NAME='#{@session[:shoparray1][i].to_s}'
-																				and machine_no='#{c.MACHINE_NO}'
-
-																			  and TRANS_DATE<'#{session[:dailyvalue]}'
+	  							where CLUSTER_NAME='#{@session[:clustarray]}'
+								and SHOP_NAME='#{@session[:shoparray1][i].to_s}'
+								and machine_no='#{c.MACHINE_NO}'
+                                                                and TRANS_DATE<'#{session[:dailyvalue]}'
 																				 order by TRANS_DATE desc limit 1")%>
-
-
-													<% @pmper=Machinedata.find(:all,
-														:conditions=>["CLUSTER_NAME in (?) and SHOP_NAME=? and MACHINE_NO='#{c.MACHINE_NO}'and TRANS_DATE='#{session[:dailyvalue]}'",
-														@session[:clustarray],@session[:shoparray1][i].to_s],
-														:order => "MACHINE_NAME,digitno,charno") %>
-										<% for i1 in @pmper %>
+					<% @pmper=Machinedata.find(:all,
+                                                                   :conditions=>["CLUSTER_NAME in (?) and SHOP_NAME=? and MACHINE_NO='#{c.MACHINE_NO}'and TRANS_DATE='#{session[:dailyvalue]}'",
+                                                                   @session[:clustarray],@session[:shoparray1][i].to_s],
+								   :order => "MACHINE_NAME,digitno,charno") %>
+				<% for i1 in @pmper %>
 				<% if machinesetting[0].setting == i1.SETTING%>
 					<td nowrap height="10" align=left><font color=blue><b><%= c.SETTING%></b></font></td>
 				<% else %>
 					<td nowrap height="10" align=left bgcolor="pink"><font><b><%= c.SETTING%></b></font></td>
 				<% end %>
 				<%end %>
-				<td nowrap height="10" align=left><%= @pset %></td>
+
+                                        <% @lossval=0%>
+	<% @machinevalues=Machinedata.find(:all,
+                        :conditions=>['SHOP_NAME=? and MACHINE_NO=? and TRANS_DATE<=?',@session[:shoparray1][i].to_s,c.MACHINE_NO,session[:dailyvalue]],:order => 'TRANS_DATE desc')%>
+				<%@machinevalues.each do |item|%>
+       					<% if c.SETTING!=item.SETTING %>
+								<% @mtrper=item.MTRPER %>
+			 		  			<% @pset=item.SETTING%>
+	 							<% break%>
+			 		  	<% else %>
+	 					  		<% @mtrper=0 %>
+	 		  					<% @pset='A'%>
+			 		  	<% end %>
+			    <% end %>
+
+
+                                      <td nowrap height="10" align=left><%= @pset %></td>
 					<!--<td nowrap height="10" align=center>
 							 @totalper=(@tout.to_f*100)/@tin.to_f
 							 @totalper.round
@@ -1044,20 +1061,7 @@ and TRANS_DATE<='#{session[:enddatehc]}' and SHOP_NAME= '#{@session[:shoparray1]
    <td nowrap height="10" align=left><font size=3><%= @lossval%></font></td>
    <% end %>
 <!--display Loss  value end-->
-	<% @lossval=0%>
-	<% @machinevalues=Machinedata.find(:all,
-                        :conditions=>['SHOP_NAME=? and MACHINE_NO=? and TRANS_DATE<=?',@session[:shoparray1][i].to_s,c.MACHINE_NO,session[:dailyvalue]],:order => 'TRANS_DATE desc')%>
-				<%@machinevalues.each do |item|%>
-       					<% if c.SETTING!=item.SETTING %>
-								<% @mtrper=item.MTRPER %>
-			 		  			<% @pset=item.SETTING%>
-	 							<% break%>
-			 		  	<% else %>
-	 					  		<% @mtrper=0 %>
-	 		  					<% @pset='A'%>
-			 		  	<% end %>
-			    <% end %>
-
+	
 	<!--display Loss AMT value start-->
 			<%if @totalval >=0 %>
 					<td nowrap height="10" align=center ><font color=black><b><%= @totalval.to_i%></b></font></td>

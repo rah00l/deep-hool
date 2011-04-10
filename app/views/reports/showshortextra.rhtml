@@ -133,6 +133,7 @@ window.onload=function()
 										    
 										    
 										    <% @keys=Counterdata.find(:first,:conditions=>["ClusterName=? and ShopName=? and DATE=?",@session[:rrclustername],@shp.ShopName,@date1]) %>
+                                                                                      <%if @keys!= nil%>
 											<% if key.GroupID=='KEY 1'%>
 												<% @keyval=@keys.KEY1.to_i%>
 												
@@ -150,7 +151,9 @@ window.onload=function()
 												<% @keyval=@keys.KEY4.to_i%>
 												
 											<% end %>
-											<%@val= (@keyval.to_i-@totalcoll.to_i) %>
+											
+                                                                                       <%end%>
+                                                                                      <%@val= (@keyval.to_i-@totalcoll.to_i) %>
 											<% if @val.to_i<0%>
 												<td nowrap align="center"><font color=red face="Zurich BT" size="2"><%= @val %></font>&nbsp;</td>
 											<% else %>
