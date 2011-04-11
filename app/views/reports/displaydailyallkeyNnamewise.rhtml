@@ -55,9 +55,7 @@
   <tr>
     <td width="34%" height="19"><font size="2">TODAY'S HC</font></td>
     <td width="45%" height="19" colspan="3"><% @cc= Counterdata.find_by_sql("select sum(HC) as 'totalHC' from counterdatas where  Date='#{session[:dailyvalue]}'")%>
-<%= @cc[0].totalHC %>&nbsp; - &nbsp;
-    <% count = Counterdata.count(:shopname,:distinct => true,:conditions => ["date=? ",session[:dailyvalue]])%>
-<span align="right">(HC per Shop) <%= @cc[0].totalHC.to_i/count.to_i %></span>
+<%= @cc[0].totalHC %>
     </td>
 <!--    <td width="21%" height="19">
 
