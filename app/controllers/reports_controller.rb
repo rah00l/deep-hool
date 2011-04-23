@@ -366,6 +366,7 @@ def showcounterwise
 end
 
 def shownamewisesummary
+#raise params.inspect
   session[:ttdate1]=params[:date1]
   session[:ttdate2]=params[:date2]
   p "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2"
