@@ -333,12 +333,12 @@
 
                         <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">Target </td>
                         <% date_range = session[:dailyvalue].split('-') %>
-                        <% date_adj =  date_range[0].to_s + '-' + date_range[1].to_s + '-' + '%' %>
-                        <% tar = Target.find(:first,:conditions => ["Shop_Name=? and Date like ?",@session[:shoparray1][i].to_s,date_adj]) %>
-                        <% if tar !=nil  %>
-                        <td width="90" height="19" ALIGN="CENTER"><B><%= tar.Target_value %></B></td>
+                        <% date_adj =  date_range[0].to_s + '-' +'0' +date_range[1].to_s + '-' + '%' %>
+                          <% tar = Target.find(:first,:conditions => ["Shop_Name=? and Date like ?",@session[:shoparray1][i].to_s,date_adj]) %>
+                        <% unless tar.nil?  %>
+                              <td width="90" height="19" ALIGN="CENTER"><B><%= tar.Target_value %></B></td>
                         <%else%>
-                        <td width="90" height="19" ALIGN="CENTER">0</td>
+                              <td width="90" height="19" ALIGN="CENTER">0</td>
                         <%end%>
 
             <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">EXPAVG</td>
