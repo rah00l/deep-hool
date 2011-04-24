@@ -334,7 +334,10 @@
                         <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">Target </td>
                         <% date_range = session[:dailyvalue].split('-') %>
                         <% date_adj =  date_range[0].to_s + '-' +'0' +date_range[1].to_s + '-' + '%' %>
-                          <% tar = Target.find(:first,:conditions => ["Shop_Name=? and Date like ?",@session[:shoparray1][i].to_s,date_adj]) %>
+                          <% tar = Target.find(:all,
+                                                :conditions => ["Shop_Name=? and Date like ?",
+                                                @session[:shoparray1][i].to_s,date_adj],
+                                                :order => "Date DESC") %>
                         <% unless tar.nil?  %>
                               <td width="90" height="19" ALIGN="CENTER"><B><%= tar.Target_value %></B></td>
                         <%else%>

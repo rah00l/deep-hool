@@ -244,7 +244,7 @@ def showdailyreport
   @day=@date.split('-');
   @session[:startdatehc]=Date.parse(01.to_s+'-'+@day[1].to_s+'-'+@day[0].to_s)
   @session[:enddatehc]=Date.parse(@day[2].to_s+'-'+@day[1].to_s+'-'+@day[0].to_s)
-   @session[:datediff]=@day[2].to_i-0
+  @session[:datediff]=@day[2].to_i-0
   
    
   
@@ -272,7 +272,11 @@ def showdailyreport
         @carray=@session[:clustarray].to_s
     end
  if params[:date]!=nil
-  session[:dailyvalue]=params[:date]
+  session[:dailyvalue]=Date.parse(params[:date]).strftime("%Y-%m-%d")
+  #Date.parse()
+  #raise Date.parse(session[:dailyvalue]).strftime("%Y-%m-%d")
+
+  
   @machinesdata1=Machinedata.count(:conditions=>["CLUSTER_NAME in (#{@session[:rrclusternamedaily].to_s}) and SHOP_NAME in (#{@session[:shoparray].to_s}) and TRANS_DATE>='#{@session[:startdatehc]}' and TRANS_DATE<='#{@session[:enddatehc]}'"]) 
  @count=0
   if(@machinesdata1.to_i>0)
