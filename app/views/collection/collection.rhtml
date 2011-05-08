@@ -73,6 +73,7 @@ DATE: <%= session[:ttdate]%> </b></P>-->
 
 <%@COLL=((((c.TMTRIN.to_i*c.MTR_RATE_IN.to_i)-(c.TMTROUT.to_i*c.MTE_RATE_OUT.to_i))/10)*c.MULTIPLY_BY)+c.MTRSHORT.to_i%>
 
+
 <td nowrap align=center><%= c.SHORTREASON %>&nbsp;</td>
 <td nowrap  align=center><%= @COLL %>&nbsp;</td>
 <% @TotalCOLL=@TotalCOLL.to_i+@COLL.to_i %>
@@ -116,7 +117,7 @@ DATE: <%= session[:ttdate]%> </b></P>-->
 <td nowrap align=center><%= c.MTRSHORT.to_i %>&nbsp;</td>
 <% @TotalMCSHORT=@TotalMCSHORT.to_i + c.MTRSHORT.to_i%>
 
-<%@COLL=((((c.TSRIN.to_i*c.SCREEN_RATE_IN.to_i)-(c.TSROUT.to_i*c.SCREEN_RATE_OUT.to_i))/10)*c.MULTIPLY_BY)+c.MTRSHORT.to_i%>
+<%@COLL=(((((c.TSRIN.to_f*c.SCREEN_RATE_IN.to_f)-(c.TSROUT.to_f*c.SCREEN_RATE_OUT.to_f))/10)*c.MULTIPLY_BY).round)+c.MTRSHORT.to_i%>
 
 <td nowrap align=center><%= c.SHORTREASON %>&nbsp;</td>
 <td nowrap  align=center><%= @COLL %>&nbsp;</td>
@@ -151,7 +152,7 @@ DATE: <%= session[:ttdate]%> </b></P>-->
 <td nowrap align=center><%= c.TSROUT.to_i %>&nbsp;</td>
 <td nowrap align=center><%= c.MTRSHORT.to_i %>&nbsp;</td>
 <% @TotalMCSHORT=@TotalMCSHORT.to_i + c.MTRSHORT.to_i%>
-<%@COLL=((((c.TSRIN.to_i*c.SCREEN_RATE_IN.to_i)-(c.TSROUT.to_i*c.SCREEN_RATE_OUT.to_i))/10)*c.MULTIPLY_BY)+c.MTRSHORT.to_i%>
+<%@COLL=(((((c.TSRIN.to_f*c.SCREEN_RATE_IN.to_f)-(c.TSROUT.to_f*c.SCREEN_RATE_OUT.to_f))/10)*c.MULTIPLY_BY).round)+c.MTRSHORT.to_i%>
 
 <td nowrap align=center><%= c.SHORTREASON %>&nbsp;</td>
 <td nowrap  align=center><%= @COLL %>&nbsp;</td>

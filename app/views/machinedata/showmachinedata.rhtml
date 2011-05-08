@@ -882,7 +882,7 @@ function CALCOLLECTION(key)
     @colldata.each do |data|
        
         if data.CALCULATEBY=='S'
-        		  @COLL=((((data.TSRIN.to_i*data.SCREEN_RATE_IN.to_i)-(data.TSROUT.to_i*data.SCREEN_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i
+                  @COLL=((((data.TSRIN.to_i*data.SCREEN_RATE_IN.to_i)-(data.TSROUT.to_i*data.SCREEN_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i
                   @totalcoll=@totalcoll.to_i+@COLL.to_i
                   
               else
@@ -913,6 +913,7 @@ var mulby=document.getElementById("multiplyby").value;
 if(today_CALCULATEBY.value=='S')
 {
 key_collections.value=parseInt(newval)+parseInt(today_SRCOLL.value)
+
 }
 else
 {
@@ -2218,6 +2219,7 @@ var today_MTRDIFFWHY=document.getElementById('today_MTRDIFFWHY');
 function CALKEYSHORT()
 {
 var key_collections=document.getElementById('key_collections').value;
+//alert(key_collections.value);
 var key_collections2=document.getElementById('key_collections2').value;
 
 var key1=document.getElementById('key_collection1').value;

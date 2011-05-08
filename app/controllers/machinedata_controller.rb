@@ -215,6 +215,7 @@ def showdailydata
     
     
     #@totalcoll=Machinedata.sum(:SRCOLL,:conditions=>["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and Machine_No=?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate],@session[:ttmachineno]])
+    
     @session[:ttCOLL1]=@totalcoll
 #########END KEY1############
 
@@ -316,6 +317,100 @@ end
 
 
 def showmachinedata
+#####Collection for KEY1###########
+
+@colldata = Machinedata.find_all(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID='KEY 1'",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]])
+    @totalcoll=0
+    @colldata.each do |data|
+        #puts "in LOOP"
+        if data.CALCULATEBY=='S'
+                  @totalcoll=(@totalcoll.to_f+(((((data.TSRIN.to_f*data.SCREEN_RATE_IN.to_f)-(data.TSROUT.to_f*data.SCREEN_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f)).round
+        else
+                @totalcoll=(@totalcoll+(((((data.TMTRIN.to_f*data.MTR_RATE_IN.to_f)-(data.TMTROUT.to_f*data.MTE_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f)).round
+        end
+       puts @totalcoll
+    end
+    puts "TOTAL COll"
+    puts @totalcoll
+
+
+
+    #@totalcoll=Machinedata.sum(:SRCOLL,:conditions=>["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and Machine_No=?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate],@session[:ttmachineno]])
+
+    @session[:ttCOLL1]=@totalcoll
+    #raise @session[:ttCOLL1].inspect
+#########END KEY1############
+
+#####Collection for KEY2###########
+
+
+@colldata = Machinedata.find_all(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID='KEY 2'",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]])
+    @totalcoll=0
+    @colldata.each do |data|
+        #puts "in LOOP"
+        if data.CALCULATEBY=='S'
+                  @totalcoll=(@totalcoll.to_f+(((((data.TSRIN.to_f*data.SCREEN_RATE_IN.to_f)-(data.TSROUT.to_f*data.SCREEN_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f)).round
+        else
+                @totalcoll=(@totalcoll+(((((data.TMTRIN.to_f*data.MTR_RATE_IN.to_f)-(data.TMTROUT.to_f*data.MTE_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f)).round
+        end
+       puts @totalcoll
+    end
+    puts "TOTAL COll"
+    puts @totalcoll
+
+
+
+    #@totalcoll=Machinedata.sum(:SRCOLL,:conditions=>["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and Machine_No=?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate],@session[:ttmachineno]])
+    @session[:ttCOLL2]=@totalcoll
+#########END KEY2############
+
+#####Collection for KEY3###########
+
+@colldata = Machinedata.find_all(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID='KEY 3'",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]])
+    @totalcoll=0
+    @colldata.each do |data|
+        #puts "in LOOP"
+        if data.CALCULATEBY=='S'
+                  @totalcoll=(@totalcoll.to_f+(((((data.TSRIN.to_f*data.SCREEN_RATE_IN.to_f)-(data.TSROUT.to_f*data.SCREEN_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f)).round
+        else
+                @totalcoll=(@totalcoll+(((((data.TMTRIN.to_f*data.MTR_RATE_IN.to_f)-(data.TMTROUT.to_f*data.MTE_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f)).round
+        end
+       puts @totalcoll
+    end
+    puts "TOTAL COll"
+    puts @totalcoll
+
+
+
+    #@totalcoll=Machinedata.sum(:SRCOLL,:conditions=>["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and Machine_No=?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate],@session[:ttmachineno]])
+    @session[:ttCOLL3]=@totalcoll
+#########END KEY3############
+
+#####Collection for KEY4###########
+
+@colldata = Machinedata.find_all(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID='KEY 4'",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]])
+    @totalcoll=0
+    @colldata.each do |data|
+        #puts "in LOOP"
+        if data.CALCULATEBY=='S'
+                  @totalcoll=(@totalcoll.to_f+(((((data.TSRIN.to_f*data.SCREEN_RATE_IN.to_f)-(data.TSROUT.to_f*data.SCREEN_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f)).round
+        else
+                @totalcoll=(@totalcoll+(((((data.TMTRIN.to_f*data.MTR_RATE_IN.to_f)-(data.TMTROUT.to_f*data.MTE_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i)).round
+        end
+       puts @totalcoll
+    end
+    puts "TOTAL COll"
+    puts @totalcoll
+
+
+
+    #@totalcoll=Machinedata.sum(:SRCOLL,:conditions=>["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and Machine_No=?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate],@session[:ttmachineno]])
+    @session[:ttCOLL4]=@totalcoll
+#########END KEY4############
+
+
+  
+  
     begin
     puts "in show mc data********************"
     puts params[:date]
@@ -350,7 +445,7 @@ def roundval(val)
        end
        
 def updatemachinedata
-   
+    #raise params.inspect
     #puts params[:today][:SRIN]
     #puts params[:today][:SROUT]
     #puts params[:today][:MTRIN]
@@ -360,7 +455,7 @@ def updatemachinedata
     #puts params[:yesterday][:PMTRIN]
     #puts params[:yesterday][:PMTROUT]
     #puts params[:srcoll]
-    
+    #raise params.inspect
     puts params[:today]
     puts "------------------------"
     puts params[:multiplyby]
@@ -396,10 +491,9 @@ def updatemachinedata
      #@mdata.SRCOLL=(params[:today][:SRCOLL].to_i/params[:multiplyby].to_i).round
      
      
-     
-    
-     
-     @mdata.SRCOLL=(((@mdata.TSRIN.to_i*params[:rate][:SRIN].to_i)-(@mdata.TSROUT.to_i*params[:rate][:SROUT].to_i))/10)+@mdata.MTRSHORT.to_i####
+     @mdata.SRCOLL=((((@mdata.TSRIN.to_f*params[:rate][:SRIN].to_f)-(@mdata.TSROUT.to_f*params[:rate][:SROUT].to_f))/10).round)+@mdata.MTRSHORT.to_i####
+     #raise ((((@mdata.TSRIN.to_f*params[:rate][:SRIN].to_f)-(@mdata.TSROUT.to_f*params[:rate][:SROUT].to_f))/10).round).inspect
+  
      
      
      #METER
@@ -412,7 +506,7 @@ def updatemachinedata
      puts params[:today][:TMTRIN]
      puts @mdata.TMTRIN
      @mdata.TMTROUT=roundval((params[:today][:TMTROUT].to_i)/params[:multiplyby].to_i)
-       puts params[:today][:TMTROUT]
+     puts params[:today][:TMTROUT]
      puts @mdata.TMTROUT
      @mdata.MTRPER=params[:today][:MTRPER]
      #@mdata.MTRCOLL=(params[:today][:MTRCOLL].to_i/params[:multiplyby].to_i).round
