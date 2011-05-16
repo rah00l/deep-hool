@@ -1194,16 +1194,19 @@
                                                                                                 <td></td>
                                                                                                 <td></td>
                                                                                                 <td></td>
+                                                                                                 <%@mneg1=0%>
+                                                                                                <% @mpos1 =0 %>
                                                                                                 <%if @TotalMCSHORT.to_i<0 %>
-                                                                                                            <% @mneg1=@mneg1.to_i+@TotalMCSHORT.to_i%>
+                                                                                                            <% @mneg1= @mneg1.to_i+@TotalMCSHORT.to_i%>
                                                                                                           <% else %>
-                                                                                                            <% @mpos1=@mpos1.to_i+@TotalMCSHORT.to_i%>
+                                                                                                            <% @mpos1= @mpos1.to_i+@TotalMCSHORT.to_i%>
                                                                                                           <% end %>
                                                                                                         <% if @TotalTSRIN!=0 %>
                                                                                                           <% @totalper=((@TotalTSROUT.to_i-@mneg1.to_i)*100)/(@TotalTSRIN.to_i+@mpos1.to_i)%>
                                                                                                         <% else %>
                                                                                                           <% @totalper=0%>
                                                                                                         <% end %>
+                                                                                                <%= "#{@TotalTSROUT}" "#{@TotalTSRIN}"  %>
                                                                                                 <td><b>ToD's&nbsp;PER</b></td>
                                                                                                 <td align="center"><font size="3"><%= (@totalper.to_i).round %>%</b></font></td>
                                                                                             
