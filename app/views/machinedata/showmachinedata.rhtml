@@ -2073,11 +2073,15 @@ var rate_MROUT=document.getElementById("rate_MROUT").value;
  mrateout=rate_MROUT
 
 // today_SRCOLL.value= ((parseInt(today_TSRIN.value)*parseInt(sratein))-(parseInt(today_TSROUT.value)*parseInt(srateout))/10)+parseInt(today_MTRSHORT.value);
-today_SRCOLL.value= parseInt((((parseInt(today_TSRIN.value)*parseInt(sratein))-(parseInt(today_TSROUT.value)*parseInt(srateout)))/10)+parseInt(today_MTRSHORT.value));
+//today_SRCOLL.value= parseInt((((parseInt(today_TSRIN.value)*parseInt(sratein))-(parseInt(today_TSROUT.value)*parseInt(srateout)))/10)+parseInt(today_MTRSHORT.value));
 //today_SRCOLL.value= 0;
+today_SRCOLL1 = parseInt((parseInt(today_TSRIN.value)*parseInt(sratein))-(parseInt(today_TSROUT.value)*parseInt(srateout)));
+today_SRCOLL.value = Math.round(today_SRCOLL1/10)+parseInt(today_MTRSHORT.value);
 
 //alert(mratein);
-today_MTRCOLL.value= parseInt((((parseInt(today_TMTRIN.value)*parseInt(mratein))-(parseInt(today_TMTROUT.value)*parseInt(mrateout)))/10)+parseInt(today_MTRSHORT.value));
+//today_MTRCOLL.value= parseInt((((parseInt(today_TMTRIN.value)*parseInt(mratein))-(parseInt(today_TMTROUT.value)*parseInt(mrateout)))/10)+parseInt(today_MTRSHORT.value));
+today_MTRCOLL1 = parseInt((parseInt(today_TMTRIN.value)*parseInt(mratein))-(parseInt(today_TMTROUT.value)*parseInt(mrateout)));
+  today_MTRCOLL.value = Math.round(today_MTRCOLL1/10)+parseInt(today_MTRSHORT.value);
 
 	
 
