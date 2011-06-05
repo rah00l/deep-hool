@@ -13,7 +13,7 @@ class TargetsController < ApplicationController
          :redirect_to => { :action => :list }
 
   def list
-    @target_pages, @targets = paginate :targets, :per_page => 10
+    @target_pages, @targets = paginate :targets, :per_page => 15,:order => "Shop_Name"
   end
 
   def show
