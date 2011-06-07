@@ -1189,30 +1189,30 @@
 
 
                                                                                           </tr>
-                                                                                          <tr>
-                                                                                            <td></td>
-                                                                                                <td></td>
-                                                                                                <td></td>
-                                                                                                <td></td>
-                                                                                                <td></td>
-                                                                                                <td></td>
-                                                                                                <td></td>
-                                                                                                 <%@mneg1=0%>
-                                                                                                <% @mpos1 =0 %>
-                                                                                                <%if @TotalMCSHORT.to_i<0 %>
-                                                                                                            <% @mneg1= @mneg1.to_i+@TotalMCSHORT.to_i%>
-                                                                                                          <% else %>
-                                                                                                            <% @mpos1= @mpos1.to_i+@TotalMCSHORT.to_i%>
-                                                                                                          <% end %>
-                                                                                                        <% if @TotalTSRIN!=0 %>
-                                                                                                          <% @totalper=((@TotalTSROUT.to_f-@mneg1.to_f)*100)/(@TotalTSRIN.to_f+@mpos1.to_f)%>
-                                                                                                        <% else %>
-                                                                                                          <% @totalper=0%>
-                                                                                                        <% end %>
-                                                                                                <td><b>PERCENT</b></td>
-                                                                                                <td align="center"><font size="3"><%= (@totalper.to_f).round %>%</b></font></td>
+                                                                                          <%#*<tr>%>
+                                                                                            <%#*<td></td>%>
+                                                                                                <%#*<td></td>%>
+                                                                                                <%#*<td></td>%>
+                                                                                                <%#*<td></td>%>
+                                                                                                <%#*<td></td>%>
+                                                                                                <%#*<td></td>%>
+                                                                                                <%#*<td></td>%>
+                                                                                                 <%#@mneg1=0%>
+                                                                                                <%# @mpos1 =0 %>
+                                                                                                <%#if @TotalMCSHORT.to_i<0 %>
+                                                                                                            <%# @mneg1= @mneg1.to_i+@TotalMCSHORT.to_i%>
+                                                                                                          <%# else %>
+                                                                                                            <%# @mpos1= @mpos1.to_i+@TotalMCSHORT.to_i%>
+                                                                                                          <%# end %>
+                                                                                                        <%# if @TotalTSRIN!=0 %>
+                                                                                                          <%# @totalper=((@TotalTSROUT.to_f-@mneg1.to_f)*100)/(@TotalTSRIN.to_f+@mpos1.to_f)%>
+                                                                                                        <%# else %>
+                                                                                                          <%# @totalper=0%>
+                                                                                                        <%# end %>
+                                                                                                <%#*<td><b>PERCENT</b></td>%>
+                                                                                                <%#*<td align="center"><font size="3"><%= (@totalper.to_f).round %>%</b></font></td>%>
 
-                                                                                          </tr>
+                                                                                          <%#*</tr>%>
 
                                                                                           </table>
                                                                                           <br>
