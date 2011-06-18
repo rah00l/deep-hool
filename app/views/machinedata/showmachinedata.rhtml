@@ -882,11 +882,11 @@ function CALCOLLECTION(key)
     @colldata.each do |data|
        
         if data.CALCULATEBY=='S'
-                  @COLL=((((data.TSRIN.to_i*data.SCREEN_RATE_IN.to_i)-(data.TSROUT.to_i*data.SCREEN_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i
+                  @COLL=(((((data.TSRIN.to_f*data.SCREEN_RATE_IN.to_f)-(data.TSROUT.to_f*data.SCREEN_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f).round
                   @totalcoll=@totalcoll.to_i+@COLL.to_i
                   
               else
-              	  @COLL1=((((data.TMTRIN.to_i*data.MTR_RATE_IN.to_i)-(data.TMTROUT.to_i*data.MTE_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i
+              	  @COLL1=(((((data.TMTRIN.to_f*data.MTR_RATE_IN.to_f)-(data.TMTROUT.to_f*data.MTE_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f).round
                   @totalcoll=@totalcoll.to_i+@COLL1.to_i
          end    
        
