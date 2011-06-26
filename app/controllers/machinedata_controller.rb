@@ -445,47 +445,29 @@ def roundval(val)
        end
        
 def updatemachinedata
-    #raise params.inspect
-    #puts params[:today][:SRIN]
-    #puts params[:today][:SROUT]
-    #puts params[:today][:MTRIN]
-    #puts params[:today][:MTROUT]
-    #puts params[:yesterday][:PSRIN]
-    #puts params[:yesterday][:PSROUT]
-    #puts params[:yesterday][:PMTRIN]
-    #puts params[:yesterday][:PMTROUT]
-    #puts params[:srcoll]
-    #raise params.inspect
-    puts params[:today]
-    puts "------------------------"
-    puts params[:multiplyby]
-    
+
      @prevmachinedata = Machinedata.find(:first,:conditions=>['Cluster_Name=? and Shop_Name=? and TRANS_Date=? and Machine_No=?',@session[:ttclustername],@session[:ttshopname],(Date.parse(@session[:ttdate])-1),@session[:ttmachineno]])
-     
      @prevmachinedata.PSRINVALUE=params[:yesterday][:PSRIN]
      @prevmachinedata.PSROUTVALUE=params[:yesterday][:PSROUT]
      @prevmachinedata.PMTRINVALUE=params[:yesterday][:PMTRIN]
      @prevmachinedata.PMTROUTVALUE=params[:yesterday][:PMTROUT]
     
-     puts "?????????"
-    puts params[:yesterday][:SETTING]
-    puts params[:yesterday][:date]
-    puts params[:yesterday][:srin] 
      @mdata = Machinedata.find(:first,:conditions=>['Cluster_Name=? and Shop_Name=? and TRANS_Date=? and Machine_No=?',@session[:ttclustername],@session[:ttshopname],(Date.parse(@session[:ttdate])),@session[:ttmachineno]])
-     
      
      mulby=params[:multiplyby]
     
-     puts mulby
-     #SCREEN
-     
      
      @mdata.SRIN=params[:today][:SRIN]
      @mdata.SROUT=params[:today][:SROUT]
      @mdata.PSRINVALUE=params[:today][:PSRINVALUE]
      @mdata.PSROUTVALUE=params[:today][:PSROUTVALUE]
-     @mdata.TSRIN=roundval((params[:today][:TSRIN].to_i)/params[:multiplyby].to_i)
-     @mdata.TSROUT=roundval((params[:today][:TSROUT].to_i)/params[:multiplyby].to_i)
+
+#     @mdata.TSRIN=roundval((params[:today][:TSRIN].to_i)/params[:multiplyby].to_i)
+#     @mdata.TSROUT=roundval((params[:today][:TSROUT].to_i)/params[:multiplyby].to_i)
+
+     @mdata.TSRIN=((params[:today][:TSRIN].to_f)/params[:multiplyby].to_f).round
+     @mdata.TSROUT=((params[:today][:TSROUT].to_f)/params[:multiplyby].to_f).round
+
      @mdata.SRPER=params[:today][:SRPER]
      @mdata.MTRSHORT=params[:today][:MTRSHORT]
      #@mdata.SRCOLL=(params[:today][:SRCOLL].to_i/params[:multiplyby].to_i).round
@@ -501,13 +483,13 @@ def updatemachinedata
      @mdata.MTROUT=params[:today][:MTROUT]
      @mdata.PMTRINVALUE=params[:today][:PMTRINVALUE]
      @mdata.PMTROUTVALUE=params[:today][:PMTROUTVALUE]
-     @mdata.TMTRIN=roundval((params[:today][:TMTRIN].to_i)/params[:multiplyby].to_i)
-     puts "TMTRIN%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-     puts params[:today][:TMTRIN]
-     puts @mdata.TMTRIN
-     @mdata.TMTROUT=roundval((params[:today][:TMTROUT].to_i)/params[:multiplyby].to_i)
-     puts params[:today][:TMTROUT]
-     puts @mdata.TMTROUT
+     #@mdata.TMTRIN=roundval((params[:today][:TMTRIN].to_i)/params[:multiplyby].to_i)
+     @mdata.TMTRIN=((params[:today][:TMTRIN].to_f)/params[:multiplyby].to_f).round
+
+     #@mdata.TMTROUT=roundval((params[:today][:TMTROUT].to_i)/params[:multiplyby].to_i)
+
+    @mdata.TMTROUT=((params[:today][:TMTROUT].to_f)/params[:multiplyby].to_f).round
+     
      @mdata.MTRPER=params[:today][:MTRPER]
      #@mdata.MTRCOLL=(params[:today][:MTRCOLL].to_i/params[:multiplyby].to_i).round
      @mdata.MTRCOLL=(((@mdata.TMTRIN.to_i*params[:rate][:MRIN].to_i)-(@mdata.TMTROUT.to_i* params[:rate][:MROUT].to_i))/10)+@mdata.MTRSHORT.to_i
@@ -520,9 +502,13 @@ def updatemachinedata
      
      
      @mdata.SHORTREASON=params[:today][:Shortreason]
-     @mdata.THIRTYDAYSAVG=roundval(params[:today][:THIRTYDAYSAVG].to_i/params[:multiplyby].to_i)
-     @mdata.TENDAYSAVG=roundval(params[:today][:TENDAYSAVG].to_i/params[:multiplyby].to_i)
-     @mdata.SRAVG=roundval(params[:today][:SRAVG].to_i/params[:multiplyby].to_i)
+
+     #@mdata.THIRTYDAYSAVG=roundval(params[:today][:THIRTYDAYSAVG].to_i/params[:multiplyby].to_i)
+     @mdata.THIRTYDAYSAVG=(params[:today][:THIRTYDAYSAVG].to_f/params[:multiplyby].to_f).round
+     #@mdata.TENDAYSAVG=roundval(params[:today][:TENDAYSAVG].to_i/params[:multiplyby].to_i)
+     @mdata.TENDAYSAVG=(params[:today][:TENDAYSAVG].to_f/params[:multiplyby].to_f).round
+     @mdata.SRAVG=(params[:today][:SRAVG].to_f/params[:multiplyby].to_f).round
+     #@mdata.SRAVG=roundval(params[:today][:SRAVG].to_i/params[:multiplyby].to_i)
      @mdata.SETTING=params[:today][:SETTING]
      
      @mdata.SCREEN_RATE_IN=params[:rate][:SRIN]
@@ -535,15 +521,68 @@ puts "**************************************"
     if(@prevmachinedata.SETTING!=@mdata.SETTING)
         @mdata.LASTSETTING=params[:yesterday][:SETTING]
     end
+
+    Group.find(:all,:select=>'GroupID',:conditions=>["ClusterName=? and ShopName=?",@session[:ttclustername],@session[:ttshopname]]).each do |key|
+      #Group.find_by_ClusterName_and_ShopName(@clustername,@sname).each do |key|
+      p "========================>"
+        p key.GroupID
+      machine_data = Machinedata.find(:all,
+                                      :conditions=> ["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID=?",
+                                      @session[:ttclustername],@session[:ttshopname],(Date.parse(@session[:ttdate])),key.GroupID])
+
+        p "--------------------------->"
+      @tot_short_extra=0
+      machine_data.each do |data|
+        if data.CALCULATEBY.eql?('S')
+          short_extra = (((((data.TSRIN.to_f*data.SCREEN_RATE_IN.to_f)-(data.TSROUT.to_f*data.SCREEN_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f).round
+          @tot_short_extra = @tot_short_extra + short_extra
+          #ShortExtra.find_or_create_by_date_and_cluster_name_and_shop_name_and_group_id_and_short_extra("#{@trdate}","#{@clustername}","#{@sname}","#{@gid}",short_extra)
+          p "----------by-S-#{@tot_short_extra}-----------"
+        else
+          short_extra =(((((data.TMTRIN.to_f*data.MTR_RATE_IN.to_f)-(data.TMTROUT.to_f*data.MTE_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f).round
+          @tot_short_extra = @tot_short_extra + short_extra
+          p "----------by-M-#{@tot_short_extra}-----------"
+          #ShortExtra.find_or_create_by_date_and_cluster_name_and_shop_name_and_group_id_and_short_extra("#{@trdate}","#{@clustername}","#{@sname}","#{@gid}",short_extra)
+        end
+      end
+
+       keys = Counterdata.find(:first,:conditions=>["ClusterName=? and ShopName=? and DATE=?",
+                                                            @session[:ttclustername],@session[:ttshopname],(Date.parse(@session[:ttdate]))])
+
+        #keys = Counterdata.find_by_ClusterName_and_ShopName_and_Date('@clustername','@sname','@trdate')
+
+                 if keys!= nil
+											 if key.GroupID.eql?('KEY 1')
+												 keyval=keys.KEY1.to_i
+											end
+											 if key.GroupID=='KEY 2'
+												 keyval=keys.KEY2.to_i
+											end
+											if key.GroupID=='KEY 3'
+												 keyval=@keys.KEY3.to_i
+											 end
+                       if key.GroupID=='KEY 4'
+												 keyval=@keys.KEY4.to_i
+											 end
+                 end
+                 p "-------------------------keyval-----#{keyval}---"
+            short_extra = (keyval.to_i - @tot_short_extra.to_i)
+    p "---~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#{short_extra}~~~~~~~~~~~~~~~~``>"
+    p "--@trdate-#{@trdate}-----@clustername--#{@clustername}--@sname----#{@sname}------key.GroupID---#{key.GroupID}-----------------------------------------------------------------------------------------------------"
+    s = ShortExtra.find_by_date_and_cluster_name_and_shop_name_and_group_id((Date.parse(@session[:ttdate])),@session[:ttclustername],@session[:ttshopname],key.GroupID)
+    p "======================================s=========================---------------->#{s}"
+    s.update_attribute(:short_extra, short_extra)
+    p "---------------------------------------------------------------------------updation done------------------------"
+    #ShortExtra.update_attributes("#{@trdate}","#{@clustername}","#{@sname}","#{key.GroupID}",short_extra)
+    end
+
      
-     
-     
-     
-     
-      @prevmachinedata.save
+     @prevmachinedata.save
      @mdata.save
-     
-    redirect_to :action=>"dailydata"
+
+
+
+  redirect_to :action=>"dailydata"
     #puts 
 end
 

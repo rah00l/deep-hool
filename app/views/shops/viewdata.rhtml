@@ -26,11 +26,11 @@ function show_progress(X)
 }
 */
 
-function show_progress(X)
+function show_progress(X,Y)
 {
 				
 			file='<%= @session['file']%>';
-	      	a=confirm("ARE YOU SURE YOU WANT TO UPLOAD FILE "+file+"?" );
+                a=confirm("ARE YOU SURE YOU WANT TO UPLOAD FILE "+file+"?" );
 			if(a==true)
 			{
 				
@@ -41,12 +41,14 @@ function show_progress(X)
 						{
 	      					document.getElementById('aux_div').style.visibility = "visible";
     	 					new Ajax.Request("<%= url_for :controller=> :shops,:action=>:uploaddata %>",{method:'post'});
+                                                Y.disabled=true;
     					}
     			}
     			else
     			{
     						document.getElementById('aux_div').style.visibility = "visible";
     	 					new Ajax.Request("<%= url_for :controller=> :shops,:action=>:uploaddata %>",{method:'post'});
+                                                Y.disabled=true;
     			
     			}
     		}
@@ -290,7 +292,7 @@ COUNTER COLLECTION DETAILS
             <% @actualdatediff=@datediff-1%>
 				
  
- <input type="button" onclick="show_progress('<%= @actualdatediff%>');" value="UPLOAD DATA">
+ <input type="button" onclick="show_progress('<%= @actualdatediff%>',this);" value="UPLOAD DATA">
 
 <div id="aux_div" style=" visibility:hidden; align:center; width:333;
   									border: 2px solid white;
