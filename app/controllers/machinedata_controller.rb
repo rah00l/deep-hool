@@ -524,7 +524,12 @@ puts "**************************************"
 
     Group.find(:all,:select=>'GroupID',:conditions=>["ClusterName=? and ShopName=?",@session[:ttclustername],@session[:ttshopname]]).each do |key|
       #Group.find_by_ClusterName_and_ShopName(@clustername,@sname).each do |key|
-      p "========================>"
+    
+    check = ShortExtra.find_by_date_and_cluster_name_and_shop_name_and_group_id((Date.parse(@session[:ttdate])),@session[:ttclustername],@session[:ttshopname],key.GroupID)
+    unless check.blank?
+
+   p "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5checked------------------"
+    p "========================>"
         p key.GroupID
       machine_data = Machinedata.find(:all,
                                       :conditions=> ["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID=?",
@@ -569,10 +574,13 @@ puts "**************************************"
             short_extra = (keyval.to_i - @tot_short_extra.to_i)
     p "---~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#{short_extra}~~~~~~~~~~~~~~~~``>"
     p "--@trdate-#{@trdate}-----@clustername--#{@clustername}--@sname----#{@sname}------key.GroupID---#{key.GroupID}-----------------------------------------------------------------------------------------------------"
-    s = ShortExtra.find_by_date_and_cluster_name_and_shop_name_and_group_id((Date.parse(@session[:ttdate])),@session[:ttclustername],@session[:ttshopname],key.GroupID)
-    p "======================================s=========================---------------->#{s}"
-    s.update_attribute(:short_extra, short_extra)
+    #s = ShortExtra.find_by_date_and_cluster_name_and_shop_name_and_group_id((Date.parse(@session[:ttdate])),@session[:ttclustername],@session[:ttshopname],key.GroupID)
+    #p "======================================s=========================---------------->#{s}"
+    #unless s.blank?
+    check.update_attribute(:short_extra, short_extra)
+    #end
     p "---------------------------------------------------------------------------updation done------------------------"
+    end
     #ShortExtra.update_attributes("#{@trdate}","#{@clustername}","#{@sname}","#{key.GroupID}",short_extra)
     end
 
