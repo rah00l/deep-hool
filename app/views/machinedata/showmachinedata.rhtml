@@ -2663,7 +2663,7 @@ SROUT.readOnly=true;
                  <td width="33%" ><input type="text" name="short[extra1]" id="short_extra1" size=5 value="<%= (@keys.KEY1.to_i)-(@session[:ttCOLL1].to_i) %>" readonly></td>
                 <% else%>
                 <td width="33%" ><input type="text" name="key[collection1]" id="key_collection1" size=5 value="0" readonly></td>
-                <td width="33%" ><input type="text" name="short[extra1]" id="short_extra1" size=5 value="0" readonly></td>
+                <td width="33%" ><input type="text" name="short[extra1]" id="short_extra1" size=5 value="<%= (@keys.KEY1.to_i)-(@session[:ttCOLL1].to_i) %>" readonly></td>
                 <% end%>
                  
               </tr>
@@ -2674,7 +2674,7 @@ SROUT.readOnly=true;
                 <td width="33%" ><input type="text" name="short[extra2]" id="short_extra2" size=5 value="<%= (@keys.KEY2.to_i)-(@session[:ttCOLL2].to_i)%>" readonly></td>
                 <%else%>
                 <td width="33%" ><input type="text" name="key[collection2]" id="key_collection2" size=5 value="0" readonly></td>
-                <td width="33%" ><input type="text" name="short[extra2]" id="short_extra2" size=5 value="0" readonly></td>
+                <td width="33%" ><input type="text" name="short[extra2]" id="short_extra2" size=5 value="<%= (@keys.KEY2.to_i)-(@session[:ttCOLL2].to_i)%>" readonly></td>
                 <%end%>
                 
                 
