@@ -75,12 +75,12 @@ for(i=0; i<lb.length; i++)  {
 <%files = Dir.glob("*")%>
 <%files = files.sort%>
 <tr>
-<td width="191">
+<td width="400" align="center">
 <b><font face="Arial" size="2">
                     RECEIVED DATA</font></b><BR><BR>
                  
 
-<select id="shop_FileName" name="shop[FileName][]"  size=10>
+<select id="shop_FileName" name="shop[FileName][]"  size=20>
 <%files.each { |file| %>
      <%= file %>
      
@@ -91,18 +91,6 @@ for(i=0; i<lb.length; i++)  {
 <% } %>
   </select>
  <% Dir.chdir(pw) %> 
-</td>
-<td width="183">
-<b><font face="Arial" size="2">
-                    MISSED DATA</font></b><BR><BR>
-
-<% @t=Shop.find_by_sql("select ShopName from shops where ShopName not in(select distinct ShopName from clientdatas)")%>
-<select id="shop_missed" name="shop[missed][]"  size=10>
-<% @t.each {|t|%>
-	<option value=<%= t.ShopName %>><%= t.ShopName %></option>
-<% } %>
-</select>
-
 </td>
 </tr>
 </table>

@@ -999,6 +999,8 @@ def createdata
      if File.directory?("#{@folderpath}")
          
     FileUtils.copy(filename, "#{@folderpath}")
+    FileUtils.rm_r(filename)
+
     else
         FileUtils.mkdir_p "#{@folderpath}"
          FileUtils.copy(filename, "#{@folderpath}")
