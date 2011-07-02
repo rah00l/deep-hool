@@ -144,17 +144,31 @@ function Check()
 	}
 
 }
+
 function onlyNumbers(evt)
 {
-	
 	var e = event || evt; // for trans-browser compatibility
 	var charCode = e.which || e.keyCode;
+        
     if(charCode > 31 && (charCode < 48 || charCode > 57))
 		return false;
     else
-	return true;
+           return true;
+
 
 }
+function Multiplesof_fivehundred(evt)
+  {
+    if (evt.value % 500 !=0 || evt.value.length==0)
+    {
+      alert('Enter amount in multiples of 500 or 0');
+      evt.value='';
+      evt.focus();
+      return false;
+    }
+  }
+
+
 
 function onlyNumbersminus(evt)
 {
@@ -490,7 +504,7 @@ var btsave1 = document.getElementById("save");
 					<td width="25%" height="34" align="right"><label for="countercollection_Exp">Exp</label></td>
 					<td width="25%" height="34">
 					
-					<input type="text" name="countercollection[Exp]" id="countercollection_Exp"size="20" onkeypress="return onlyNumbers();" onKeyDown="if(event.keyCode==13)  this.form.countercollection_HC.focus();" onblur="calculatetotal1(this);" maxlength="6" value="0" onFocus="this.select();"></td>
+					<input type="text" name="countercollection[Exp]" id="countercollection_Exp"size="20" onkeypress="return onlyNumbers();"  onKeyDown="if(event.keyCode==13)  this.form.countercollection_HC.focus();" onblur="calculatetotal1(this);" maxlength="6" value="0" onFocus="this.select();"></td>
 
 					</td>
             		<td width="25%" height="34" align="right"><label for="countercollection_KEY1">KEY 1</label></td>
@@ -515,7 +529,7 @@ var btsave1 = document.getElementById("save");
             		<td width="25%" height="34" align="right"><label for="countercollection_HC">Hc</label></td>
             		<td width="25%" height="34">
             		
-            		<input type="text" name="countercollection[HC]" id="countercollection_HC"size="20" onkeypress="return onlyNumbers();" onKeyDown="if(event.keyCode==13)  this.form.countercollection_Credit.focus();" onblur="calculatetotal1(this);" maxlength="6" VALUE="0" onFocus="this.select();">
+            		<input type="text" name="countercollection[HC]" id="countercollection_HC"size="20" onkeypress="return onlyNumbers();" onKeyDown="if(event.keyCode==13)  this.form.countercollection_Credit.focus();" onblur="return Multiplesof_fivehundred(this); calculatetotal1(this);" maxlength="6" VALUE="" onFocus="this.select();">
 
             		
           			<td width="25%" height="34" align="right"><label for="countercollection_KEY2">KEY 2</label></td>

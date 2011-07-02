@@ -200,8 +200,9 @@ Counter Collection</b></font></td>
                     DATE</font></b>
  					</td>
           <td width="40%" align="justify" >
-        
-     <%= calendar_date_select_tag "date",Date.today.to_s,  :popup => "force" %> &nbsp;</tr>
+        <% date = Date.today-1 %>
+
+     <%= calendar_date_select_tag "date", date.strftime('%Y-%m-%d') ,:popup => "force" %> &nbsp;</tr>
  
           <tr>
     				<td width="238" height="16" align=right> 

@@ -100,7 +100,7 @@
         		 </td>
       		</tr>
 			<tr >
-		  <% @shops=Shop.find(:all)%>
+		  <% @shops=Shop.find(:all,:order=>'ShopName')%>
       	  <% @count=1 %>
 		  <% @shops.each do |shop| %>
 		  
@@ -139,7 +139,7 @@
 
        			 <td width="56%" height="20" align=right >
         
-       		<% if(@count>1)  and @result.usertype == "Admin" %>
+       		<% if(@count>1)  and @result.usertype == "Admin" || @result.usertype == "SuperAdmin"%>
        		
 					
 					<%= submit_to_remote 'Send','Send',:url => {:controller=>'clientdatas',:action => "createdata" },:confirm=>"ARE YOU SURE YOU WANT TO SEND DATA?",:before=>'showprogress();'%>
