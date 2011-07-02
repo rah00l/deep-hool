@@ -522,9 +522,16 @@ puts "**************************************"
         @mdata.LASTSETTING=params[:yesterday][:SETTING]
     end
 
-    Group.find(:all,:select=>'GroupID',:conditions=>["ClusterName=? and ShopName=?",@session[:ttclustername],@session[:ttshopname]]).each do |key|
-      #Group.find_by_ClusterName_and_ShopName(@clustername,@sname).each do |key|
     
+
+     
+     @prevmachinedata.save
+     @mdata.save
+
+
+  Group.find(:all,:select=>'GroupID',:conditions=>["ClusterName=? and ShopName=?",@session[:ttclustername],@session[:ttshopname]]).each do |key|
+      #Group.find_by_ClusterName_and_ShopName(@clustername,@sname).each do |key|
+
     check = ShortExtra.find_by_date_and_cluster_name_and_shop_name_and_group_id((Date.parse(@session[:ttdate])),@session[:ttclustername],@session[:ttshopname],key.GroupID)
     unless check.blank?
 
@@ -583,10 +590,6 @@ puts "**************************************"
     end
     #ShortExtra.update_attributes("#{@trdate}","#{@clustername}","#{@sname}","#{key.GroupID}",short_extra)
     end
-
-     
-     @prevmachinedata.save
-     @mdata.save
 
 
 
