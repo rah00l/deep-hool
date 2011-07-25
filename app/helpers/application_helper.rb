@@ -11,15 +11,16 @@ module ApplicationHelper
     percent_target = ((pre_month_avg_hc.to_f/target.to_f)*100).round
     tar = 100 - percent_target
     target_achive = tar.abs
-    per = '%'
-    percent_font_color(pre_month_avg_hc,target,target_achive,per)
+    pre = '- '
+    post = '%'
+    percent_font_color(pre,pre_month_avg_hc,target,target_achive,post)
   end
 
-  def percent_font_color(first_value,second_value,result,per)
+  def percent_font_color(pre,first_value,second_value,result,post)
     if first_value.to_i < second_value.to_i
-      return ("<span style='color:#f00;font-weight:bold;'>"+ result.to_s + per.to_s + "</span>")
+      return ("<span style='color:#f00;font-weight:bold;'>"+ pre.to_s + result.to_s + post.to_s + "</span>")
     else
-      return ("<span style='color:blue;font-weight:bold;'>" + result.to_s + per.to_s  + "</span>")
+      return ("<span style='color:blue;font-weight:bold;'>" + pre.to_s +  result.to_s + post.to_s  + "</span>")
     end
   end
 
