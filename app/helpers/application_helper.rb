@@ -28,6 +28,14 @@ module ApplicationHelper
     first_date = Date.parse(last_date).strftime('%Y-%m-01')
     return first_date,last_date
   end
+  
+  def get_prevdate_os(shop_name,date)
+    #prev_date = (Date.parse(date) - 1).strftime('%Y-%m-%d')
+    #abc = Counterdata.find(:first,:conditions=>["shopname=? and date=?",shop_name,prev_date])
+    outstand_prev_entry = Countercollection.find_by_ShopName(shop_name,:order => 'Date desc')
+    os  = outstand_prev_entry.blank? ? Shop.find_by_ShopName(shop_name).os : Countercollection.find_by_ShopName(shop_name,:order => 'Date desc').os
+    #abc.blank? ? Shop.find_by_ShopName(shop_name).os : Counterdata.find(:first,:conditions=>["shopname=? and date=?",shop_name,prev_date]).os
+  end
 
 end
 
