@@ -315,7 +315,8 @@
           <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">HCAVG</td>
                     <% tar = Target.find_by_Shop_Name("#{@session[:shoparray1][i].to_s}") %>
           <td width="90" height="19"  ALIGN="CENTER"><B>
-                <% hc_avg = Counterdata.average(:HC,:conditions=>["clustername=? and shopname=? and date>=? and date<=?",@session[:rrclustername],@session[:shoparray1][i].to_s,@session[:startdatehc],@session[:enddatehc]]).round %><%= percent_font_color('',hc_avg,tar.Target_value,hc_avg,'') %>
+                <% hc_avg = Counterdata.average(:HC,:conditions=>["clustername=? and shopname=? and date>=? and date<=?",@session[:rrclustername],@session[:shoparray1][i].to_s,@session[:startdatehc],@session[:enddatehc]]).round %>
+                <%= tar.blank? ? hc_avg : percent_font_color('',hc_avg,tar.Target_value,hc_avg,'')  %>
               </B>
             </td>
 
