@@ -337,15 +337,16 @@
           <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">HC</td>
           <td width="90" height="19" ALIGN="CENTER" ><B><%= data.HC%></B></td>
 
-          <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">Target </td>
-          <% unless tar.blank?  %>
-          <td width="90" height="19" ALIGN="CENTER"><B><span><%= tar.Target_value %></span>&nbsp;&nbsp;
-                <%prev_month_avg_hc = previous_month_avg_hc(@session[:rrclustername],@session[:shoparray1][i].to_s,@session[:enddatehc])%>
-                <%= target_percentage(prev_month_avg_hc,tar.Target_value) %>
-                </B></td>
-          <%else%>
-          <td width="90" height="19" ALIGN="CENTER"><span>0</span><span>0</span></td>
-          <%end%>
+          <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">TARGET </td>
+            <% unless tar.blank?  %>
+              <td width="60" height="19" ALIGN="CENTER"><B><%= tar.Target_value %></B></td>
+              <%prev_month_avg_hc = previous_month_avg_hc(@session[:rrclustername],@session[:shoparray1][i].to_s,@session[:enddatehc])%>
+              <td width="50" height="19" ALIGN="CENTER"><B><%= target_percentage(prev_month_avg_hc,tar.Target_value) %></B></td>
+            <%else%>
+              <td width="60" height="19" ALIGN="CENTER"><span>0</span><span>0</span></td>
+              <%prev_month_avg_hc = previous_month_avg_hc(@session[:rrclustername],@session[:shoparray1][i].to_s,@session[:enddatehc])%>
+              <td width="50" height="19" ALIGN="CENTER"><B><%= target_percentage(prev_month_avg_hc,tar.Target_value) %></B></td>
+            <%end%>
           
           <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">EXPAVG</td>
           <td width="90" height="19" ALIGN="CENTER" ><B><%= Counterdata.average(:Exp,
@@ -537,41 +538,22 @@
         <% @totalper=0%>
       <% end %>
       <% @totalper.round %>
-
       <BR>
 
-      <table>
-        <tr>
-          <td colspan=16 align=center>
-            <font size=4><b>
-                <%= @session[:shoparray1][i].to_s%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <!-- display % start-->
-
-                <%@totalamt=@totalper.round%>
-                <%if @totalamt.to_i <=59%>
-                  <font color= red><%=@totalamt %>%</font></td>
-                    <%elsif @totalamt.to_i >59 and @totalamt.to_i <=69%>
-                    <font color= blue><%= @totalamt %>%</font></td>
-                      <%elsif @totalamt.to_i >69 and @totalamt.to_i <=80%>
-                      <font color= green><%= @totalamt %>%</font></td>
-                        <%elsif @totalamt.to_i >=81%>
-                        <font color= red><%=@totalamt %>%</font></td>
-                          <%end%>
-                        <!-- display % end-->
-                        </b></font></td>
-
-                      <td><font size="4"><b>&nbsp;&nbsp;&nbsp;&nbsp;<span>S/E</span>&nbsp;&nbsp;
-                                <% ShortExtra.find(:all,:select=>'group_id',:conditions => ["date=? and cluster_name=? and shop_name=? ",session[:dailyvalue],@session[:rrclustername],@session[:shoparray1][i].to_s]).each do |key| %>
-                                <% short_extra = short_extra_values(session[:dailyvalue],@session[:rrclustername],@session[:shoparray1][i].to_s,key.group_id) %>
+  <%@totalamt=@totalper.round%>
+          
+            <table>
+              <tr><td colspan=16><font size=4>
+                    <b><span>&nbsp;&nbsp;S/E&nbsp;&nbsp;<% ShortExtra.find(:all,:select=>'group_id',:conditions => ["date=? and cluster_name=? and shop_name=? ",session[:dailyvalue],@session[:rrclustername],@session[:shoparray1][i].to_s]).each do |key| %>
+                        <% short_extra = short_extra_values(@session[:startdatehc],@session[:enddatehc],@session[:rrclustername],@session[:shoparray1][i].to_s,key.group_id) %>
                                 <%= key.group_id %>&nbsp;&nbsp;
-                                (<%= se_value = short_extra.blank? ? '' : font_color(short_extra)  %>)
+                                <%= se_value = short_extra.blank? ? '' : font_color(short_extra)  %>&nbsp;&nbsp;</span>
                           <%end%>
-                                &nbsp;&nbsp;
-                                </font></b></td>
-
-                      </tr>
-                      </table>
-
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <span><%= @session[:shoparray1][i].to_s%></span>&nbsp;&nbsp;
+                      <%= tot_percentage_color(@totalamt) %></b></td>
+              </tr>
+            </table>
                       <br></br>
 
                       <table  border="1" width ="95%"  cellpadding="0"  cellspacing="0"  bordercolor="black"   id="AutoNumber1" >
