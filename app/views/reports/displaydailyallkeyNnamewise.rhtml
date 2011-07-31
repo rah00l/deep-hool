@@ -340,8 +340,6 @@
               <td width="50" height="19" ALIGN="CENTER"><B><%= target_percentage(prev_month_avg_hc,tar.Target_value) %></B></td>
             <%else%>
               <td width="60" height="19" ALIGN="CENTER"><span>0</span><span>0</span></td>
-              <%prev_month_avg_hc = previous_month_avg_hc(@session[:rrclustername],@session[:shoparray1][i].to_s,@session[:enddatehc])%>
-              <td width="50" height="19" ALIGN="CENTER"><B><%= target_percentage(prev_month_avg_hc,tar.Target_value) %></B></td>
             <%end%>
 
           <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">EXPAVG</td>
