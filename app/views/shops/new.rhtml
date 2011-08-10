@@ -603,12 +603,18 @@ function onlyNumbers(evt)
 				<tr>
 					<td height="1" width="238" align=right><b> <font face="Arial" size="2" ><label for="shop_Address">ADDRESS</label></font></b>  					</td>
   					<td width="196" height="1" align=left>
-	 	 			<%= text_area 'shop', 'Address'  ,:cols=>"30%", :rows=>"3%",:onkeydown=>"if(event.keyCode==13)  this.form.shop_Cash.focus();"%> 					
+	 	 			<%= text_area 'shop', 'Address'  ,:cols=>"30%", :rows=>"3%",:onkeydown=>"if(event.keyCode==13)  this.form.shop_os.focus();"%>
   					</td>
   					<td height="1" width="166" align=right></td>
  	 				<td width="275" height="1" align=left></td>
  	 				
 				</tr>
+                                <tr>
+					<td height="1" width="238" align=right><b> <font face="Arial" size="2" ><label for="shop_Address">OS</label></font></b>  					</td>
+  					<td width="196" height="1" align=left>
+	 	 			<%= text_field 'shop', 'os'  ,:cols=>"30%", :rows=>"3%",:onkeydown=>"if(event.keyCode==13)  this.form.shop_Cash.focus();"%>
+  					</td>
+                                </tr>
 				<tr>
 					<td width="238"></td>
 					<td align=center width="196">CASH</td>

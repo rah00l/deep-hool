@@ -11,6 +11,9 @@ class Shop < ActiveRecord::Base
      
     validates_numericality_of :OpeningBal, :message=>"must be a numberic value"
     validates_presence_of :OpeningBal, :on=> :create
+
+   validates_numericality_of :os, :message=>"must be a numberic value"
+    validates_presence_of :os, :on=> :create
     
     validates_presence_of :Address, :on=>:create
     validates_presence_of :Address, :on=>:update

@@ -17,9 +17,61 @@ function showsave1()
 
 }
 
+  function os_validate()
+  {
+    var btsave = document.getElementById("countercollection_Outstanding");
+    var btsave1 = document.getElementById("countercollection_Outstanding1");
+    var form_hc = document.getElementById("countercollection_HC");
+    if (btsave.value < 0 )
+    {
+      abc = Math.abs(btsave.value);
+      if( btsave1.value < abc)
+      {
+        alert('PLEASE ENTER AMOUNT LESSER THAN O/S '+btsave1.value);
+        calculatetotal2(form_hc);
+        btsave.focus();
+        return(false);
+      }
+      else
+      {
+        if(abc == btsave1.value)
+        {
+
+        }
+        else
+        {
+          if(form_hc.value > 0 )
+          {
+           alert('PLEASE CLEAR YOUR O/S FIRST');
+           form_hc.value=0;
+           calculatetotal2(form_hc);
+            form_hc.focus();
+            return(false);
+          }
+        }
+      }
+    }
+    else
+    {
+      if (form_hc.value==0)
+      {}
+      else
+      {
+        alert('YOU CAN NOT ENTER HC DURING BORROWING O/S');
+        form_hc.value = 0;
+        btsave.value = 0;
+        calculatetotal2(form_hc);
+        form_hc.focus();
+        return(false);
+      }
+    }
+    showsave();
+  }
+
 function showsave()
 {
-	
+
+        
 	if(event.keyCode==13)
 	{
 	 	var btsave1 = document.getElementById("save");
@@ -27,7 +79,8 @@ function showsave()
         btsave1.disabled=false;
 
 	 	btsave1.focus();
-	 }	
+	 }
+         
 }
 
 function calculatetotal1(obj)
@@ -80,10 +133,10 @@ var total1=document.getElementById("total1");
 
 function calculatetotal2(obj)
 {
-	
+        //alert('TOT');
 	if(obj.value.length<1)
 	{
-	alert("Please Enter Value");
+	alert("PLEASE ENTER VALUE");
 	obj.focus();
 	return false;
 	}
@@ -104,7 +157,9 @@ function calculatetotal2(obj)
 
 	var sum=parseInt(OPENBAL)+parseInt(KEY1)+parseInt(KEY2)+parseInt(KEY3)+parseInt(KEY4)+parseInt(outstd);
 	total2.value=sum;
-	return true;
+        //alert('.---.');
+
+        return false;
 	}
 	
 	
@@ -135,12 +190,12 @@ function Check()
 				alert("Both total not matching");
 				cash.focus();
 				var btsave1 = document.getElementById("save");
-      
-        btsave1.disabled=true;
-
-				return(false);
+                                btsave1.disabled=true;
+                                return(false);
 			}
-		return(true);
+
+                //os_validate();
+                return(true);
 	}
 
 }
@@ -161,7 +216,7 @@ function Multiplesof_fivehundred(evt)
   {
     if (evt.value % 500 !=0 || evt.value.length==0)
     {
-      alert('Enter amount in multiples of 500 or 0');
+      alert('PLEASE ENTER AMOUNT IN MULTIPLES OF  0  OR  500 ');
       evt.value='';
       evt.focus();
       return false;
@@ -454,13 +509,6 @@ var btsave1 = document.getElementById("save");
 <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" width="100%" id="AutoNumber1" height="350">
   <tr>
     <td width="100%" height="330" align=center>
-   
-   
-    
-
-    
-    
-
     <table border="1" cellpadding="0" cellspacing="0"  bgcolor="#C0C0C0" style="border-collapse: collapse" bordercolor="#6C3401" width="80%" id="AutoNumber2" height="320">
       <tr>
         <td width="100%" height="1"><h3>Counter Collection</h3></td>
@@ -511,9 +559,9 @@ var btsave1 = document.getElementById("save");
             		<td width="25%" height="34">
             		<% if(@c>=1) %>
             			<%if(@c==1)%>
-            		<input type="text" name="countercollection[KEY1]" id="countercollection_KEY1" size="20" onchange="return minussignsforkey1();" onkeypress="return onlyNumbersminus();" onKeyDown="if(event.keyCode==13)  this.form.countercollection_Outstanding.focus();" onblur="calculatetotal2(this);" maxlength="6" value="0" onFocus="this.select();">
+            		<input type="text" name="countercollection[KEY1]" id="countercollection_KEY1" size="20" onchange="return minussignsforkey1();" onblur="calculatetotal2(this);" onkeypress="return onlyNumbersminus();" onKeyDown="if(event.keyCode==13)  this.form.countercollection_Outstanding.focus();"  maxlength="6" value="0" onFocus="this.select();">
             			<%else%>
-            			<input type="text" name="countercollection[KEY1]" id="countercollection_KEY1" size="20" onchange="return minussignsforkey1();" onkeypress="return onlyNumbersminus();" onKeyDown="if(event.keyCode==13)  this.form.countercollection_KEY2.focus();" onblur="calculatetotal2(this);" maxlength="6" value="0" onFocus="this.select();">
+            			<input type="text" name="countercollection[KEY1]" id="countercollection_KEY1" size="20" onchange="return minussignsforkey1();"  onblur="calculatetotal2(this);" onkeypress="return onlyNumbersminus();" onKeyDown="if(event.keyCode==13)  this.form.countercollection_KEY2.focus();" onblur="calculatetotal2(this);" maxlength="6" value="0" onFocus="this.select();">
             			<%end%>
 
             		
@@ -603,7 +651,9 @@ var btsave1 = document.getElementById("save");
 					 <td width="25%" height="34" align="right"><label for="countercollection_Outstanding">O/S</label></td>
 					 <td width="25%" height="34">
 					
-<input type=text id='countercollection_Outstanding' name='countercollection[Outstanding]'  onkeypress="return onlyNumbersminus();" onchange="return minussignsforos();" onKeyDown="showsave();" onblur="calculatetotal2(this);" size="20" value="0" onFocus="this.select();"></td>
+<span><input type=text id='countercollection_Outstanding' name='countercollection[Outstanding]'  onkeypress="return onlyNumbersminus();" onchange="return minussignsforos(); " onKeyDown="if(event.keyCode==13) os_validate();" onblur="calculatetotal2(this);" size="8" value="0" onFocus="this.select();"></span>
+<span><input type=text id='countercollection_Outstanding1' name='countercollection1[Outstanding]' value="<%= get_prevdate_os(@session['shop'],@session['date'].strftime("%d-%m-%Y")) %>" size="6" readonly></span>
+                                         </td>
 
  </td>
 					

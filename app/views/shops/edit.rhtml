@@ -132,7 +132,6 @@ function onlyNumbers(evt)
 <td height="400" width=100% align="center">
 
 <% form_tag :action => 'update', :id => @shop do %>
-
 <%= error_messages_for 'shop' %>
 
 <font  size= "4">
@@ -195,6 +194,13 @@ function onlyNumbers(evt)
  	 				</td>
  	 				
 				</tr>
+
+                                 <tr>
+					<td height="1" width="238" align=right><b> <font face="Arial" size="2" ><label for="shop_Address">OS</label></font></b>  					</td>
+  					<td width="196" height="1" align=left>
+	 	 			<%= text_field 'shop', 'os'  ,:cols=>"30%", :rows=>"3%",:onkeydown=>"if(event.keyCode==13)  this.form.shop_Cash.focus();"%>
+  					</td>
+                                </tr>
 				
 				<tr>
 					<td width="218"></td>

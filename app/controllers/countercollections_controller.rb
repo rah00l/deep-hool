@@ -26,13 +26,31 @@ class CountercollectionsController < ApplicationController
 
 #CREATING NEW ENTRY IN COUNTERCOLLECTION WHEN ALL ENTRIES IN PARTICULAR SHOP GETS COMPLETED
   def create
+    #raise params[:countercollection][:Outstanding].inspect
       begin
       @cluster=Shop.find_first(["ShopName=?",params[:countercollection][:ShopName]])
             params[:countercollection][:ClusterName]=@cluster.ClusterName
       #params[:countercollection][:Openingbal]=params[:countercollection][:Cash].to_i+params[:countercollection][:Credit].to_i
       @countercollection = Countercollection.new(params[:countercollection])
-   
+      outstand_entry = params[:countercollection][:Outstanding]
+      outstand_prev_entry = Countercollection.find_by_ShopName(params[:countercollection][:ShopName],:order => 'Date desc')
+      #raise outstand_prev_entry.inspect
+      #raise outstand_prev_entry.os.inspect
+      #raise outstand_entry
+      #raise (outstand_prev_entry.os.to_i - (outstand_entry.to_i).abs).inspect
+      first_os = Shop.find_by_ShopName(params[:countercollection][:ShopName]).os
+      if outstand_entry.to_i < 0
+      os  = outstand_prev_entry.blank? ? first_os.to_i - (outstand_entry.to_i).abs : outstand_prev_entry.os.to_i - (outstand_entry.to_i).abs
+      else
+      os  = outstand_prev_entry.blank? ? first_os.to_i + (outstand_entry.to_i).abs : outstand_prev_entry.os.to_i + (outstand_entry.to_i).abs
+      end
+
+      #raise os.inspect
+      #raise os.inspect
+      @countercollection.os = os.to_i.abs
+      #raise @countercollection.os.inspect
       if @countercollection.save
+      
 =begin        
         @p=Previousrecord.find_first(["ShopName=?",@session['shop']])
         @p.Date=@session['date']
@@ -56,6 +74,7 @@ class CountercollectionsController < ApplicationController
       render :action => 'new'
   end
   rescue Exception=>ex
+    raise 
     puts ex.message()
   end
   end
