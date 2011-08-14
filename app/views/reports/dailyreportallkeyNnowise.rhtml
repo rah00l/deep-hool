@@ -77,15 +77,14 @@
         <!-- <td width="21%" height="23"></td> -->
       </tr>
       <td width="34%" height="19">&nbsp;</td>
-      <!--<td width="45%" height="19" colspan="3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HRK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      LAT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      &nbsp;&nbsp;MRL
-
-      </td>-->
+      
       <td width="15%" height="19" align=center>HRK</td><td width="15%" height="19" align=center>LAT</td><td width="15%" height="19" align=center>MRL</td>
-
-      <!--<td width="21%" height="19">
-  </td> -->
+      <tr>
+        <td width="34%" height="19"><font size="2">HC VALUES FOR ALL GROUP</font></td>
+        <td width="15%" height="19" align=center><% hc = sum_of_values_for_all_group('HC','HRK',session[:startdatehc],@session[:enddatehc]) %><%= hc.blank? ? 0 : hc %></td>
+        <td width="15%" height="19" align=center><% hc = sum_of_values_for_all_group('HC','LAT',session[:startdatehc],@session[:enddatehc]) %><%= hc.blank? ? 0 : hc %></td>
+        <td width="15%" height="19" align=center><% hc = sum_of_values_for_all_group('HC','MRL',session[:startdatehc],@session[:enddatehc]) %><%= hc.blank? ? 0 : hc %></td>
+      </tr>
       <tr>
         <td width="34%" height="19"><font size="2">HC% FOR ALL GROUP</font></td>
         <td width="15%" height="19" align=center>
@@ -135,6 +134,15 @@
           &nbsp;</td>
         <!-- <td width="21%" height="19" align=center>
     </td>--></tr>
+    
+      
+      <tr>
+          <td width="34%" height="19"><font size="2">EXP VALUES FOR ALL GROUP</font></td>
+          <td width="15%" height="19" align=center><% exp = sum_of_values_for_all_group('EXP','HRK',session[:startdatehc],@session[:enddatehc]) %><%= exp.blank? ? 0 : exp %></td>
+          <td width="15%" height="19" align=center><% exp = sum_of_values_for_all_group('EXP','LAT',session[:startdatehc],@session[:enddatehc]) %><%= exp.blank? ? 0 : exp %></td>
+          <td width="15%" height="19" align=center><% exp = sum_of_values_for_all_group('EXP','MRL',session[:startdatehc],@session[:enddatehc]) %><%= exp.blank? ? 0 : exp %></td>
+        </tr>
+      
       <tr>
         <td width="34%" height="19"><font size="2">EXP% FOR ALL GROUP</font></td>
         <td width="15%" height="19" align=center>
@@ -359,18 +367,20 @@
 
       <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="949" id="AutoNumber3" height="33">
         <tr>
-          <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">OS</td>
+          <td bgcolor="#FFA500" width="50" height="19" ALIGN="CENTER">OS</td>
 
           <% os = Counterdata.find(:first,
             :conditions => ["ClusterName='#{@session[:rrclustername]}'
       and Date='#{@session[:enddatehc]}' and
       ShopName='#{@session[:shoparray1][i].to_s}'"])%>
-          <td width="90" height="19" ALIGN="CENTER" ><B><%= os.Outstanding %></B>
+          <td width="60" height="19" ALIGN="CENTER" ><B><%= os.Outstanding %></B>
           </td>
+          <td bgcolor="#FFA500" width="60" height="19" ALIGN="CENTER">BAL-OS</td>
+            <% bal_os = Countercollection.find_by_Date_and_ClusterName_and_ShopName(session[:dailyvalue],@session[:rrclustername],@session[:shoparray1][i].to_s)  %>
+            <td width="50" height="19" ALIGN="CENTER" ><font color="red"><B><%= bal_os.blank? ? 0  : bal_os.os  %></B></font></td>
 
-
-          <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">Y'CR</td>
-          <td width="90" height="19" ALIGN="CENTER" ><B>
+          <td bgcolor="#FFA500" width="50" height="19" ALIGN="CENTER">Y'CR</td>
+          <td width="60" height="19" ALIGN="CENTER" ><B>
 
               <% @c1= Counterdata.find(:first,
                 :conditions=>["ClusterName='#{@session[:rrclustername]}'
@@ -384,15 +394,15 @@
             <B><%= ycredit%></B>
           </td>
 
-          <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">T'CR</td>
-          <td width=90" height="19" ALIGN="CENTER" ><B>
+          <td bgcolor="#FFA500" width="50" height="19" ALIGN="CENTER">T'CR</td>
+          <td width="60" height="19" ALIGN="CENTER" ><B>
               <%= data.Credit%></B></td>
 
-          <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">DIFF CR</td>
-          <td width="90" height="19" ALIGN="CENTER" >
+          <td bgcolor="#FFA500" width="50" height="19" ALIGN="CENTER">DIFF CR</td>
+          <td width="60" height="19" ALIGN="CENTER" >
             <B><%= data.Credit.to_i-ycredit.to_i%></B>
           </td>
-          <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">M/S </td>
+          <td bgcolor="#FFA500" width="50" height="19" ALIGN="CENTER">M/S </td>
 
           <% @r=Machinedata.find_by_sql("select DISTINCT TRANS_DATE from Machinedatas where CLUSTER_NAME='#{@session[:clustarray]}'
     and TRANS_DATE>='#{session[:startdatehc]}'
@@ -473,7 +483,9 @@
             <% @totalREFUND+@totalADMIN+@totalCZ+@totalBONUS+@totalXYZ+@totalMF+@totalMT+@totalPF+@totalCE+@totalROK %>
 
           <%end%>
-          <td width="90" height="19" ALIGN="CENTER"><B><%=(@totalBONUS1.to_i+@totalCE1.to_i+@totalXYZ1.to_i)%></b></td><td width="90" height="19" ALIGN="CENTER"> <b><%= @totalREFUND1.to_i+@totalADMIN1.to_i %></b></td>  <td width="90" height="19" ALIGN="CENTER"><b><%= @totalMF1.to_i+@totalMT1.to_i+@totalPF1.to_i+@totalCZ1.to_i+@totalROK1.to_i %></b></td>
+          <td width="60" height="19" ALIGN="CENTER"><B><%=(@totalBONUS1.to_i+@totalCE1.to_i+@totalXYZ1.to_i)%></b></td>
+          <td width="60" height="19" ALIGN="CENTER"> <b><%= @totalREFUND1.to_i+@totalADMIN1.to_i %></b></td>
+          <td width="60" height="19" ALIGN="CENTER"><b><%= @totalMF1.to_i+@totalMT1.to_i+@totalPF1.to_i+@totalCZ1.to_i+@totalROK1.to_i %></b></td>
 
         </tr>
       </table>
@@ -532,7 +544,7 @@
         <tr>
           <td colspan=16 align=center>
             <font size=4><b>
-                <%= @session[:shoparray1][i].to_s%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <%= @session[:shoparray1][i].to_s%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <!-- display % start-->
 
                 <%@totalamt=@totalper.round%>
@@ -546,7 +558,18 @@
                         <font color= red><%=@totalamt %>%</font></td>
                           <%end%>
                         <!-- display % end-->
-                        </b></font></td></tr>
+                        </b></font></td>
+
+                      <td><font size="4"><b>&nbsp;&nbsp;&nbsp;&nbsp;<span>S/E</span>&nbsp;&nbsp;
+                                <% ShortExtra.find(:all,:select=>'group_id',:conditions => ["date=? and cluster_name=? and shop_name=? ",session[:dailyvalue],@session[:rrclustername],@session[:shoparray1][i].to_s]).each do |key| %>
+                                <% short_extra = short_extra_values(session[:dailyvalue],@session[:rrclustername],@session[:shoparray1][i].to_s,key.group_id) %>
+                                <%= key.group_id %>&nbsp;&nbsp;
+                                (<%= se_value = short_extra.blank? ? '' : font_color(short_extra)  %>)
+                          <%end%>
+                                &nbsp;&nbsp;
+                                </font></b></td>
+
+                      </tr>
                       </table>
 
                       <br></br>
