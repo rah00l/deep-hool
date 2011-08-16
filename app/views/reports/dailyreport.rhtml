@@ -217,7 +217,8 @@ Daily Machine Data</b></font></td>
           <!--<%#= calendar_date_select_tag "date",Date.today.to_s,  :popup => "force" %> -->
 
        <% if(session[:dailyvalue]==nil) %>
-            <%= calendar_date_select_tag "date",Date.today.to_s,  :popup => "force" %>
+          <% date = Date.today-1 %>
+            <%= calendar_date_select_tag "date",date.strftime('%Y-%m-%d'),  :popup => "force" %>
      <%else%>
             <%= calendar_date_select_tag "date",session[:dailyvalue].to_s,  :popup => "force" %>
 	<%end%>

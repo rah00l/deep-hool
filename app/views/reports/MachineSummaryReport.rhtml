@@ -250,7 +250,7 @@ Machine Summary Report</b></font></td>
           <!--<%= calendar_date_select_tag "date",Date.today.to_s,  :popup => "force" %> -->
 
        <% if(@session[:ttdate1]==nil) %>
-     <%= calendar_date_select_tag "date1",Date.today.to_s,  :popup => "force" %> 
+     <%= calendar_date_select_tag "date1",Date.today.strftime('%Y-%m-01'),  :popup => "force" %>
      <%else%>
      <%= calendar_date_select_tag "date1",@session[:ttdate1].to_s,  :popup => "force" %> 
 	<%end%>
@@ -269,7 +269,8 @@ Machine Summary Report</b></font></td>
           <!--<%= calendar_date_select_tag "date",Date.today.to_s,  :popup => "force" %> -->
 
        <% if(@session[:ttdate2]==nil) %>
-     <%= calendar_date_select_tag "date2",Date.today.to_s,  :popup => "force" %> 
+          <% date = Date.today-1 %>
+     <%= calendar_date_select_tag "date2",date.strftime('%Y-%m-%d'),  :popup => "force" %>
      <%else%>
      <%= calendar_date_select_tag "date2",@session[:ttdate2].to_s,  :popup => "force" %> 
 	<%end%>

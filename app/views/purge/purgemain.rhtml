@@ -65,7 +65,7 @@
           <!--<%= calendar_date_select_tag "date",Date.today.to_s,  :popup => "force" %> -->
 
        
-     <%= calendar_date_select_tag "startdate",Date.today.to_s,  :popup => "force" %> 
+     <%= calendar_date_select_tag "startdate",Clientdata.minimum(:date),  :popup => "force" %>
      
      &nbsp;</tr>
 

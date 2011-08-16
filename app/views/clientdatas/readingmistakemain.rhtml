@@ -248,7 +248,8 @@ output.value = (day<10?'0'+day:day) +'-'+ (month1<10?'0'+month1:month1) +'-'+yea
           <!--<%= calendar_date_select_tag "date",Date.today.to_s,  :popup => "force" %> -->
 
        <% if(@session[:ttdate1]==nil) %>
-     <%= calendar_date_select_tag "date1",Date.today.to_s,  :popup => "force" %> 
+          <% date = Date.today-1 %>
+     <%= calendar_date_select_tag "date1", date.strftime('%Y-%m-%d'),  :popup => "force" %>
      <%else%>
      <%= calendar_date_select_tag "date1",@session[:ttdate1].to_s,  :popup => "force" %> 
 	<%end%>
