@@ -460,8 +460,8 @@ def updatemachinedata
   @mdata.TSROUT=((params[:today][:TSROUT].to_f)/params[:multiplyby].to_f).round
   @mdata.SRPER=params[:today][:SRPER]
   @mdata.MTRSHORT=params[:today][:MTRSHORT]
-  #@mdata.SRCOLL=((((@mdata.TSRIN.to_f*params[:rate][:SRIN].to_f)-(@mdata.TSROUT.to_f*params[:rate][:SROUT].to_f))/10).round)+@mdata.MTRSHORT.to_i####
-  @mdata.SRCOLL = params[:today][:SRCOLL]
+  @mdata.SRCOLL=((((@mdata.TSRIN.to_f*params[:rate][:SRIN].to_f)-(@mdata.TSROUT.to_f*params[:rate][:SROUT].to_f))/10).round)+@mdata.MTRSHORT.to_i####
+  #@mdata.SRCOLL = params[:today][:SRCOLL]
   @mdata.MTRIN=params[:today][:MTRIN]
   @mdata.MTROUT=params[:today][:MTROUT]
   @mdata.PMTRINVALUE=params[:today][:PMTRINVALUE]
