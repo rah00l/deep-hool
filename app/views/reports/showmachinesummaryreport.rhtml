@@ -106,7 +106,7 @@ and SHOP_NAME='#{@session[:rrshopname]}' and MACHINE_NO='#{machine.MACHINE_NO}' 
 			
                         
 			<% @COLLTOTAL=@COLLTOTAL.to_i+(c.SRCOLL.to_i*c.MULTIPLY_BY.to_i)%>
-<td><%#= c.SRCOLL.to_i %></td>
+
 			<% @GSRINTOTAL=@GSRINTOTAL.to_i+((c.TSRIN.to_i*c.SCREEN_RATE_IN.to_i)/10).round%>
 			
 			<% @GSROUTTOTAL=@GSROUTTOTAL.to_i+((c.TSROUT.to_i*c.SCREEN_RATE_OUT.to_i)/10).round%>
