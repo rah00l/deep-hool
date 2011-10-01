@@ -460,8 +460,8 @@ def updatemachinedata
   @mdata.TSROUT=((params[:today][:TSROUT].to_f)/params[:multiplyby].to_f).round
   @mdata.SRPER=params[:today][:SRPER]
   @mdata.MTRSHORT=params[:today][:MTRSHORT]
-  @mdata.SRCOLL=((((@mdata.TSRIN.to_f*params[:rate][:SRIN].to_f)-(@mdata.TSROUT.to_f*params[:rate][:SROUT].to_f))/10).round)+@mdata.MTRSHORT.to_i####
-  #@mdata.SRCOLL = params[:today][:SRCOLL]
+  mtrshort = @mdata.MTRSHORT.to_i/mulby.to_i
+  @mdata.SRCOLL=((((@mdata.TSRIN.to_f*params[:rate][:SRIN].to_f)-(@mdata.TSROUT.to_f*params[:rate][:SROUT].to_f))/10).round)+mtrshort.to_i####
   @mdata.MTRIN=params[:today][:MTRIN]
   @mdata.MTROUT=params[:today][:MTROUT]
   @mdata.PMTRINVALUE=params[:today][:PMTRINVALUE]
@@ -469,7 +469,7 @@ def updatemachinedata
   @mdata.TMTRIN=((params[:today][:TMTRIN].to_f)/params[:multiplyby].to_f).round
   @mdata.TMTROUT=((params[:today][:TMTROUT].to_f)/params[:multiplyby].to_f).round
   @mdata.MTRPER=params[:today][:MTRPER]
-  @mdata.MTRCOLL=(((@mdata.TMTRIN.to_i*params[:rate][:MRIN].to_i)-(@mdata.TMTROUT.to_i* params[:rate][:MROUT].to_i))/10)+@mdata.MTRSHORT.to_i
+  @mdata.MTRCOLL=((((@mdata.TMTRIN.to_i*params[:rate][:MRIN].to_i)-(@mdata.TMTROUT.to_i* params[:rate][:MROUT].to_i))/10).round)+mtrshort.to_i
   @mdata.CALCULATEBY=params[:today][:CALCULATEBY]
   @mdata.MTRDIFFIN=params[:today][:MTRDIFFIN]
   @mdata.MTRDIFFOUT=params[:today][:MTRDIFFOUT]

@@ -44,6 +44,7 @@ DATE: <%= session[:ttdate]%> </b></P>-->
 
           <% @TotalMCSHORT=0%>
           <% @TotalCOLL=0%>
+          <% scroll = 0 %>
           <% if @machinesdata!=nil%>
             <% @machinesdata.each do |c| %>
               <tr bgcolor=#F86049>
@@ -51,16 +52,17 @@ DATE: <%= session[:ttdate]%> </b></P>-->
                 <td nowrap  align=center><%= c.MACHINE_NAME %>&nbsp;</td>
                 <td nowrap align=center><%= c.SRIN.to_i %>&nbsp;</td>
                 <td nowrap align=center><%= c.SROUT.to_i %>&nbsp;</td>
-                <td nowrap align=center><%= c.MTRIN.to_i %>&nbsp;</td>
+                <td nowrap align=center><%= c.MTRIN.to_i%>&nbsp;</td>
                 <td nowrap align=center><%= c.MTROUT.to_i %>&nbsp;</td>
-                <td nowrap  align=center><%= c.TMTRIN.to_i %>&nbsp;</td>
-                <td nowrap align=center><%= c.TMTROUT.to_i %>&nbsp;</td>
+                <td nowrap  align=center><%= c.TMTRIN.to_i*c.MULTIPLY_BY.to_i %>&nbsp;</td>
+                <td nowrap align=center><%= c.TMTROUT.to_i*c.MULTIPLY_BY.to_i %>&nbsp;</td>
                 <td nowrap align=center><%= c.MTRSHORT.to_i %>&nbsp;</td>
                 <% @TotalMCSHORT=@TotalMCSHORT.to_i + c.MTRSHORT.to_i%>
+
         <%#@COLL=((((c.TMTRIN.to_i*c.MTR_RATE_IN.to_i)-(c.TMTROUT.to_i*c.MTE_RATE_OUT.to_i))/10)*c.MULTIPLY_BY)+c.MTRSHORT.to_i%>
                 <td nowrap align=center><%= c.SHORTREASON %>&nbsp;</td>
-                <td nowrap  align=center><%= c.MTRCOLL.to_i %>&nbsp;</td>
-                <% @TotalCOLL=@TotalCOLL.to_i+c.MTRCOLL.to_i %>
+                <td nowrap  align=center><%= scroll = c.MTRCOLL.to_i*c.MULTIPLY_BY.to_i %>&nbsp;</td>
+                <% @TotalCOLL=@TotalCOLL.to_i+scroll.to_i %>
                 <td nowrap  align=center><%= c.MTRDIFFIN.to_i %>&nbsp;</td>
                 <td nowrap  align=center><%= c.MTRDIFFOUT.to_i %>&nbsp;</td>
               </tr>
@@ -81,14 +83,14 @@ DATE: <%= session[:ttdate]%> </b></P>-->
                   <td nowrap align=center><%= c.SROUT.to_i %>&nbsp;</td>
                   <td nowrap align=center><%= c.MTRIN.to_i %>&nbsp;</td>
                   <td nowrap align=center><%= c.MTROUT.to_i %>&nbsp;</td>
-                  <td nowrap  align=center><%= c.TSRIN.to_i %>&nbsp;</td>
-                  <td nowrap align=center><%= c.TSROUT.to_i %>&nbsp;</td>
+                  <td nowrap  align=center><%= c.TSRIN.to_i*c.MULTIPLY_BY.to_i %>&nbsp;</td>
+                  <td nowrap align=center><%= c.TSROUT.to_i*c.MULTIPLY_BY.to_i %>&nbsp;</td>
                   <td nowrap align=center><%= c.MTRSHORT.to_i %>&nbsp;</td>
                   <% @TotalMCSHORT=@TotalMCSHORT.to_i + c.MTRSHORT.to_i%>
           <%#@COLL=(((((c.TSRIN.to_f*c.SCREEN_RATE_IN.to_f)-(c.TSROUT.to_f*c.SCREEN_RATE_OUT.to_f))/10)*c.MULTIPLY_BY).round)+c.MTRSHORT.to_i%>
                   <td nowrap align=center><%= c.SHORTREASON %>&nbsp;</td>
-                  <td nowrap  align=center><%= c.SRCOLL %>&nbsp;</td>
-                  <% @TotalCOLL=@TotalCOLL.to_i+c.SRCOLL.to_i %>
+                  <td nowrap  align=center><%= scroll = c.SRCOLL*c.MULTIPLY_BY.to_i %>&nbsp;</td>
+                  <% @TotalCOLL=@TotalCOLL.to_i+scroll.to_i %>
                   <td nowrap  align=center><%= c.MTRDIFFIN.to_i %>&nbsp;</td>
                   <td nowrap  align=center><%= c.MTRDIFFOUT.to_i %>&nbsp;</td>
                 </tr>
@@ -107,15 +109,15 @@ DATE: <%= session[:ttdate]%> </b></P>-->
                   <td nowrap align=center><%= c.SROUT.to_i %>&nbsp;</td>
                   <td nowrap align=center><%= c.MTRIN.to_i %>&nbsp;</td>
                   <td nowrap align=center><%= c.MTROUT.to_i %>&nbsp;</td>
-                  <td nowrap  align=center><%= c.TSRIN.to_i %>&nbsp;</td>
-                  <td nowrap align=center><%= c.TSROUT.to_i %>&nbsp;</td>
+                  <td nowrap  align=center><%= c.TSRIN.to_i*c.MULTIPLY_BY.to_i %>&nbsp;</td>
+                  <td nowrap align=center><%= c.TSROUT.to_i*c.MULTIPLY_BY.to_i %>&nbsp;</td>
                   <td nowrap align=center><%= c.MTRSHORT.to_i %>&nbsp;</td>
                   <% @TotalMCSHORT=@TotalMCSHORT.to_i + c.MTRSHORT.to_i%>
           <%#@COLL=(((((c.TSRIN.to_f*c.SCREEN_RATE_IN.to_f)-(c.TSROUT.to_f*c.SCREEN_RATE_OUT.to_f))/10)*c.MULTIPLY_BY).round)+c.MTRSHORT.to_i%>
 
                   <td nowrap align=center><%= c.SHORTREASON %>&nbsp;</td>
-                  <td nowrap  align=center><%= c.SRCOLL %>&nbsp;</td>
-                  <% @TotalCOLL=@TotalCOLL.to_i+c.SRCOLL.to_i %>
+                  <td nowrap  align=center><%= scroll = c.SRCOLL*c.MULTIPLY_BY.to_i %>&nbsp;</td>
+                  <% @TotalCOLL=@TotalCOLL.to_i+scroll.to_i %>
                   <td nowrap  align=center><%= c.MTRDIFFIN.to_i %>&nbsp;</td>
                   <td nowrap  align=center><%= c.MTRDIFFOUT.to_i %>&nbsp;</td>
                 </tr>
