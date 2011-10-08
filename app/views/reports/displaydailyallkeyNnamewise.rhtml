@@ -810,11 +810,12 @@
                                                   @session[:clustarray],@session[:shoparray1][i].to_s],
                                                 :order => "MACHINE_NAME,digitno,charno") %>
                                               <% for i1 in @pmper %>
-
+                                                    <%unless machinesetting[0].nil?%>
                                                 <% if machinesetting[0].setting == i1.SETTING%>
                                                   <td nowrap height="10" align=left><font color=blue><b><%= c.SETTING%></b></font></td>
                                                 <% else %>
                                                   <td nowrap height="10" align=left bgcolor="pink"><font><b><%= c.SETTING%></b></font></td>
+                                                <% end %>
                                                 <% end %>
                                               <%end %>
                                               <td nowrap height="10" align=left><%= @pset %></td>
@@ -1056,10 +1057,12 @@
                                                                                     @session[:clustarray],@session[:shoparray1][i].to_s],
                                                                                   :order => "MACHINE_NAME,digitno,charno") %>
                                                                                 <% for i1 in @pmper %>
+                                                                                    <%unless machinesetting[0].nil? %>
                                                                                   <% if machinesetting[0].setting == i1.SETTING%>
                                                                                     <td nowrap height="10" align=left><font color=blue><b><%= c.SETTING%></b></font></td>
                                                                                   <% else %>
                                                                                     <td nowrap height="10" align=left bgcolor="pink"><font><b><%= c.SETTING%></b></font></td>
+                                                                                  <% end %>
                                                                                   <% end %>
                                                                                 <%end %>
                                                                                 <td nowrap height="10" align=left><%= @pset %></td>
