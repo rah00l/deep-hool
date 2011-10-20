@@ -99,17 +99,17 @@ and SHOP_NAME='#{@session[:rrshopname]}' and MACHINE_NO='#{machine.MACHINE_NO}' 
 		<%if c.CALCULATEBY=='S'%>
 			
 			<%# @SRINTOTAL=@SRINTOTAL.to_i+(c.TSRIN.to_i*c.MULTIPLY_BY.to_i)%>
-			<% @SRINTOTAL=@SRINTOTAL.to_i+(((c.TSRIN.to_i)*c.MULTIPLY_BY.to_i))%>
-
+			<% @SRINTOTAL=@SRINTOTAL.to_i+(((c.TSRIN.to_i*c.MULTIPLY_BY.to_i*c.SCREEN_RATE_IN.to_i)/10).round)%>
+                        <% @TotalTSRIN=@TotalTSRIN.to_i+(((c.TSRIN.to_i*c.MULTIPLY_BY.to_i*c.SCREEN_RATE_IN.to_i)/10).round)%>
 			<%# @SROUTTOTAL=@SROUTTOTAL.to_i+(c.TSROUT.to_i*c.MULTIPLY_BY.to_i)%>
-			<% @SROUTTOTAL=@SROUTTOTAL.to_i+(((c.TSROUT.to_i)*c.MULTIPLY_BY.to_i))%>
+			<% @SROUTTOTAL=@SROUTTOTAL.to_i+((c.TSROUT.to_i*c.MULTIPLY_BY*c.SCREEN_RATE_OUT.to_i)/10).round%>
 			
                         
 			<% @COLLTOTAL=@COLLTOTAL.to_i+(c.SRCOLL.to_i*c.MULTIPLY_BY.to_i)%>
 
-			<% @GSRINTOTAL=@GSRINTOTAL.to_i+((c.TSRIN.to_i*c.SCREEN_RATE_IN.to_i)/10).round%>
+			<% @GSRINTOTAL=@GSRINTOTAL.to_i+((c.TSRIN.to_i*c.MULTIPLY_BY*c.SCREEN_RATE_IN.to_i)/10).round%>
 			
-			<% @GSROUTTOTAL=@GSROUTTOTAL.to_i+((c.TSROUT.to_i*c.SCREEN_RATE_OUT.to_i)/10).round%>
+			<% @GSROUTTOTAL=@GSROUTTOTAL.to_i+((c.TSROUT.to_i*c.MULTIPLY_BY*c.SCREEN_RATE_OUT.to_i)/10).round%>
 			
 			<% @GCOLLTOTAL=@GCOLLTOTAL.to_i+(c.SRCOLL.to_i*c.MULTIPLY_BY.to_i)%>
 
@@ -128,8 +128,8 @@ and SHOP_NAME='#{@session[:rrshopname]}' and MACHINE_NO='#{machine.MACHINE_NO}' 
 		<%# @GSRINTOTAL=@GSRINTOTAL.to_i+(c.TMTRIN.to_i*c.MULTIPLY_BY.to_i)%>
 		<%# @GSROUTTOTAL=@GSROUTTOTAL.to_i+(c.TMTROUT.to_i*c.MULTIPLY_BY.to_i)%>
 		
-		<% @GSRINTOTAL=@GSRINTOTAL.to_i+((c.TMTRIN.to_i*c.MTR_RATE_IN.to_i)/10).round%>
-		<% @GSROUTTOTAL=@GSROUTTOTAL.to_i+((c.TMTROUT.to_i*c.MTE_RATE_OUT.to_i)/10).round%>
+		<% @GSRINTOTAL=@GSRINTOTAL.to_i+((c.TMTRIN.to_i*c.MULTIPLY_BY*c.MTR_RATE_IN.to_i)/10).round%>
+		<% @GSROUTTOTAL=@GSROUTTOTAL.to_i+((c.TMTROUT.to_i*c.MULTIPLY_BY*c.MTE_RATE_OUT.to_i)/10).round%>
 
 		
 		<% @GCOLLTOTAL=@GCOLLTOTAL.to_i+(c.MTRCOLL.to_i*c.MULTIPLY_BY.to_i)%>
