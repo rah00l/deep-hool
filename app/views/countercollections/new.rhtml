@@ -75,26 +75,17 @@
 
       function calculatetotal1(obj)
       {
-        if(obj.value.length<1)
-        {
-          alert("Please enter value");
-          obj.focus();
-          return false;
-        }
-        else
-        {
           var total1=document.getElementById("total1");
           var cash=document.getElementById("countercollection_Cash").value;
           var Exp=document.getElementById("countercollection_Exp").value;
           var hc=document.getElementById("countercollection_HC").value;
+          hc == ''? hc = 0 : hc = hc
           var cr=document.getElementById("countercollection_Credit").value;
           var sht_ext=document.getElementById("countercollection_ShortExt").value;
           var sum=parseInt(cash)+parseInt(Exp)+parseInt(hc)+parseInt(cr)+parseInt(sht_ext);
           total1.value=sum;
           return true;
-        }
-	
-      }
+       }
 
       function calsh()
       {
@@ -111,14 +102,6 @@
 
       function calculatetotal2(obj)
       {
-        if(obj.value.length<1)
-        {
-          alert("PLEASE ENTER VALUE");
-          obj.focus();
-          return false;
-        }
-        else
-        {
           var total2=document.getElementById("total2");
           var OPENBAL='<%= "#{@session['obal']}" %>'
           var KEY1=document.getElementById("countercollection_KEY1").value;
@@ -129,30 +112,6 @@
           var sum=parseInt(OPENBAL)+parseInt(KEY1)+parseInt(KEY2)+parseInt(KEY3)+parseInt(KEY4)+parseInt(outstd);
           total2.value=sum;
           return false;
-        }
-      }
-      function calculatetotal_fromos(obj)
-      {
-        /*if(obj.value.length<1)
-        {
-          alert("PLEASE ENTER VALUE");
-          obj.focus();
-          return false;
-        }
-        else
-        if*/
-        //{
-          var total2=document.getElementById("total2");
-          var OPENBAL='<%= "#{@session['obal']}" %>'
-          var KEY1=document.getElementById("countercollection_KEY1").value;
-          var KEY2=document.getElementById("countercollection_KEY2").value;
-          var KEY3=document.getElementById("countercollection_KEY3").value;
-          var KEY4=document.getElementById("countercollection_KEY4").value;
-//          var outstd=document.getElementById("countercollection_outstanding").value;
-          var sum=parseInt(OPENBAL)+parseInt(KEY1)+parseInt(KEY2)+parseInt(KEY3)+parseInt(KEY4);
-          total2.value=sum;
-          return false;
-        //}
       }
 
       function Check()
@@ -171,7 +130,7 @@
         }
         else
         {
-          if(total1!=total2)
+          if(total1!=total2 || total1==0 || total2==0)
           {
             alert("Both total not matching");
             calculatetotal2(os);
@@ -193,14 +152,15 @@
         else
           return true;
       }
+
       function Multiplesof_fivehundred(evt)
       {
-        if (evt.value % 500 !=0 || evt.value.length==0)
-        {
+         if (evt.value % 500 !=0)
+         {
           alert('PLEASE ENTER AMOUNT IN MULTIPLES OF  0  OR  500 ');
           evt.value='';
-          calculatetotal_fromos();
           evt.focus();
+          calculatetotal1(evt);
           return false;
         }
       }
@@ -342,7 +302,6 @@
         var k4=document.getElementById("countercollection_KEY4");
         if (k4.value.length>0)
         {
-          //alert(k4.value);
           value=checkoccerance(k4.value);
           if (value<=1)
             return true;
@@ -364,7 +323,6 @@
           return false;
         }
       }
-
 
       function minussignsforos()
       {
@@ -436,6 +394,16 @@
         }
         return count;
       }
+
+  function notAblank(obj)
+  {
+    if(obj.value.length<1)
+    {
+      alert("PLEASE ENTER VALUE");
+      obj.focus();
+      return false;
+    }
+  }
     </script>
     <script type="text/javascript">
       window.onload=function()
@@ -485,7 +453,13 @@
                     <tr>
                       <td width="25%" height="34" align="right"><label >Cash</label></td>
                       <td width="25%" height="34">
-                        <input type=text  id="countercollection_Cash" name="countercollection[Cash]" value='0'  onblur="calculatetotal1(this);"  onkeypress="return onlyNumbers();"  onKeyDown="if(event.keyCode==13)  this.form.countercollection_Exp.focus();" size="20" onFocus="this.select();"/></td>
+                        <input type=text  id="countercollection_Cash" name="countercollection[Cash]" value='0'
+                               onKeyUp="calculatetotal1(this);"
+                               onkeypress="return onlyNumbers();"
+                               onblur="notAblank(this);"
+                               onKeyDown="if(event.keyCode==13)  this.form.countercollection_Exp.focus();"
+                               size="20"
+                               onFocus="this.select();"/></td>
                       <td width="25%" height="34" align="right"><label for="countercollection_Openingbal">O/B</label></td>
                       <td width="25%" height="34">
                         <input type=text id='countercollection_Openingbal' name='countercollection[Openingbal]' value=<%= "#{@session['obal']}" %> readonly size="20"/></td>
@@ -494,15 +468,36 @@
                       <% @c =Group.count(["ShopName=?",@session['sname']]) %>
                       <td width="25%" height="34" align="right"><label for="countercollection_Exp">Exp</label></td>
                       <td width="25%" height="34">
-                        <input type="text" name="countercollection[Exp]" id="countercollection_Exp"size="20" onkeypress="return onlyNumbers();"  onKeyDown="if(event.keyCode==13)  this.form.countercollection_HC.focus();" onblur="calculatetotal1(this);" maxlength="6" value="0" onFocus="this.select();"/></td>
+                        <input type="text" name="countercollection[Exp]" id="countercollection_Exp"size="20" 
+                               onkeypress="return onlyNumbers();"
+                               onblur="notAblank(this);"
+                               onKeyDown="if(event.keyCode==13)  this.form.countercollection_HC.focus();"
+                               onKeyUp="calculatetotal1(this);"
+                               maxlength="6"
+                               value="0"
+                               onFocus="this.select();"/></td>
                       </td>
                       <td width="25%" height="34" align="right"><label for="countercollection_KEY1">KEY 1</label></td>
                       <td width="25%" height="34">
                         <% if(@c>=1) %>
                           <%if(@c==1)%>
-                            <input type="text" name="countercollection[KEY1]" id="countercollection_KEY1" size="20" onchange="return minussignsforkey1();" onblur="calculatetotal2(this);" onkeypress="return onlyNumbersminus();" onKeyDown="if(event.keyCode==13)  this.form.countercollection_Outstanding.focus();"  maxlength="6" value="0" onFocus="this.select();"/>
+                            <input type="text" name="countercollection[KEY1]" id="countercollection_KEY1" size="20"
+                                   onchange="return minussignsforkey1();"
+                                   onkeypress="return onlyNumbersminus();"
+                                   onblur="notAblank(this);"
+                                   onKeyDown="if(event.keyCode==13)  this.form.countercollection_Outstanding.focus();"
+                                   onKeyUp="calculatetotal2(this);"
+                                   maxlength="6" value="0"
+                                   onFocus="this.select();"/>
                           <%else%>
-                            <input type="text" name="countercollection[KEY1]" id="countercollection_KEY1" size="20" onchange="return minussignsforkey1();"  onblur="calculatetotal2(this);" onkeypress="return onlyNumbersminus();" onKeyDown="if(event.keyCode==13)  this.form.countercollection_KEY2.focus();" onblur="calculatetotal2(this);" maxlength="6" value="0" onFocus="this.select();"/>
+                            <input type="text" name="countercollection[KEY1]" id="countercollection_KEY1" size="20"
+                                   onchange="return minussignsforkey1();"
+                                   onkeypress="return onlyNumbersminus();"
+                                   onblur="notAblank(this);"
+                                   onKeyDown="if(event.keyCode==13)  this.form.countercollection_KEY2.focus();"
+                                   onKeyUp="calculatetotal2(this);"
+                                   maxlength="6" value="0"
+                                   onFocus="this.select();"/>
                           <%end%>
                         <%else%>
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;------
@@ -512,14 +507,34 @@
                     <tr>
                       <td width="25%" height="34" align="right"><label for="countercollection_HC">Hc</label></td>
                       <td width="25%" height="34">
-                        <input type="text" name="countercollection[HC]" id="countercollection_HC"size="20" onkeypress="return onlyNumbers();" onKeyDown="if(event.keyCode==13)  this.form.countercollection_Credit.focus();" onblur="return Multiplesof_fivehundred(this); calculatetotal1(this);" maxlength="6" VALUE="" onFocus="this.select();"/>
+                        <input type="text" name="countercollection[HC]" id="countercollection_HC"size="20"
+                               onkeypress="return onlyNumbers();"
+                               onKeyDown=" if(event.keyCode==13)  this.form.countercollection_Credit.focus();"
+                               onblur="notAblank(this); return Multiplesof_fivehundred(this); "
+                               onKeyUp="calculatetotal1(this);"
+                               maxlength="6" VALUE="" onFocus="this.select();"/>
                       <td width="25%" height="34" align="right"><label for="countercollection_KEY2">KEY 2</label></td>
                       <td width="25%" height="34">
                         <% if(@c>=2) %>
                           <%if(@c==2)%>
-                            <input type="text" name="countercollection[KEY2]" id="countercollection_KEY2"size="20" onkeypress="return onlyNumbersminus();" onKeyDown="if(event.keyCode==13)  this.form.countercollection_Outstanding.focus();" onchange="return minussignsforkey2();" onblur="calculatetotal2(this);" maxlength="6" value="0" onFocus="this.select();"/>
+                            <input type="text" name="countercollection[KEY2]" id="countercollection_KEY2"size="20"
+                                   onkeypress="return onlyNumbersminus();"
+                                   onKeyDown="if(event.keyCode==13)  this.form.countercollection_Outstanding.focus();"
+                                   onblur="notAblank(this);"
+                                   onchange="return minussignsforkey2();"
+                                   onKeyUp="calculatetotal2(this);"
+                                   maxlength="6"
+                                   value="0"
+                                   onFocus="this.select();"/>
                           <%else%>
-                            <input type="text" name="countercollection[KEY2]" id="countercollection_KEY2"size="20" onkeypress="return onlyNumbersminus();" onKeyDown="if(event.keyCode==13)  this.form.countercollection_KEY3.focus();" onblur="calculatetotal2(this);" onchange="return minussignsforkey2();" maxlength="6" value="0" onFocus="this.select();"/>
+                            <input type="text" name="countercollection[KEY2]" id="countercollection_KEY2"size="20" 
+                                   onkeypress="return onlyNumbersminus();"
+                                   onKeyDown="if(event.keyCode==13)  this.form.countercollection_KEY3.focus();"
+                                   onblur="notAblank(this);"
+                                   onKeyUp="calculatetotal2(this);"
+                                   onchange="return minussignsforkey2();"
+                                   maxlength="6" value="0"
+                                   onFocus="this.select();"/>
                           <%end%>
                         <%else%>
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;------
@@ -530,14 +545,34 @@
                     <tr>
                       <td width="25%" height="34" align="right">CR</td>
                       <td width="25%" height="34">
-                        <input type=text id='countercollection_Credit' name='countercollection[Credit]'  onblur="calculatetotal1(this);"  onkeypress="return onlyNumbers();" onKeyDown="if(event.keyCode==13)  this.form.countercollection_KEY1.focus()" size="20" value="0" onFocus="this.select();"/></td>
+                        <input type=text id='countercollection_Credit' name='countercollection[Credit]'
+                                      onKeyUp="calculatetotal1(this);"
+                                      onkeypress="return onlyNumbers();"
+                                      onKeyDown="if(event.keyCode==13)  this.form.countercollection_KEY1.focus()"
+                                      onblur="notAblank(this);"
+                                      size="20" value="0"
+                                      onFocus="this.select();"/></td>
                       <td width="25%" height="34" align="right"><label for="countercollection_KEY3">KEY 3</label></td>
                       <td width="25%" height="34">
                         <% if(@c>=3) %>
                           <%if(@c==3)%>
-                            <input type="text" name="countercollection[KEY3]" id="countercollection_KEY3"size="20" onkeypress="return onlyNumbersminus();" onKeyDown="if(event.keyCode==13)  this.form.countercollection_Outstanding.focus();" onchange="return minussignsforkey3();" onblur="calculatetotal2(this);" maxlength="6" value="0" onFocus="this.select();"/>
+                            <input type="text" name="countercollection[KEY3]" id="countercollection_KEY3"size="20" 
+                                   onkeypress="return onlyNumbersminus();"
+                                   onKeyDown="if(event.keyCode==13)  this.form.countercollection_Outstanding.focus();"
+                                   onblur="notAblank(this);"
+                                   onchange="return minussignsforkey3();"
+                                   onKeyUp="calculatetotal2(this);"
+                                   maxlength="6" value="0"
+                                   onFocus="this.select();"/>
                           <%else%>
-                            <input type="text" name="countercollection[KEY3]" id="countercollection_KEY3"size="20" onkeypress="return onlyNumbersminus();" onKeyDown="if(event.keyCode==13)  this.form.countercollection_Key4.focus();" onblur="calculatetotal2(this);" onchange="return minussignsforkey3();" maxlength="6" value="0" onFocus="this.select();"/>
+                            <input type="text" name="countercollection[KEY3]" id="countercollection_KEY3"size="20" 
+                                   onkeypress="return onlyNumbersminus();"
+                                   onKeyDown="if(event.keyCode==13)  this.form.countercollection_Key4.focus();"
+                                   onblur="notAblank(this);"
+                                   onKeyUp="calculatetotal2(this);"
+                                   onchange="return minussignsforkey3();"
+                                   maxlength="6" value="0"
+                                   onFocus="this.select();"/>
                           <%end%>
                         <%else%>
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;------
@@ -548,12 +583,25 @@
                     <tr>
                       <td width="25%" height="34" align="right"><label for="countercollection_Short_Ext">Short ext</label></td>
                       <td width="25%" height="34">
-                        <input type=text id='countercollection_ShortExt' name='countercollection[Short_Ext]'  onchange="return minussigns();" onblur="checkshort();"  onkeypress="return onlyNumbersminus();" onKeyDown="if(event.keyCode==13)  this.form.countercollection_KEY1.focus();" size="20" value="0" onFocus="this.select();" readonly/></td>
+                        <input type=text id='countercollection_ShortExt' name='countercollection[Short_Ext]'  
+                               onchange="return minussigns();"
+                               onblur="notAblank(this); checkshort();"
+                               onkeypress="return onlyNumbersminus();"
+                               onKeyDown="if(event.keyCode==13)  this.form.countercollection_KEY1.focus();" size="20" value="0"
+                               onFocus="this.select();"
+                               readonly/></td>
                       </td>
                       <td width="25%" height="34" align="right"><label for="countercollection_KEY4">KEY 4</label></td>
                       <td width="25%" height="34">
                         <% if(@c>=4) %>
-                          <input type="text" name="countercollection[KEY4]" id="countercollection_KEY4"size="20" onchange="return minussignsforkey4();" onkeypress="return onlyNumbers();" onKeyDown="if(event.keyCode==13)  this.form.countercollection_Outstanding.focus();" onblur="calculatetotal2(this);" maxlength="6" value="0" onFocus="this.select();"/>
+                          <input type="text" name="countercollection[KEY4]" id="countercollection_KEY4"size="20" 
+                                 onchange="return minussignsforkey4();"
+                                 onkeypress="return onlyNumbers();"
+                                 onblur="notAblank(this);"
+                                 onKeyDown="if(event.keyCode==13)  this.form.countercollection_Outstanding.focus();"
+                                 onKeyUp="calculatetotal2(this);"
+                                 maxlength="6" value="0"
+                                 onFocus="this.select();"/>
                         <%else%>
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;------
                           <input type="hidden" name="countercollection[KEY4]" id="countercollection_KEY4" value="0"/>
@@ -565,8 +613,17 @@
                       <td width="25%" height="34"></td>
                       <td width="25%" height="34" align="right"><label for="countercollection_Outstanding">O/S</label></td>
                       <td width="25%" height="34">
-                        <span><input type=text id='countercollection_Outstanding' name='countercollection[Outstanding]'  onkeypress="return onlyNumbersminus();" onchange="return minussignsforos(); " onKeyDown="if(event.keyCode==13) os_validate();" onblur="return Multiplesof_fivehundred(this); calculatetotal1(this);" size="8" value="0" onFocus="this.select();"/></span>
-                        <span><input type=text id='countercollection_Outstanding1' name='countercollection1[Outstanding]' value="<%= get_prevdate_os(@session['shop'],@session['date'].strftime("%d-%m-%Y")) %>" size="6" readonly/></span>
+                        <span><input type=text id='countercollection_Outstanding' name='countercollection[Outstanding]'  
+                                     onkeypress="return onlyNumbersminus();"
+                                     onchange="return minussignsforos(); "
+                                     onKeyUp="calculatetotal2(this);"
+                                     onKeyDown="if(event.keyCode==13) os_validate(); "
+                                     onblur="notAblank(this); return Multiplesof_fivehundred(this); "
+                                     size="8"
+                                     value="0"
+                                     onFocus="this.select();"/></span>
+                        <span><input type=text id='countercollection_Outstanding1' name='countercollection1[Outstanding]'
+                                     value="<%= get_prevdate_os(@session['shop'],@session['date'].strftime("%d-%m-%Y")) %>" size="6" readonly/></span>
                       </td>
                       </td>
                     </tr>
