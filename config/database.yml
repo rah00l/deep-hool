@@ -15,14 +15,14 @@ development:
   adapter: mysql
   database: gamingstation
   username: root
-  password: password
+  password: rah00l
   host: localhost
 
 production:
   adapter: mysql
   database: gamingstation
   username: root
-  password: password
+  password: rah00l
   host: localhost
 
 # Warning: The database defined as 'test' will be erased and
