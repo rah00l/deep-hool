@@ -1,40 +1,33 @@
 class ClustersController < ApplicationController
   layout 'adminlayout'
-   before_filter :login_required
+  #  before_filter :login_required
   def index
-    list
-    render :action => 'list'
+    @clusters = Cluster.all
+    respond_to do |format|
+      format.html # index.html.erb
+    end
   end
 
-  # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
-  verify :method => :post, :only => [ :destroy, :create, :update ],
-         :redirect_to => { :action => :list }
-
-  def list
-    @cluster_pages, @clusters = paginate :clusters, :per_page => 10
-  end
-
-  def show
-    @cluster = Cluster.find(params[:id])
-  end
+  #  def show
+  #    @cluster = Cluster.find(params[:id])
+  #  end
 
   def new
     @cluster = Cluster.new
+    respond_to do |format|
+      format.html
+    end
   end
 
   def create
-      begin
     @cluster = Cluster.new(params[:cluster])
-    
-  if @cluster.save
-       flash[:notice] = '<font color=green size=4><b>GROUP WAS SUCCESSFULLY CREATED.</b></font>'
-      redirect_to :action => 'list'
-    else
-      render :action => 'new'
-  end
-
-    rescue Exception=>ex
-    puts ex.message()
+    respond_to do |format|
+      if @cluster.save
+        flash[:notice] = '<font color=green size=4><b>GROUP WAS SUCCESSFULLY CREATED.</b></font>'
+        format.html { redirect_to clusters_path }
+      else
+        format.html { render :action => "new" }
+      end
     end
   end
 
@@ -43,22 +36,29 @@ class ClustersController < ApplicationController
   end
 
   def update
+    debugger
     @cluster = Cluster.find(params[:id])
-    if @cluster.update_attributes(params[:cluster])
-      flash[:notice] = '<font color=green size=4><b>GROUP WAS SUCCESSFULLY UPDATED.</b></font>'
-      redirect_to :action => 'list'
-    else
-      render :action => 'edit'
+    respond_to do |format|
+      if @cluster.update_attributes(params[:cluster])
+        flash[:notice] = '<font color=green size=4><b>GROUP WAS SUCCESSFULLY UPDATED.</b></font>'
+        format.html { redirect_to(clusters_path) }
+      else
+        format.html { render :action => "edit" }
+      end
     end
   end
 
   def destroy
     Cluster.find(params[:id]).destroy
-    redirect_to :action => 'list'
-end
-def canceladd
-    render :update do |page|
-    page.redirect_to url_for(:controller=>'clusters', :action=>'list')
+    respond_to do |format|
+      format.html { redirect_to(clusters_path) }
     end
-    end
+  end
+
+  #  def canceladd
+  #    render :update do |page|
+  #      format.html { redirect_to(clusters_url) }
+  ##      page.redirect_to url_for(:controller=>'clusters', :action=>'list')
+  #    end
+  #  end
 end

@@ -2,28 +2,26 @@ class AccountController < ApplicationController
   # model   :user
   #LOGIN METHOD FOR CHECKING AUTHENTICITY
   def login
-    debugger
-   case @request.method
-    when :post
-      @session['uname']=@params['user_login']
-      @session['pass']=@params['user_password']
-      if @session['user'] = User.authenticate(@params['user_login'], @params['user_password'])
-				@result=User.login_type(@params['user_login'],@params['user_password'])
-        if @result.userstatus==1
-          @user=User.find(@result.id)
-          @user.loginstatus='Y'
-          @user.save
-          if @result.usertype=="Admin"
+if request.post?
+      session['uname']=params['user_login']
+      session['pass']=params['user_password']
+      if session['user'] = User.authenticate(params['user_login'], params['user_password'])
+				result=User.login_type(params['user_login'],params['user_password'])
+        if result.userstatus==1
+          user=User.find(result.id)
+          user.loginstatus='Y'
+          user.save
+          if result.usertype=="Admin"
             redirect_to  :controller => 'users',:action => "main"
           else
             redirect_to  :controller => 'users',:action => "client"
           end
         else
-          @message="You cannot login !!"
+          message="You cannot login !!"
         end
       else
-        @login    = @params['user_login']
-        @message  = "Login unsuccessful"
+        login    = params['user_login']
+        message  = "Login unsuccessful"
       end
     end
   end

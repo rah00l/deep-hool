@@ -1,22 +1,16 @@
-<!-- An unpublished work of Sprylogic Technologies Ltd.  -->
-<!-- � Copyright Sprylogic Technologies Ltd. 2008. All rights reserved  -->
-
-
 <html>
   <title>GamingStation</title>
   <head>
-
     <%= stylesheet_link_tag "ddlevelsmenu-topbar" %>
-    <%= javascript_include_tag "prototype","effects","application",:defaults %>
+    <%= javascript_include_tag "prototype","effects","application","jquery",:defaults %>
+    <%#= javascript_include_tag  "application" %>
     <script>
       function SHOWExpense()
       {
         window.open('exreport','myWin','toolbar=no, directories=no, location=yes, status=NO, menubar=no, resizable=yes, scrollbars=yes,left=0,top=0,alwaysRaised=yes');
-
       }
     </script>
     <script type="text/javascript"><!--//--><![CDATA[//><!--
-
       sfHover = function() {
         var sfEls = document.getElementById("nav").getElementsByTagName("LI");
         for (var i=0; i<sfEls.length; i++) {
@@ -29,7 +23,6 @@
         }
       }
       if (window.attachEvent) window.attachEvent("onload", sfHover);
-
       //--><!]]></script>
     <style type="text/css">
       body {
@@ -105,16 +98,12 @@
       }
 
     </style>
-
-
   </head>
-
   <body topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0" marginwidth="0" marginheight="0" >
     <center>
       <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="1000" id="AutoNumber1" height="427">
         <tr>
           <td width="1000" height="75" >
-
             <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="1000" id="AutoNumber2" height="75">
               <tr align=center>
                 <td width="100%" height="50" >
@@ -124,7 +113,7 @@
                 <td width="1000" height="15" >
                   <table width="1000" height="15">
                     <tr>
-                    <%if @session['user']['usertype']=='SuperAdmin'%>
+                      <%if session['user']['usertype']=='SuperAdmin'%>
                         <td width="200" height="15" >
                         </td>
                         <td width="800"  bgcolor="#6C3401" height="15" >
@@ -133,15 +122,15 @@
                               <ul>
                                 <li><a href="#">Group      &gt;</a></font>
                                   <ul>
-                                    <li><%= link_to 'ADD', :controller => 'clusters', :action => "new" %></li>
-                                    <li><%= link_to 'Modify', :controller => 'clusters', :action => "list" %></li>
+                                    <li><%= link_to 'ADD', new_cluster_path %></li>
+                                    <li><%= link_to 'Modify', clusters_path %></li>
                                   </ul>
                                 </li>
                                 <!--</ul>-->
                                 <li><a href="#">Shops      &gt;</a></font>
                                   <ul>
-                                    <li><%= link_to 'ADD', :controller => 'shops', :action => "new" %></li>
-                                    <li><%= link_to 'Modify', :controller => 'shops', :action => "search" %></li>
+                                    <li><%= link_to 'ADD', new_shop_path %></li>
+                                    <li><%= link_to 'Modify',search_shops_path %></li>
                                   </ul>
                                 </li>
                                 <!--<ul>-->
@@ -170,7 +159,6 @@
                             <li><font face="Zurich BT"><a href="#"><b><font size="2">Transactions</font></b></a></font>
                               <ul>
                                 <li><%= link_to 'Data Entry', :controller => 'clientdatas', :action => "new" %></li>
-
                                 <li><%= link_to 'Expenses' %></li>
                                 <li><%= link_to 'Create and send', :controller => 'clientdatas', :action => "createdata" %></li>
                               </ul>
@@ -197,22 +185,15 @@
                                   </ul>
                                 </li>
                                 <li><%= link_to 'Previous Data', :controller => 'clientdatas', :action => "previousdata" %></li>
-
                               </ul>
                             </li>
-
                             <li><font face="Zurich BT"><a href="#"><b><font size="2">Reports</font></b></a></font>
                               <ul>
-
-                                
-                                  <li><%= link_to 'Reading Mistakes', :controller => 'clientdatas', :action => "readingmistakemain"%></li>
-                                
+                                <li><%= link_to 'Reading Mistakes', :controller => 'clientdatas', :action => "readingmistakemain"%></li>
                                 <li>
-                                    <%= link_to 'Monthly Expence Report', :controller => 'reports', :action => "exreport"  %>
+                                  <%= link_to 'Monthly Expence Report', :controller => 'reports', :action => "exreport"  %>
                                   <!--<%= link_to 'Monthly Expence report' ,url_for( :controller=>'reports',:action => 'exreport'), { :popup => ['new_window','left=100,height=500,width=800,top=50,scrollbars=1,resizable=1,maximizable=1']}%>-->
-
                                 </li>
-
                                 <li><%= link_to 'Monthly HC Report', :controller => 'reports', :action => "hcreport" %></li>
                                 <li><a href="#">M/c Listing Report &gt;</a>
                                   <ul>
@@ -232,24 +213,16 @@
                                 <li><%= link_to 'Counter Wise Report', :controller => 'reports', :action => "counterwisereport" %></li>
                                 <li><%= link_to 'Short Extra', :controller => 'reports', :action => "shortextramain" %></li>
                                 <li><%= link_to 'Master Report', :controller => 'reports', :action => "mastermain" %></li>
-
-
                               </ul>
                             </li>
-
-
-
                             <li><b><font size="2"><%= link_to "Log Out", :controller=> "account", :action => 'logout' %> </font> </b></li>
-
                           </ul>
                         </td>
-                      <%elsif @session['user']['usertype']=='Admin'%>
-
+                      <%elsif session['user']['usertype']=='Admin'%>
                         <td width="200" height="15" >
                         </td>
                         <td width="800"  bgcolor="#6C3401" height="15" >
                           <ul id="nav">
-                            
                             <li><font face="Zurich BT"><a href="#"><b><font size="2">Transactions</font></b></a></font>
                               <ul>
                                 <li><%= link_to 'Data Entry', :controller => 'clientdatas', :action => "new" %></li>
@@ -259,7 +232,7 @@
                             <li><font face="Zurich BT"><a href="#"><b><font size="2">Utilities</font></b></a></font>
                               <ul>
                                 <li><%= link_to 'Change Password', :controller => 'users', :action => "password" %></li>
-                            
+
                               </ul>
                             </li>
                             <li><font face="Zurich BT"><a href="#"><b><font size="2">Data Transfer</font></b></a></font>
@@ -275,17 +248,12 @@
 
                               </ul>
                             </li>
-
                             <li><font face="Zurich BT"><a href="#"><b><font size="2">Reports</font></b></a></font>
                               <ul>
-
-
-                                  <li><%= link_to 'Reading Mistakes', :controller => 'clientdatas', :action => "readingmistakemain"%></li>
-
+                                <li><%= link_to 'Reading Mistakes', :controller => 'clientdatas', :action => "readingmistakemain"%></li>
                                 <li>
-                                    <%= link_to 'Monthly Expence Report', :controller => 'reports', :action => "exreport"  %>
+                                  <%= link_to 'Monthly Expence Report', :controller => 'reports', :action => "exreport"  %>
                                   <!--<%= link_to 'Monthly Expence report' ,url_for( :controller=>'reports',:action => 'exreport'), { :popup => ['new_window','left=100,height=500,width=800,top=50,scrollbars=1,resizable=1,maximizable=1']}%>-->
-
                                 </li>
 
                                 <li><%= link_to 'Monthly HC Report', :controller => 'reports', :action => "hcreport" %></li>
@@ -307,21 +275,12 @@
                                 <li><%= link_to 'Counter Wise Report', :controller => 'reports', :action => "counterwisereport" %></li>
                                 <li><%= link_to 'Short Extra', :controller => 'reports', :action => "shortextramain" %></li>
                                 <li><%= link_to 'Master Report', :controller => 'reports', :action => "mastermain" %></li>
-
-
                               </ul>
                             </li>
-
-
-
                             <li><b><font size="2"><%= link_to "Log Out", :controller=> "account", :action => 'logout' %> </font> </b></li>
-
                           </ul>
                         </td>
-
                       <%else%>
-
-
                         <td width="600" height="15" >
                         </td>
                         <td width="400"  bgcolor="#6C3401" height="15" >
@@ -334,22 +293,17 @@
                               </ul>
                             </li>
                             <li><font face="Zurich BT" size="2"><b><%= link_to 'Change Password', :controller => 'customer', :action => "password" %></b></font></li>
-
                             <li><b><font size="2"><%= link_to "Log Out", :controller=> "account", :action => 'logout' %> </font> </b></li>
-
                           </ul>
                         </td>
-
                       <%end%>
                     </tr>
                   </table>
-
                 </td>
               </tr>
             </table>
           </td>
         </tr>
-
         <tr width="100%" height="2">
           <td width="100%" height="2" bgcolor="#6C3401"></td>
         </tr>
@@ -358,54 +312,40 @@
             <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber3" height="450">
               <tr>
                 <td width="80%" height="450" align=center>
-
                   <h2><%= @page_heading %></h2>
                   <BR>
                   <% if flash[:notice] -%>
                     <div id='notice'><%= flash[:notice] -%></div>
                   <% end -%>
-
                   <% if flash[:confirm] -%>
                     <div id='confirm'><%= flash[:confirm] -%></div>
                   <% end -%>
-
                   <script type="text/javascript">
                     //setTimeout("new Effect.Pulsate('notice');", 40)
                     setTimeout("new Effect.Fade('notice');", 3000)
-
                   </script>
                   <script type="text/javascript">
                     setTimeout("new Effect.Fade('confirm');", 3000)
                   </script>
-
                   <%= @content_for_layout %>
                 </td>
               </tr>
             </table>
           </td>
         </tr>
-        <tr width=100% >
-
-          <td width=100% bgcolor=#6C3401>
-            <table   width="100%">
-              <tr width=100%>
-                <td width="50%" height="1" align=left ><b>
-                  </b>
-                </td>
-                <!--<tr>
-             				<tr width=100%>-->
-                <td width="50%" height="1" align=right><b>
-                  </b>
-                </td>
-              </tr>
-              <!--</table>
-					</td>
-				</tr>
-			</table>
-
-		</td>
-	</tr>-->
-            </table>
-            </center>
-            </body>
-            </html>
+        <tr width=100% />
+        <td width=100% bgcolor=#6C3401/>
+        <table   width="100%">
+          <tr width=100%>
+            <td width="50%" height="1" align=left ><b>
+              </b>
+            </td>
+            <td width="50%" height="1" align=right><b>
+              </b>
+            </td>
+          </tr>
+        </table>
+      </table>
+    </center>
+  </body>
+</html>
