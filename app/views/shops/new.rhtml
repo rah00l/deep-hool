@@ -425,9 +425,7 @@ window.onload=function()
 	var save=document.getElementById('save');
 	save.disabled=true;
 	var cmbclustername=document.getElementById('shop_ClusterName');
-	
 	cmbclustername.focus();
-
 }
 </script>
 
@@ -436,11 +434,9 @@ window.onload=function()
 //DISPLAY SAVE BUTTON ON FILLING ALL VALUES
 function showsave()
 {
-	
 	if(event.keyCode==13)
 	{
 	 	var btsave1 = document.getElementById("save");
-      
         btsave1.disabled=false;
 
 	 	btsave1.focus();
@@ -534,16 +530,13 @@ function onlyNumbers(evt)
 
 }
 </script>
-
 </head>
 <body>
 <center>
 <table height="400" width="80%"  >
 <tr>
 <td height="400" width=100% align="center">
-
 <% form_tag :action => 'create' do %>
-
 <%= error_messages_for 'shop' %>
 <font  size= "4">
 <% if session[:msg] %>

@@ -898,11 +898,7 @@ class ShopsController < ApplicationController
   end
 
   def search
-    begin
-      @session['cluster']=params[:shop][:ClusterName]
-      redirect_to :action=>'list'
-    rescue Exception=>ex
-    end
+    @Cluster_Name=Cluster.find(:all,:order => "ClusterName")
   end
 
   def getCluster
@@ -919,8 +915,17 @@ class ShopsController < ApplicationController
   end
 
   def index
-    list
-    render :action => 'list'
+    @shops = Shop.find(:all,:conditions => ["ClusterName=?",params[:shop][:ClusterName]],:order => "ShopName")
+
+#    respond_to do|format|
+#			format.html
+#      format.js {render :file => 'shops/index' }
+render :update, :layout => false, :content_type => "text/javascript" do
+|page|
+  page.call :alert, "Im JS"
+  page.render :file => 'shops/index'
+ end
+#    end
   end
 
   # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
@@ -931,9 +936,9 @@ class ShopsController < ApplicationController
     @shop_pages, @shops = paginate :shops, :per_page => 10
   end
 
-  def show
-    @shop = Shop.find(params[:id])
-  end
+#  def show
+#    @shop = Shop.find(params[:id])
+#  end
 
   def new
     @shop = Shop.new
