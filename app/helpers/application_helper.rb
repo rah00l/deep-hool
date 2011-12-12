@@ -1,4 +1,5 @@
 # Methods added to this helper will be available to all templates in the application.
+require 'ruby-debug'
 module ApplicationHelper
   def previous_month_avg_hc(cluster_name,shop_name,date)
     date = date.to_s
@@ -7,7 +8,6 @@ module ApplicationHelper
   end
 
   def target_percentage(pre_month_avg_hc,target)
-    #raise target.to_i.inspect
     percent_target = ((pre_month_avg_hc.to_f/target.to_f)*100).round
     tar = 100 - percent_target
     target_achive = tar.abs
@@ -31,11 +31,8 @@ module ApplicationHelper
   end
   
   def get_prevdate_os(shop_name,date)
-    #prev_date = (Date.parse(date) - 1).strftime('%Y-%m-%d')
-    #abc = Counterdata.find(:first,:conditions=>["shopname=? and date=?",shop_name,prev_date])
     outstand_prev_entry = Countercollection.find_by_ShopName(shop_name,:order => 'Date desc')
     os  = outstand_prev_entry.blank? ? Shop.find_by_ShopName(shop_name).os : Countercollection.find_by_ShopName(shop_name,:order => 'Date desc').os
-    #abc.blank? ? Shop.find_by_ShopName(shop_name).os : Counterdata.find(:first,:conditions=>["shopname=? and date=?",shop_name,prev_date]).os
   end
 
   def short_extra_values(date1,date2,cluster_name,shop_name,group_id)
@@ -59,6 +56,14 @@ module ApplicationHelper
       ("<span style='color:green;font-weight:bold;'>"+ number.to_s + '%' +"</span>")
     elsif number.to_i >=81
       return ("<span style='color:red;font-weight:bold;'>"+ number.to_s + '%' + "</font>")
+    end
+  end
+
+  def sign_convey(number)
+    if number.to_i>0
+     return '-'+number.to_s
+    else
+      return number.to_s.sub('-','')
     end
   end
 
