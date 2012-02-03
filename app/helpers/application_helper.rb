@@ -1,5 +1,4 @@
 # Methods added to this helper will be available to all templates in the application.
-require 'ruby-debug'
 module ApplicationHelper
   def previous_month_avg_hc(cluster_name,shop_name,date)
     date = date.to_s
