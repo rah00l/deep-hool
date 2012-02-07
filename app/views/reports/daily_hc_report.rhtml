@@ -9,34 +9,34 @@
 
     <h3 align="center"><font color="#6C3401" face="Zurich BT" size="2"></font></h3>
       <table border="1" width ="202"  cellpadding="0"  cellspacing="0" bordercolor="#111111"   id="AutoNumber1"  height="24"  left:2% >
-             <tr  bgcolor="#E1CEA2" align=center></tr>
+             <tr  bgcolor="" align=center></tr>
               <tr><td align="center">
-                  <font color=#6C3401 face="Zurich BT" size="2"><b>
+                  <font color=#6C3401 face="Zurich BT" size="4"><b>
                     <%= date = Date.parse(params[:date]).strftime("%d-%m-%Y") if params[:date]%>
                     </b></font>&nbsp;</tr>
             <table border="1" width ="202"  cellpadding="0"  cellspacing="0" bordercolor="#111111"   id="AutoNumber1"  height="24"  left:2% >
-                <tr  bgcolor="#E1CEA2" align=center>
+                <tr  bgcolor="" align=center>
                 <th nowrap width="1%" height="22" >
-                  <font color=white face="Zurich BT" size="2">SHOP NAME</font></th>
+                  <font color=white face="Zurich BT" size="4">SHOP NAME</font></th>
                 <th nowrap width="1%" height="22" >
-                  <font color=white face="Zurich BT" size="2">HC</font></th>
+                  <font color=white face="Zurich BT" size="4">HC</font></th>
                </tr><% total = 0 %>
                    <%  @clusters.each do |cluster| %>
                       <% Shop.find(:all,:select=>"ShopName",:conditions=> ["ClusterName=?","#{cluster.ClusterName}"],:order => "ShopName").each do |shop_name| %>
-                     <tr bgcolor="#E1CEA2" align=center>
-                        <td><%= shop_name.ShopName %></td>
+                     <tr bgcolor="" align=center>
+                        <td><font size="4"><%= shop_name.ShopName %></font></td>
                         <% Counterdata.find(:all,:select=>'HC',:conditions=>["ClusterName=? and ShopName=? and Date=? ",cluster.ClusterName,shop_name.ShopName,params[:date]]).each do |hc| %>
-                        <td><%= hc.HC %></td>
-                        <% total = total + hc.HC %>
+                        <td><font size="4"><%= hc.HC.to_i / 10%></font></td>
+                        <% total = total + hc.HC.to_i / 10 %>
                         <%end%>
                     </tr>
                       <%end%>
                    <%end%>
                    <tr  bgcolor="#E1CEA2" align=center>
                 <th nowrap width="1%" height="22" >
-                  <font color=white face="Zurich BT" size="2">Total</font></th>
+                  <font color=white face="Zurich BT" size="4">Total</font></th>
                 <th nowrap width="1%" height="22" >
-                  <font color=white face="Zurich BT" size="2"><%= total %></font></th>
+                  <font color=white face="Zurich BT" size="4"><%= total %></font></th>
                </tr>
 
             </table>

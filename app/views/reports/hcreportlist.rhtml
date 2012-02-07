@@ -46,21 +46,21 @@
                       <td nowrap align="center">-</td>
                     <% else %>
                       <% if @i.to_i==@d[2].to_i %>
-                        <td nowrap align="center"><%= @hv.hc %>&nbsp;</td>
+                        <td nowrap align="center"><%= @hv.hc.to_i / 10 %>&nbsp;</td>
                         <%@num=@hv.hc%>
                         <%@total_hc=@total_hc.to_i + @num.to_i %>
                         <%@totalcol_hc=@totalcol_hc.to_i+@num.to_i %>
                       <%end%>
                     <% end %>
                   <%end%>		 <!-- end of dis_shop do loop -->
-                  <td><b><%=@total_hc.to_i%>&nbsp;</b></td>
+                  <td><b><%=@total_hc.to_i / 10%>&nbsp;</b></td>
                   <%@number=@number.to_i+@total_hc.to_i%>
                   <%@total_hc=0%>
                 <% end %>
 
               </tr>
               <tr>
-                <td><b>Total</b></td>
+                <td><b>TOT</b></td>
                 <% @dshopanother =Counterdata.find_by_sql("select distinct(shopname) from shops where clustername='#{@session[:rrclustername]}'  order by shopname  " )%>
                 <% @dshopanother .each do |@ds2| %>
                   <% @total_hcvalue =Counterdata.find_by_sql("select sum(hc) as hc from(select * from counterdatas
@@ -71,14 +71,14 @@
                     <% @av=@avg.hcavg %>
                   <% end %>
                   <% @total_hcvalue .each do |@thcv2| %>
-                    <td><b><%= @thcv2.hc %>&nbsp;</b></td>
+                    <td><b><%= @thcv2.hc.to_i / 10 %>&nbsp;</b></td>
                     <%@tableadd=@tableadd.to_i+@thcv2.hc.to_i %>
                   <%end%>
                 <%end%>
-                <td><b><%=@tableadd.to_i%></b> &nbsp;</td>
+                <td><b><%=@tableadd.to_i / 10%></b> &nbsp;</td>
               </tr>
               <tr>
-                <td><b>Average</b></td>
+                <td><b>AVG</b></td>
                 <% @dshopanother =Counterdata.find_by_sql("select distinct(shopname) from shops where clustername='#{@session[:rrclustername]}'  order by shopname  " )%>
                 <% @dshopanother .each do |@ds2| %>
                   <% @total_avg =Counterdata.find_by_sql("select avg(hc) as hcavg from(select * from counterdatas
@@ -86,26 +86,12 @@
                   <% @total_avg .each do |@avg| %>
                     <% @av=@avg.hcavg %>
                   <% end %>
-                  <td><b><%= @av.to_f.round %>&nbsp;</b></td>
+                  <td><b><%= @av.to_f.round / 10%>&nbsp;</b></td>
                 <%end%>
-                <td><b><%= (@tableadd.to_f/ @session[:dayshc].to_f).round %>&nbsp;</b></td>
+                <td><b><%= (@tableadd.to_f/ @session[:dayshc].to_f).round / 10%>&nbsp;</b></td>
               </tr>
             </table>
-            <!--new2-->
-<%#end%>
-<%# @tableadd=0 %>
-            <!--</td>
-            <td><b><%=@number.to_i%>&nbsp;</b></td>
-            </tr>
-            </table>-->
-            <!--ends new2-->
-
-            <!--<br/>
-            <div align=center>
-            <p>&nbsp;</p>
-
-
-            </td></tr></table>-->
+            
           </td></tr></table>
       </table>
       <br/>
@@ -160,11 +146,10 @@
               <% @sum=0%>
             <% end %>
 
-            <td><%= @sum %>&nbsp;</td>
+            <td><%= @sum.to_i / 10 %>&nbsp;</td>
             <% if @sum==0%>
               <td>-</td>
             <% else %>
-              <% p "----- 1st -> #{@sum} 2nd -> #{@tsum} " %>
               <td><%= ((@sum.to_f/@tsum1.to_f)*100).round  %>&nbsp;</td>
             <% end %> &nbsp;</tr>
 
