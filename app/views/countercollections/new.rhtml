@@ -60,12 +60,14 @@
             return(false);
           }
         }
-/*        if(btsave1.value == 0 && form_hc.value > 0)
+        if(btsave1.value == 0 && form_hc.value > 0 && btsave.value > 0)
           {
             alert("PLEASE CLEAR O/S ,YOU CAN NOT ENTER HC ");
+            form_hc.value = 0;
+            btsave.value = 0;
             form_hc.focus();
             return(false);
-          }*/
+          }
         showsave();
       }
 

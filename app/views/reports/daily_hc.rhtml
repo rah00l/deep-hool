@@ -32,8 +32,9 @@
                           DATE</font></b>
                     </td>
                     <td width="286" align="justify" >
+                      <% date = Date.today-1 %>
                       <% if(@session[:ttdate1]==nil) %>
-                        <%= calendar_date_select_tag "date",Date.today.to_s,  :popup => "force" %>
+                        <%= calendar_date_select_tag "date",date.to_s ,  :popup => "force" %>
                       <%else%>
                         <%= calendar_date_select_tag "date",@session[:ttdate1].to_s,  :popup => "force" %>
                       <%end%>
