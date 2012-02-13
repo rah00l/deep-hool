@@ -1,0 +1,4 @@
+<% form_tag(:controller=>'machinedata', :action=>'data_upload',:multipart => true) do  %>
+<strong>Select a File</strong>  <%= file_field_tag :import_file %> <br/><br/>
+<input type="submit" name="commit" value="Submit"/>
+<%end%>

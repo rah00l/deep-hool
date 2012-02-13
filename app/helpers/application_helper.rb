@@ -67,6 +67,19 @@ module ApplicationHelper
   end
 
 
+  def roundval(val)
+    if (val<0)
+      if ((val.to_f.to_s.split(".")[1]).to_i<=5)
+        return (val).ceil
+      else
+        return (val).round
+      end
+    else
+      return (val).round
+    end
+  end
+
+
 end
 
 
