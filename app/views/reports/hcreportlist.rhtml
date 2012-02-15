@@ -86,9 +86,9 @@
                   <% @total_avg .each do |@avg| %>
                     <% @av=@avg.hcavg %>
                   <% end %>
-                  <td><b><%= @av.to_f.round / 10%>&nbsp;</b></td>
+                  <td><b><%= (@av.to_f / 10).round%>&nbsp;</b></td>
                 <%end%>
-                <td><b><%= (@tableadd.to_f/ @session[:dayshc].to_f).round / 10%>&nbsp;</b></td>
+                <td><b><%= ((@tableadd.to_f/ @session[:dayshc].to_f)/ 10).round%>&nbsp;</b></td>
               </tr>
             </table>
             
