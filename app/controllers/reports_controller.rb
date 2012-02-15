@@ -320,7 +320,30 @@ class ReportsController < ApplicationController
       @session[:startdate]=Date.parse(01.to_s+'-'+@session[:month].to_s+'-'+@session[:year].to_s)
       @session[:enddate]=Date.parse(@session[:days].to_s+'-'+@session[:month].to_s+'-'+@session[:year].to_s)
       @session[:rrclustername]=params[:machinedata][:ClusterName]
+      if params[:machinedata][:ClusterName].eql?('ALL')
+        session[:shop_name] = Shop.all_shop_name_list
+      else
+        session[:shop_name] = Shop.selected_shop_name_list(params[:machinedata][:ClusterName])
+      end
       redirect_to :action => 'showshortextra'
+    rescue Exception=>ex
+    end
+  end
+
+  def showshort_new
+begin
+      @session[:month]=params[:date][:month]
+      @session[:year]=params[:date][:year]
+      @session[:days]=(Date.new(@session[:year].to_i, 12, 31) << (12-@session[:month].to_i)).day
+      @session[:startdate]=Date.parse(01.to_s+'-'+@session[:month].to_s+'-'+@session[:year].to_s)
+      @session[:enddate]=Date.parse(@session[:days].to_s+'-'+@session[:month].to_s+'-'+@session[:year].to_s)
+      @session[:rrclustername]=params[:machinedata][:ClusterName]
+      if params[:machinedata][:ClusterName].eql?('ALL')
+        session[:shop_name] = Shop.all_shop_name_list
+      else
+        session[:shop_name] = Shop.selected_shop_name_list(params[:machinedata][:ClusterName])
+      end
+      redirect_to :action => 'showshortextra_modi'
     rescue Exception=>ex
     end
   end

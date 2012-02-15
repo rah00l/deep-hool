@@ -19,7 +19,13 @@ class Shop < ActiveRecord::Base
     validates_presence_of :Address, :on=>:update
    # has_many :groups, :foreign_key=>'ShopName',:class_name=>'Groups',:dependent=>:destroy
     
-    
+def self.all_shop_name_list
+   Shop.find(:all,:select=>"ShopName",:order=>"ShopName").collect(&:ShopName)
+end
+
+def self.selected_shop_name_list(cluster_name)
+  Shop.find(:all,:select=>"ShopName",:conditions=>["ClusterName=?",cluster_name],:order=>"ShopName").collect(&:ShopName)
+end
     
    
 end
