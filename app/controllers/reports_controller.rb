@@ -360,4 +360,8 @@ class ReportsController < ApplicationController
     @clusters = Cluster.find(:all,:select=>"ClusterName",:order=>"ClusterName")
     
   end
+
+  def mc_cabinet_new
+    @cluster_name = Cluster.find(:all).collect(&:ClusterName)
+  end
 end
