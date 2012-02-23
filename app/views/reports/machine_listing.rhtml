@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <%= javascript_include_tag "prototype","effects","application",:defaults %>
+  </head>
+  <body >
+    <h3><%= params[:machinedata][:ClusterName] %></h3>
+    <div class=clsDataGridheight id=divList bgcolor=white  width="100%" height=380 topmargin=0 >
+      <table  border="1" width ="100%"align="center">
+        <tr>
+          <th width="150" >Shop </font></th>
+          <% @machine_name.each do |mname|%>
+            <th  ><%= mname.MachineName %></font>&nbsp;</th>
+          <% end %>
+          <th>Total</font></th>
+        </tr>
+        <% for item in @shop_name %>
+          <tr>
+            <td align=center><%= item %>&nbsp;</td>
+            <% @from_totalcount=0 %>
+            <% @to_totalcount=0 %>
+            <% @machine_name.each do |mname|%>
+              <% from_machine_count = machine_count(item,mname.MachineName,params[:from_date]) %>
+              <td  align=center><%=  from_machine_count%>&nbsp;</td>
+              <%  @from_totalcount = @from_totalcount.to_i+ from_machine_count.to_i%>
+            <% end %>
+            <td  align=center><%=  @from_totalcount%>&nbsp;</td>
+          </tr>
+          <tr>
+            <td align=center><%= item %>&nbsp;</td>
+            <% @machine_name.each do |mname|%>
+              <% to_machine_count = machine_count(item,mname.MachineName,params[:to_date]) %>
+              <td  align=center><%=  to_machine_count%>&nbsp;</td>
+              <%  @to_totalcount = @to_totalcount.to_i+ to_machine_count.to_i%>
+            <% end %>
+            <td  align=center><%= @to_totalcount %>&nbsp;</td>
+          </tr>
+          <tr>
+            <td align=center>DIFF&nbsp;</td>
+            <% @machine_name.each do |mname|%>
+              <% from_machine_count = machine_count(item,mname.MachineName,params[:from_date]) %>
+              <% to_machine_count = machine_count(item,mname.MachineName,params[:to_date]) %>
+              <td  align=center><%=  from_machine_count - to_machine_count%>&nbsp;</td>
+            <% end %>
+            <td  align=center><%= @from_totalcount - @to_totalcount %>&nbsp;</td>
+          </tr>
+        <% end %>
+        <tr align=center>
+
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>
