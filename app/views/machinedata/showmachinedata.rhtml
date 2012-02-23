@@ -76,6 +76,7 @@ function SRAVG()
 	cursrcoll= parseInt((((parseInt(tsrin)*parseInt(sratein))-(parseInt(tsrout)*parseInt(srateout)))/10)+parseInt(today_MTRSHORT));
 	curmrcoll=parseInt((((parseInt(tmtrin)*parseInt(mratein))-(parseInt(tmtrout)*parseInt(mrateout)))/10)+parseInt(today_MTRSHORT));
 	var condition="false"
+
 	          	if(today_SETTING!=yesterday_SETTING)
 			 	{
 					if((yesterday_srin.value!=yesterday_PSRINVALUE.value ) || (yesterday_PSRINVALUE.value==0 && yesterday_srin.value==0))
@@ -156,6 +157,7 @@ function SRAVG()
  				<%begin%>
  	   				totalsum='<%=@srvalues.to_i %>'
  	   				totalcount='<%=@valcount.to_i %>'
+                                        
 	   				if (parseInt(totalcount)<=2)
 	   					totalcount=1;
 	   				else
@@ -579,25 +581,20 @@ today_Shortreason.disabled=false;
 function CALCOLLECTION(key)
 {
 <% @machinedata = Machinedata.find_first(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and Machine_No=?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate],@session[:ttmachineno]])
-    if(@machinedata!=nil)
-    @colldata = Machinedata.find_all(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID=? and Machine_No<>?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate],@session[:ttkeyno],@session[:ttmachineno]])
-    @totalcoll=0
-    @colldata.each do |data|
-        if data.CALCULATEBY=='S'
-                  @COLL=(((((data.TSRIN.to_f*data.SCREEN_RATE_IN.to_f)-(data.TSROUT.to_f*data.SCREEN_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f).round
-                  @totalcoll=@totalcoll.to_i+@COLL.to_i
-              else
-              	  @COLL1=(((((data.TMTRIN.to_f*data.MTR_RATE_IN.to_f)-(data.TMTROUT.to_f*data.MTE_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f).round
-                  @totalcoll=@totalcoll.to_i+@COLL1.to_i
-         end    
-       
+if(@machinedata!=nil)
+  @colldata = Machinedata.find_all(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID=? and Machine_No<>?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate],@session[:ttkeyno],@session[:ttmachineno]])
+  @totalcoll=0
+  @colldata.each do |data|
+    if data.CALCULATEBY=='S'
+      @COLL=(((((data.TSRIN.to_f*data.SCREEN_RATE_IN.to_f)-(data.TSROUT.to_f*data.SCREEN_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f).round
+      @totalcoll=@totalcoll.to_i+@COLL.to_i
+    else
+      @COLL1=(((((data.TMTRIN.to_f*data.MTR_RATE_IN.to_f)-(data.TMTROUT.to_f*data.MTE_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f).round
+      @totalcoll=@totalcoll.to_i+@COLL1.to_i
     end
-    
-    
-   
-	
-    
-	end
+
+  end
+end
 %>
 if(key=="KEY 1")
 {
@@ -1003,10 +1000,7 @@ var condition="false"
 		  if (totalin!=0)
 		  {
               //today_MTRPER.value=((parseFloat(totalout)-parseFloat(summtrshortneg))*100)/(parseFloat(totalin)+parseFloat(summtrshortpos));
-				alert(totalout);
-                                alert(summtrshortneg);
-                                alert(totalin);
-                                alert(summtrshortpos);
+				
                                 today_MTRPER.value=Math.round(((parseFloat(totalout)-parseFloat(summtrshortneg))*100)/(parseFloat(totalin)+parseFloat(summtrshortpos)));
 
              
