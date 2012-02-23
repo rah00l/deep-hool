@@ -76,6 +76,9 @@ module ApplicationHelper
     end
   end
 
+  def machine_count(shop_name,machine_name,date)
+        Machinedata.count(:conditions=>["Shop_Name=? and Machine_Name=? and Trans_Date=?",shop_name,machine_name,date])
+  end
 
   def roundval(val)
     if (val<0)

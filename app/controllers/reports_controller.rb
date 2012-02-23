@@ -13,6 +13,25 @@ class ReportsController < ApplicationController
     end
   end
 
+
+  def machine_listing
+    if params[:machinedata][:ClusterName].eql?('ALL')
+        @shop_name = Shop.all_shop_name_list
+      else
+        @shop_name = Shop.selected_shop_name_list(params[:machinedata][:ClusterName])
+      end
+#      raise @shop_name.inspect
+       @machine_name = Machine.find(:all,
+                        :select=>"distinct MachineName",
+                        :conditions=>["ShopName in (?)", @shop_name], :order => "MachineName")
+    begin
+      session[:ttdate1]=params[:date1]
+      @session[:rrclustername]=params[:machinedata][:ClusterName]
+#      redirect_to :action=>'list'
+    rescue Exception=>ex
+    end
+  end
+
   def expencereport
     begin
       @session[:month]=params[:date][:month]
