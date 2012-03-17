@@ -3,5 +3,6 @@ nbproject/*
 tmp/**/*
 .rvmrc
 db/schema.rb
+/log
 *.txt
 *.csv
