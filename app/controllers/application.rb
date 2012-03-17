@@ -16,7 +16,6 @@ class ApplicationController < ActionController::Base
   
   
   def fading_flash_message(text, seconds=3)
-    puts "in fade"
   text +
     <<-EOJS
       <script type='text/javascript'>

@@ -454,7 +454,6 @@ document.execCommand("SaveAs")
 <% @flagval="false" %>
 <% @totalval=0%>
 <% @mval=Machinedata.find(:first,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and TRANS_DATE=?',@session[:shoparray1][i].to_s,key.GroupID,c.MACHINE_NO,session[:dailyvalue]],:order => "MACHINE_NAME,digitno,charno")%>
-<% puts olddate%>
 <% @machinevalues=Machinedata.find(:all,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and TRANS_DATE<=? and TRANS_DATE>=?',@session[:shoparray1][i].to_s,key.GroupID,c.MACHINE_NO,session[:dailyvalue],olddate+1],:order => "TRANS_DATE")%>
 <% @losscount=1 %>
 <%@machinevalues.each do |item|%>

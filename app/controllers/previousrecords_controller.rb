@@ -1,16 +1,15 @@
 class PreviousrecordsController < ApplicationController
     
-    layout 'adminlayout'
-     before_filter :login_required
-def search
+  layout 'adminlayout'
+  before_filter :login_required
+  def search
     begin
-    puts "in search"
-    @session['obcluster']=params[:shop][:ClusterName]
-    redirect_to :action=>'list'
+      @session['obcluster']=params[:shop][:ClusterName]
+      redirect_to :action=>'list'
     rescue Exception=>ex
-        puts ex.message
+      puts ex.message
     end
-end
+  end
 
 
   def index
@@ -20,7 +19,7 @@ end
 
   # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
   verify :method => :post, :only => [ :destroy, :create, :update ],
-         :redirect_to => { :action => :list }
+    :redirect_to => { :action => :list }
 
   def list
     @previousrecord_pages, @previousrecords = paginate :previousrecords, :per_page => 10

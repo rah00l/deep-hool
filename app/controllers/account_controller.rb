@@ -10,7 +10,6 @@ def login
       @session['pass']=@params['user_password']
         if @session['user'] = User.authenticate(@params['user_login'], @params['user_password'])
 				@result=User.login_type(@params['user_login'],@params['user_password'])
-                    puts @result.userstatus
 					if @result.userstatus==1
                         @user=User.find(@result.id)
 						@user.loginstatus='Y'

@@ -129,7 +129,7 @@
           <% if @count.to_i>0 %>
             <% @total_hcvalue .each do |@sum1| %>
               <% @sum=@sum1.hc %>
-              <% puts @tsum1=@tsum1+@sum1.hc.to_i%>
+              <% @tsum1=@tsum1+@sum1.hc.to_i%>
             <% end %>
 
           <% else %>
@@ -154,7 +154,6 @@
             <% if @count.to_i>0 %>
               <% @total_hcvalue .each do |@sum1| %>
                 <% @sum=@sum1.hc %>
-      <%# puts @tsum=@tsum+@sum1.hc.to_i%>
               <% end %>
 
             <% else %>

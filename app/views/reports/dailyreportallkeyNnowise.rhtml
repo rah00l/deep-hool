@@ -770,7 +770,6 @@
                                                                   @session[:shoparray1][i].to_s,c.MACHINE_NO,
                                                                   session[:dailyvalue]],
                                                                 :order => "MACHINE_NAME,digitno,charno")%>
-                                                              <% puts olddate%>
                                                               <% @machinevalues=Machinedata.find(:all,
                                                                 :conditions=>['SHOP_NAME=? and MACHINE_NO=? and TRANS_DATE<=? and TRANS_DATE>=?',
                                                                   @session[:shoparray1][i].to_s,c.MACHINE_NO,session[:dailyvalue],olddate+1],
@@ -1021,7 +1020,6 @@
                                                                                                     @session[:shoparray1][i].to_s,c.MACHINE_NO,
                                                                                                     session[:dailyvalue]],
                                                                                                   :order => "MACHINE_NAME,digitno,charno")%>
-                                                                                                <% #puts olddate%>
                                                                                                 <% @machinevalues=Machinedata.find(:all,
                                                                                                   :conditions=>['SHOP_NAME=? and MACHINE_NO=? and TRANS_DATE<=? and TRANS_DATE>=?',
                                                                                                     @session[:shoparray1][i].to_s,c.MACHINE_NO,session[:dailyvalue],olddate+1],

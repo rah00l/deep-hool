@@ -119,7 +119,6 @@
       begin
 
         @session[:MachineNo]=nil
-        puts params[:GroupID]
         @session[:Groupid]=params[:GroupID]
         render :update do |page|
           page.replace_html 'MachineNodiv', :partial => 'machineprev'
