@@ -1,6 +1,6 @@
 class Machinedata < ActiveRecord::Base
 
-  after_update :calculate_short_extra
+  #after_update :calculate_short_extra
   
   def self.update_machinedata(data)
     Machinedata.transaction do
