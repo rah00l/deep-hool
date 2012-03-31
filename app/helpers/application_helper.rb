@@ -67,6 +67,16 @@ module ApplicationHelper
   end
 
 
+  def machine_no_and_machine_name_color(machine_no,machine_name)
+    machine = Machine.find_by_MachineNo_and_MachineName(machine_no,machine_name)
+    if machine.Multiplyby == 2
+      return "#FF8000"
+    else
+      ""
+    end
+  end
+
+
   def roundval(val)
     if (val<0)
       if ((val.to_f.to_s.split(".")[1]).to_i<=5)

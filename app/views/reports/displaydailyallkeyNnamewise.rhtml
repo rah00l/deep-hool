@@ -399,12 +399,12 @@
           </td>
           <td bgcolor="#FFA500" width="50" height="19" ALIGN="CENTER">M/S </td>
 
-          <% @r=Machinedata.find_by_sql("select DISTINCT TRANS_DATE from Machinedatas where CLUSTER_NAME='#{@session[:clustarray]}'
+          <% @r=Machinedata.find_by_sql("select DISTINCT TRANS_DATE from machinedatas where CLUSTER_NAME='#{@session[:clustarray]}'
     and TRANS_DATE>='#{session[:startdatehc]}'
     and TRANS_DATE<='#{session[:enddatehc]}' and SHOP_NAME= '#{@session[:shoparray1][i].to_s}' order by TRANS_DATE") %>
 
           <% @r.each do |r|%>
-            <% @sum=Machinedata.find_by_sql("select MTRSHORT,SHORTREASON from Machinedatas where CLUSTER_NAME='#{@session[:clustarray]}'
+            <% @sum=Machinedata.find_by_sql("select MTRSHORT,SHORTREASON from machinedatas where CLUSTER_NAME='#{@session[:clustarray]}'
       and TRANS_DATE='#{r.TRANS_DATE}' and SHOP_NAME='#{@session[:shoparray1][i].to_s}'" ) %>
 
             <% @totalREFUND=0%>
@@ -598,9 +598,9 @@
                           <% if c.CALCULATEBY == 'M'%>
 
                             <tr bgcolor="#FFA500">
-
-                              <td nowrap height="10" align=center><font color=blue><b><%= c.MACHINE_NO %></b></font></td>
-                              <td nowrap height="10" align=center><font color=blue><b><%= c.MACHINE_NAME %></b></font></td>
+                                <%  machine_color  = machine_no_and_machine_name_color(c.MACHINE_NO,c.MACHINE_NAME)%>
+                                <td nowrap height="10" align=center bgcolor="<%= machine_color %>"><font color=blue><b><%= c.MACHINE_NO %></b></font></td>
+                                <td nowrap height="10" align=center bgcolor="<%= machine_color %>"><font color=blue><b><%= c.MACHINE_NAME %></b></font></td>
                               <!-- display SRIN start-->
                               <%if c.SRIN.to_i>=0 %>
                                 <td nowrap height="10" align=center><font color=black><%= c.SRIN.to_i %></font></td>
@@ -839,9 +839,9 @@
                                                               <!--------------------------------------- by != M ------------------------------------------------------------------------->
                                                             <% else %>
                                                               <tr >
-
-                                                                <td nowrap height="10" align=center><font color=blue><b><%= c.MACHINE_NO %></b></font></td>
-                                                                <td nowrap height="10" align=center><font color=blue><b><%= c.MACHINE_NAME %></b></font></td>
+                                                                <%  machine_color  = machine_no_and_machine_name_color(c.MACHINE_NO,c.MACHINE_NAME)%>
+                                                                  <td nowrap height="10" align=center bgcolor="<%= machine_color %>"><font color=blue><b><%= c.MACHINE_NO %></b></font></td>
+                                                                  <td nowrap height="10" align=center bgcolor="<%= machine_color %>"><font color=blue><b><%= c.MACHINE_NAME %></b></font></td>
                                                                 <!-- display SRIN start-->
                                                                 <%if c.SRIN.to_i>=0 %>
                                                                   <td nowrap height="10" align=center><font color=black><%= c.SRIN.to_i %></font></td>
@@ -1041,7 +1041,7 @@
                                                                                 <!--display  SR avg value end-->
 
 
-                                                                                <% machinesetting  = Machinedata.find_by_sql("select setting from Machinedatas
+                                                                                <% machinesetting  = Machinedata.find_by_sql("select setting from machinedatas
         where CLUSTER_NAME='#{@session[:clustarray]}'
         and SHOP_NAME='#{@session[:shoparray1][i].to_s}'
         and machine_no='#{c.MACHINE_NO}'
