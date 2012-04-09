@@ -28,7 +28,7 @@ module ApplicationHelper
     first_date = Date.parse(last_date).strftime('%Y-%m-01')
     return first_date,last_date
   end
-  
+
   def get_prevdate_os(shop_name,date)
     outstand_prev_entry = Countercollection.find_by_ShopName(shop_name,:order => 'Date desc')
     os  = outstand_prev_entry.blank? ? Shop.find_by_ShopName(shop_name).os : Countercollection.find_by_ShopName(shop_name,:order => 'Date desc').os
@@ -67,8 +67,8 @@ module ApplicationHelper
   end
 
 
-  def machine_no_and_machine_name_color(machine_no,machine_name)
-    machine = Machine.find_by_MachineNo_and_MachineName(machine_no,machine_name)
+  def machine_no_and_machine_name_color(shop_name,machine_no,machine_name)
+    machine = Machine.find_by_ShopName_and_MachineNo_and_MachineName(shop_name,machine_no,machine_name)
     if machine.Multiplyby == 2
       return "#FF8000"
     else
