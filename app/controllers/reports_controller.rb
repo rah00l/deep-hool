@@ -2,6 +2,7 @@ class ReportsController < ApplicationController
   layout 'adminlayout'
   require 'date'
   #require 'facets'
+  require 'ruby-debug'
   before_filter :login_required
   def search
     begin
@@ -353,5 +354,10 @@ class ReportsController < ApplicationController
       session[:cname]=params[:machinedata][:ClusterName]
       redirect_to :action=>'showmaster'
     end
+  end
+
+  def daily_hc_report
+    @clusters = Cluster.find(:all,:select=>"ClusterName",:order=>"ClusterName")
+    
   end
 end

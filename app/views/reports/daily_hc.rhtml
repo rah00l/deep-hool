@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <%= javascript_include_tag "prototype","effects","application",:defaults %>
+    <%= stylesheet_link_tag 'calendar_date_select/silver.css' %>
+    <%= javascript_include_tag 'calendar_date_select/calendar_date_select.js'%>
+    <%= javascript_include_tag 'calendar_date_select/format_db.js'%>
+  </head>
+  <body>
+    <center>
+      <table height="311" width="78%"  >
+        <tr>
+          <td height="311" width=100% align="center">
+            <% form_tag :controller =>'reports' ,:action => 'daily_hc_report' do %>
+              <%= error_messages_for 'machine' %>
+              <font  size= "4">
+                <% if session[:msg] %>
+                  <div id="msg" style="width:300;border: 2px solid blue;padding-bottom: 12px; margin-bottom: 20px;
+                       background-color: #f0f0f0; height:22; padding-left:7px; padding-right:7px; padding-top:7px">
+                       <%= session[:msg] %>
+                  </div>
+                  <%session[:msg]=nil%>
+                <% end %>
+              </font>
+              <fieldset style=" height: 200 ; align:center">
+                <h2 align=center>Daily HC Report</h2>
+                <table width="680" height="81">
+                  <tr>
+                    <td width="253" height="16" align=right>
+                      <b><font face="Arial" size="2">SELECT
+                          DATE</font></b>
+                    </td>
+                    <td width="286" align="justify" >
+                      <% if(@session[:ttdate1]==nil) %>
+                        <%= calendar_date_select_tag "date",Date.today.to_s,  :popup => "force" %>
+                      <%else%>
+                        <%= calendar_date_select_tag "date",@session[:ttdate1].to_s,  :popup => "force" %>
+                      <%end%>
+                      &nbsp;
+                    </td>
+                  </tr>
+                </table>
+                <br/>
+                <%= submit_tag "SHOW REPORT" ,:id=>'save'%>
+              <% end %>
+            </fieldset>
+          </td>
+        </tr></table>
+    </center>
+  </body>
+</html>
