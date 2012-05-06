@@ -2,7 +2,7 @@ class ReportsController < ApplicationController
   layout 'adminlayout'
   require 'date'
   #require 'facets'
-  require 'ruby-debug'
+#  require 'ruby-debug'
   before_filter :login_required
   def search
     begin
