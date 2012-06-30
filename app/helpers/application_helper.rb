@@ -69,11 +69,13 @@ module ApplicationHelper
 
   def machine_no_and_machine_name_color(shop_name,machine_no,machine_name)
     machine = Machine.find_by_ShopName_and_MachineNo_and_MachineName(shop_name,machine_no,machine_name)
+	if machine
     if machine.Multiplyby == 2
       return "#FF8000"
     else
       ""
     end
+end
   end
 
   def machine_count(shop_name,machine_name,date)
