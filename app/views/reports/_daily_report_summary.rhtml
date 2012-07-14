@@ -1,0 +1,239 @@
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="68%" id="AutoNumber2" height="85">
+  <tr>
+    <td width="34%" height="19"><font size="2">GROUP/TOT/HC</font></td>
+    <td width="45%" height="19" colspan="3"><% @c= Counterdata.find_by_sql("select sum(HC) as 'totalHC' from counterdatas where  Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}'")%>
+      <%= @c[0].totalHC %>
+    </td>
+    <!--    <td width="21%" height="19"></td> -->
+  </tr>
+  <tr>
+    <td width="34%" height="19"><font size="2">AVG</font><font size="2">/HC-(For Per Day) </font></td>
+    <td width="45%" height="19" colspan="3">
+      <% if @session[:datediff].to_i!=0 %>
+      <% else %>
+        <% @session[:datediff]=1%>
+      <% end %>
+      <%= @c[0].totalHC.to_i/@session[:datediff].to_i %>
+    </td>
+  </tr>
+  <tr>
+    <td width="34%" height="19"><font size="2">TODAY'S HC</font></td>
+    <td width="45%" height="19" colspan="3"><% @cc= Counterdata.find_by_sql("select sum(HC) as 'totalHC' from counterdatas where  Date='#{session[:dailyvalue]}'")%>
+      <%= @cc[0].totalHC %>
+    </td>
+  </tr>
+  <tr>
+    <td width="34%" height="16"><font size="2">TOTAL SL/SHOP HC</font></td>
+    <td width="45%" height="16" colspan="3"><% @c= Counterdata.find_by_sql("select sum(HC) as 'totalHC' from counterdatas where ClusterName='#{@session[:rrclustername]}' and ShopName in (#{@session[:shoparray]}) and Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}'")%>
+      <%= @c[0].totalHC %>
+    </td>
+  </tr>
+  <tr>
+    <td width="34%" height="23"><font size="2">TODAYS SL/GROUP HC</font></td>
+    <td width="45%" height="23" colspan="3"><% @c= Counterdata.find_by_sql("select sum(HC) as 'totalHC' from counterdatas where ClusterName='#{@session[:rrclustername]}' and Date='#{@session[:enddatehc]}'")%>
+      <%= @c[0].totalHC %>
+    </td>
+  </tr>
+  <td width="34%" height="19">&nbsp;</td>
+  <td width="15%" height="19" align=center>HRK</td><td width="15%" height="19" align=center>LAT</td><td width="15%" height="19" align=center>MRL</td>
+  <tr>
+    <td width="34%" height="19"><font size="2">CUSTOM HC VALUES FOR ALL GROUP</font></td>
+    <td width="15%" height="19" align=center><% hc = custom_hc_value('HRK') %><%= hc.blank? ? 'NA' : hc %></td>
+    <td width="15%" height="19" align=center><% hc = custom_hc_value('LAT') %><%= hc.blank? ? 'NA' : hc %></td>
+    <td width="15%" height="19" align=center><% hc = custom_hc_value('MRL') %><%= hc.blank? ? 'NA' : hc %></td>
+  </tr>
+  <tr>
+    <td width="34%" height="19"><font size="2">HC VALUES FOR ALL GROUP</font></td>
+    <td width="15%" height="19" align=center><% hc = sum_of_values_for_all_group('HC','HRK',session[:startdatehc],@session[:enddatehc]) %><%= hc.blank? ? 0 : hc/@session[:datediff] %></td>
+    <td width="15%" height="19" align=center><% hc = sum_of_values_for_all_group('HC','LAT',session[:startdatehc],@session[:enddatehc]) %><%= hc.blank? ? 0 : hc/@session[:datediff] %></td>
+    <td width="15%" height="19" align=center><% hc = sum_of_values_for_all_group('HC','MRL',session[:startdatehc],@session[:enddatehc]) %><%= hc.blank? ? 0 : hc/@session[:datediff] %></td>
+  </tr>
+  <tr>
+    <td width="34%" height="19"><font size="2">HC% FOR ALL GROUP</font></td>
+    <td width="15%" height="19" align=center>
+      <% @c1= Counterdata.find_by_sql("select sum(HC) as 'totalHC' from counterdatas where ClusterName='HRK'  and Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}'")%>
+      <% @c1[0].totalHC %>
+      <% @c= Counterdata.find_by_sql("select sum(HC) as 'totalHC' from counterdatas where  Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}'")%>
+      <% @c[0].totalHC %>
+      <% @ctotal= @c1[0].totalHC.to_f*100/@c[0].totalHC.to_f %>
+      <% if @ctotal.to_i!=0 %>
+        <%= (@ctotal).round %>%
+      <% else %>
+        <%= 0%>
+      <% end %>
+    </td>
+    <td width="15%" height="19" align=center>
+      <% @c1= Counterdata.find_by_sql("select sum(HC) as 'totalHC' from counterdatas where ClusterName='LAT'  and Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}'")%>
+      <% @c1[0].totalHC %>
+      <% @c= Counterdata.find_by_sql("select sum(HC) as 'totalHC' from counterdatas where  Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}'")%>
+      <% @c[0].totalHC %>
+      <% @ctotal= @c1[0].totalHC.to_f*100/@c[0].totalHC.to_f %>
+      <% if @ctotal.to_i!=0 %>
+        <%= (@ctotal).round %>%
+      <% else %>
+        <%= 0%>
+      <% end %>
+      &nbsp;</td>
+    <td width="15%" height="19" align=center>
+      <% @c1= Counterdata.find_by_sql("select sum(HC) as 'totalHC' from counterdatas where ClusterName='MRL'  and Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}'")%>
+      <% @c1[0].totalHC %>
+      <% @c= Counterdata.find_by_sql("select sum(HC) as 'totalHC' from counterdatas where  Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}'")%>
+      <% @c[0].totalHC %>
+      <% @ctotal= @c1[0].totalHC.to_f*100/@c[0].totalHC.to_f %>
+      <% if @ctotal.to_i!=0 %>
+        <%= (@ctotal).round %>%
+      <% else %>
+        <%= 0%>
+      <% end %>
+      &nbsp;</td>
+  </tr>
+  <tr>
+    <td width="34%" height="19"><font size="2">CUSTOM EXP VALUES FOR ALL GROUP</font></td>
+    <td width="15%" height="19" align=center><% exp = custom_exp_value('HRK') %><%= exp.blank? ? 'NA' : exp %></td>
+    <td width="15%" height="19" align=center><% exp = custom_exp_value('LAT') %><%= exp.blank? ? 'NA' : exp %></td>
+    <td width="15%" height="19" align=center><% exp = custom_exp_value('MRL') %><%= exp.blank? ? 'NA' : exp %></td>
+  </tr>
+
+  <tr>
+    <td width="34%" height="19"><font size="2">EXP VALUES FOR ALL GROUP</font></td>
+    <td width="15%" height="19" align=center><% exp = sum_of_values_for_all_group('EXP','HRK',session[:startdatehc],@session[:enddatehc]) %><%= exp.blank? ? 0 : exp %></td>
+    <td width="15%" height="19" align=center><% exp = sum_of_values_for_all_group('EXP','LAT',session[:startdatehc],@session[:enddatehc]) %><%= exp.blank? ? 0 : exp %></td>
+    <td width="15%" height="19" align=center><% exp = sum_of_values_for_all_group('EXP','MRL',session[:startdatehc],@session[:enddatehc]) %><%= exp.blank? ? 0 : exp %></td>
+  </tr>
+
+  <tr>
+    <td width="34%" height="19"><font size="2">EXP% FOR ALL GROUP</font></td>
+    <td width="15%" height="19" align=center>
+      <% @c1= Counterdata.find_by_sql("select sum(Exp) as 'totalExp' from counterdatas where ClusterName='HRK'  and Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}'")%>
+      <% @c1[0].totalExp %>
+      <% @c= Counterdata.find_by_sql("select sum(Exp) as 'totalExp' from counterdatas where  Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}'")%>
+      <% @c[0].totalExp %>
+      <% @ctotal= @c1[0].totalExp.to_f*100/@c[0].totalExp.to_f %>
+      <% if @ctotal.to_i!=0 %>
+        <%= (@ctotal).round %>%
+      <% else %>
+        <%= 0%>
+      <% end %>
+    </td>
+    <td width="15%" height="19" align=center>
+      <% @c1= Counterdata.find_by_sql("select sum(Exp) as 'totalExp' from counterdatas where ClusterName='LAT'  and Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}'")%>
+      <% @c1[0].totalExp %>
+      <% @c= Counterdata.find_by_sql("select sum(Exp) as 'totalExp' from counterdatas where  Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}'")%>
+      <% @c[0].totalExp %>
+      <% @ctotal= @c1[0].totalExp.to_f*100/@c[0].totalExp.to_f %>
+      <% if @ctotal.to_i!=0 %>
+        <%= (@ctotal).round %>%
+      <% else %>
+        <%= 0%>
+      <% end %>
+      &nbsp;</td>
+    <td width="15%" height="19" align=center>
+      <% @c1= Counterdata.find_by_sql("select sum(Exp) as 'totalExp' from counterdatas where ClusterName='MRL'  and Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}'")%>
+      <% @c1[0].totalExp %>
+      <% @c= Counterdata.find_by_sql("select sum(Exp) as 'totalExp' from counterdatas where  Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}'")%>
+      <% @c[0].totalExp %>
+      <% @ctotal= @c1[0].totalExp.to_f*100/@c[0].totalExp.to_f %>
+      <% if @ctotal.to_i!=0 %>
+        <%= (@ctotal).round %>%
+      <% else %>
+        <%= 0%>
+      <% end %>
+      &nbsp;</td>
+    <!--<td width="21%" height="19">
+</td>--></tr>
+  <tr>
+    <td width="34%" height="19"><font size="2">TOTAL CR FOR THE MONTH</font></td>
+    <td width="15%" height="19" align=center>
+      <% @c=Counterdata.find_by_sql("select sum(Credit)as credit
+  from counterdatas
+  where ClusterName='HRK' and date='#{@session[:enddatehc]}' " )%>
+      <% @c[0].credit %>
+
+      <% @dateadj = Counterdata.find_by_sql("select DATE_SUB('#{@session[:startdatehc]}' , INTERVAL 1 DAY) as dateadj ")%>
+
+      <% @lastmonthlastdate=@dateadj[0].dateadj%>
+
+      <% @c1=Counterdata.find_by_sql("select sum(Credit)as credit
+  from counterdatas
+  where ClusterName='HRK' and date='#{@lastmonthlastdate}'")%>
+
+      <%= @totcr4month = (@c[0].credit).to_i - (@c1[0].credit).to_i %>
+
+
+    </td>
+
+    <td width="15%" height="19" align=center>
+      <% @c=Counterdata.find_by_sql("select sum(Credit)as credit
+  from counterdatas
+  where ClusterName='LAT' and date='#{@session[:enddatehc]}' " )%>
+
+
+      <% @c1=Counterdata.find_by_sql("select sum(Credit)as credit
+  from counterdatas
+  where ClusterName='LAT' and date='#{@lastmonthlastdate}'")%>
+
+      <%= @totcr4month = (@c[0].credit).to_i - (@c1[0].credit).to_i %>
+
+      &nbsp;</td>
+    <td width="15%" height="19" align=center>
+
+      <% @c=Counterdata.find_by_sql("select sum(Credit)as credit
+  from counterdatas
+  where ClusterName='MRL' and date='#{@session[:enddatehc]}' " )%>
+
+
+      <% @c1=Counterdata.find_by_sql("select sum(Credit)as credit
+  from counterdatas
+  where ClusterName='MRL' and date='#{@lastmonthlastdate}'")%>
+
+      <%= @totcr4month = (@c[0].credit).to_i - (@c1[0].credit).to_i %>
+      &nbsp;</td>
+    <!--<td width="21%" height="19">
+</td>--></tr>
+  <tr>
+    <td width="34%" height="19"><font size="2">OUTSTANNIG FOR SHOP</font></td>
+    <td width="15%" height="19" align=center>
+      <% os = sum_of_os_for_cluster('HRK',session[:enddatehc]) %><%= os.blank? ? 'NA' : os %>
+    </td>
+    <td width="15%" height="19" align=center>
+      <% os = sum_of_os_for_cluster('LAT',session[:enddatehc]) %><%= os.blank? ? 'NA' : os %>
+      &nbsp;</td>
+    <td width="15%" height="19" align=center>
+      <% os = sum_of_os_for_cluster('MRL',session[:enddatehc]) %><%= os.blank? ? 'NA' : os %>
+      &nbsp;</td>
+    <!--<td width="21%" height="19" align=center>
+</td>-->
+  </tr>
+  <tr>
+    <td width="34%" height="19"><font size="2">TOTAL SHOPES</font></td>
+    <td width="15%" height="19" align=center>
+
+      <%= Counterdata.count(:all,:select => 'distinct shopname',
+        :conditions => "ClusterName = 'HRK' and Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}' ")%>
+
+    </td>
+    <td width="15%" height="19" align=center>
+
+      <%= Counterdata.count(:all,:select => 'distinct shopname',
+        :conditions => "ClusterName = 'LAT' and Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}' ")%>
+      &nbsp;</td>
+    <td width="15%" height="19" align=center>
+
+      <%= Counterdata.count(:all,:select => 'distinct shopname',
+        :conditions => "ClusterName = 'MRL' and Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}' ")%>
+      &nbsp;</td>
+    <!--<td width="21%" height="19">
+</td>--> </tr>
+
+  <tr>
+    <td width="34%" height="19"><font size="2">TOTAL MACHINES</font></td>
+
+    <td width="15%" height="19" align=center><%= Machine.count(:machineno,:conditions => "clustername = 'HRK'")%>
+    </td>
+    <td width="15%" height="19" align=center>
+      <%=  Machine.count(:machineno,:conditions => "clustername = 'LAT'")%></td>
+    <td width="15%" height="19" align=center>
+      <%=  Machine.count(:machineno,:conditions => "clustername = 'MRL'")%></td>
+    <!--<td width="21%" height="19">
+</td>--></tr>
+</table>

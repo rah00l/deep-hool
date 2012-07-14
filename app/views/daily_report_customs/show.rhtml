@@ -1,0 +1,8 @@
+<% for column in DailyReportCustom.content_columns %>
+<p>
+  <b><%= column.human_name %>:</b> <%=h @daily_report_custom.send(column.name) %>
+</p>
+<% end %>
+
+<%= link_to 'Edit', :action => 'edit', :id => @daily_report_custom %> |
+<%= link_to 'Back', :action => 'list' %>

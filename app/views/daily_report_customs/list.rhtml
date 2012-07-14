@@ -1,0 +1,28 @@
+<h2>Entered Report HC/EXP Custom Values</h2>
+
+<table>
+  <tr>
+    <th><%= "Cluster Name" %></th>
+    <th><%= "HC" %></th>
+    <th><%= "Expence" %></th>
+    <th><%= "Action" %></th>
+  </tr>
+  
+<% for daily_report_custom in @daily_report_customs %>
+  <tr>
+  <% for column in DailyReportCustom.content_columns %>
+    <td><%=h daily_report_custom.send(column.name) %></td>
+  <% end %>
+    <td><%= link_to 'Show', :action => 'show', :id => daily_report_custom %></td>
+    <td><%= link_to 'Edit', :action => 'edit', :id => daily_report_custom %></td>
+    <td><%= link_to 'Destroy', { :action => 'destroy', :id => daily_report_custom }, :confirm => 'Are you sure?', :method => :post %></td>
+  </tr>
+<% end %>
+</table>
+
+<%= link_to 'Previous page', { :page => @daily_report_custom_pages.current.previous } if @daily_report_custom_pages.current.previous %>
+<%= link_to 'Next page', { :page => @daily_report_custom_pages.current.next } if @daily_report_custom_pages.current.next %> 
+
+<br />
+
+<%= link_to 'New daily_report_custom', :action => 'new' %>

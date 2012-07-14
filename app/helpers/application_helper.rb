@@ -19,7 +19,7 @@ module ApplicationHelper
     if first_value.to_i < second_value.to_i
       return ("<span style='color:#f00;font-weight:bold;'>"+ pre.to_s + result.to_s + post.to_s + "</span>")
     else
-      return ("<span style='color:blue;font-weight:bold;'>" + pre.to_s +  result.to_s + post.to_s  + "</span>")
+      return ("<span style='color:blue;font-weight:bold;'>" + ''.to_s +  result.to_s + post.to_s  + "</span>")
     end
   end
 
@@ -42,8 +42,20 @@ module ApplicationHelper
     number < 0 ?  ("<span style='color:#f00;font-weight:bold;'>"+ (number).to_s + "</span>") : ("<span style='color:blue;font-weight:bold;'>" + (number).to_s  + "</span>")
   end
 
-  def sum_of_values_for_all_group(money_type,shopname,date1,date2)
-    Counterdata.sum("#{money_type}",:conditions => ["ClusterName=? and Date>=? and Date<=? ",shopname,date1,date2])
+  def sum_of_values_for_all_group(money_type,cluster_name,date1,date2)
+    Counterdata.sum("#{money_type}",:conditions => ["ClusterName=? and Date>=? and Date<=? ",cluster_name,date1,date2])
+  end
+
+  def sum_of_os_for_cluster(cluster_name,date)
+    Countercollection.sum(:os,:conditions => ["ClusterName=? and Date=? ",cluster_name,date])
+  end
+
+  def custom_hc_value(cluster_name)
+    DailyReportCustom.find_by_cluster_name(cluster_name).hc.to_i if DailyReportCustom.find_by_cluster_name(cluster_name)
+  end
+
+  def custom_exp_value(cluster_name)
+    DailyReportCustom.find_by_cluster_name(cluster_name).exp.to_i if DailyReportCustom.find_by_cluster_name(cluster_name)
   end
 
   def tot_percentage_color(number)

@@ -1,0 +1,9 @@
+<h1>Editing daily_report_custom</h1>
+
+<% form_tag :action => 'update', :id => @daily_report_custom do %>
+  <%= render :partial => 'form' %>
+  <%= submit_tag 'Edit' %>
+<% end %>
+
+<%= link_to 'Show', :action => 'show', :id => @daily_report_custom %> |
+<%= link_to 'Back', :action => 'list' %>

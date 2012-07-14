@@ -1,0 +1,184 @@
+      <% @totalREFUND1=0%>
+      <% @totalBONUS1=0%>
+      <% @totalADMIN1=0%>
+      <% @totalCZ1=0%>
+      <% @totalXYZ1=0%>
+      <% @totalMF1=0%>
+      <% @totalMT1=0%>
+      <% @totalPF1=0%>
+      <% @totalCE1=0%>
+      <% @totalROK1=0%>
+      <% @countvalue=0 %>
+      <% @lossval=0%>
+
+      <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="949" id="AutoNumber3" height="33">
+        <tr>
+          <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">HCAVG</td>
+          <% tar = Target.find_by_Shop_Name("#{@session[:shoparray1][i].to_s}")  %>
+          <td width="90" height="19"  ALIGN="CENTER"><B>
+                <% hc_avg = Counterdata.average(:HC,
+                  :conditions=>["clustername=? and shopname=? and date>=? and date<=?",
+                    @session[:rrclustername],@session[:shoparray1][i].to_s,@session[:startdatehc],@session[:enddatehc]]).round %>
+                <%= tar.blank? ? hc_avg : percent_font_color('',hc_avg,tar.Target_value,hc_avg,'')  %>
+              </B>
+            </td>
+
+          <% data = Counterdata.find(:first,
+            :conditions=>["ClusterName='#{@session[:rrclustername]}'
+      and Date='#{@session[:enddatehc]}'
+      and ShopName='#{@session[:shoparray1][i].to_s}'"])%>
+
+          <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">HC</td>
+          <td width="90" height="19" ALIGN="CENTER" ><B><%= data.HC unless data.blank? %></B></td>
+
+            <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">TARGET </td>
+            <% unless tar.blank?  %>
+              <td width="60" height="19" ALIGN="CENTER"><B><%= tar.Target_value %></B></td>
+              <%prev_month_avg_hc = previous_month_avg_hc(@session[:rrclustername],@session[:shoparray1][i].to_s,@session[:enddatehc])%>
+              <td width="50" height="19" ALIGN="CENTER"><B><%= target_percentage(prev_month_avg_hc,tar.Target_value) %></B></td>
+            <%else%>
+              <td width="60" height="19" ALIGN="CENTER"><span>0</span><span>0</span></td>
+            <%end%>
+
+          <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">EXPAVG</td>
+          <td width="90" height="19" ALIGN="CENTER" ><B><%= Counterdata.average(:Exp,
+                :conditions => ["ClusterName='#{@session[:rrclustername]}'
+      and ShopName='#{@session[:shoparray1][i].to_s}'
+      and Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}'"]).to_i%>
+
+            </B></td>
+
+          <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">EXP</td>
+          <td width="90" height="19" ALIGN="CENTER" ><B><%= data.Exp unless data.blank?%>
+
+              <td bgcolor="#FFA500" width="90" height="19" ALIGN="CENTER">CASH</td>
+              <td width="90" height="19" ALIGN="CENTER" ><B><%= data.Cash unless data.blank?%> </B></td>
+
+        </tr></table>
+
+      <br></br>
+
+      <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="949" id="AutoNumber3" height="33">
+        <tr>
+          <td bgcolor="#FFA500" width="50" height="19" ALIGN="CENTER">OS</td>
+
+          <% os = Counterdata.find(:first,
+            :conditions => ["ClusterName='#{@session[:rrclustername]}'
+      and Date='#{@session[:enddatehc]}' and
+      ShopName='#{@session[:shoparray1][i].to_s}'"])%>
+          <td width="50" height="19" ALIGN="CENTER" ><B><%= os.Outstanding unless os.blank?%></B>
+          </td>
+          <td bgcolor="#FFA500" width="60" height="19" ALIGN="CENTER">BAL-OS</td>
+            <% bal_os = Countercollection.find_by_Date_and_ClusterName_and_ShopName(session[:dailyvalue],@session[:rrclustername],@session[:shoparray1][i].to_s)  %>
+            <td width="50" height="19" ALIGN="CENTER" ><font color="red"><B><%= bal_os.blank? ? 0  : bal_os.os  %></B></font></td>
+
+          <td bgcolor="#FFA500" width="50" height="19" ALIGN="CENTER">Y'CR</td>
+          <td width="50" height="19" ALIGN="CENTER" ><B>
+
+              <% @c1= Counterdata.find(:first,
+                :conditions=>["ClusterName='#{@session[:rrclustername]}'
+      and Date='#{@session[:enddatehc]-1}' and
+      ShopName='#{@session[:shoparray1][i].to_s}'"])%></B>
+            <% if(@c1!=nil)%>
+              <% ycredit=@c1.Credit%>
+            <%else%>
+              <% ycredit=0%>
+            <%end%>
+            <B><%= ycredit%></B>
+          </td>
+
+          <td bgcolor="#FFA500" width="50" height="19" ALIGN="CENTER">T'CR</td>
+          <td width="60" height="19" ALIGN="CENTER" ><B>
+              <%= data.Credit unless data.blank? %></B></td>
+
+          <td bgcolor="#FFA500" width="50" height="19" ALIGN="CENTER">DIFF CR</td>
+          <td width="60" height="19" ALIGN="CENTER" >
+            <B><%= data.Credit.to_i-ycredit.to_i%></B>
+          </td>
+          <td bgcolor="#FFA500" width="50" height="19" ALIGN="CENTER">M/S </td>
+
+          <% @r=Machinedata.find_by_sql("select DISTINCT TRANS_DATE from machinedatas where CLUSTER_NAME='#{@session[:clustarray]}'
+    and TRANS_DATE>='#{session[:startdatehc]}'
+    and TRANS_DATE<='#{session[:enddatehc]}' and SHOP_NAME= '#{@session[:shoparray1][i].to_s}' order by TRANS_DATE") %>
+
+          <% @r.each do |r|%>
+            <% @sum=Machinedata.find_by_sql("select MTRSHORT,SHORTREASON from machinedatas where CLUSTER_NAME='#{@session[:clustarray]}'
+      and TRANS_DATE='#{r.TRANS_DATE}' and SHOP_NAME='#{@session[:shoparray1][i].to_s}'" ) %>
+
+            <% @totalREFUND=0%>
+            <% @totalBONUS=0%>
+            <% @totalADMIN=0%>
+            <% @totalCZ=0%>
+            <% @totalXYZ=0%>
+            <% @totalMF=0%>
+            <% @totalMT=0%>
+            <% @totalPF=0%>
+            <% @totalCE=0%>
+            <% @totalROK=0%>
+
+            <% @sum.each do |s| %>
+
+              <% if(s.SHORTREASON=="REFUND") %>
+                <% @totalREFUND=@totalREFUND.to_i+s.MTRSHORT.to_i%>
+                <% @totalREFUND1=@totalREFUND1.to_i+s.MTRSHORT.to_i%>
+              <% end %>
+
+              <% if(s.SHORTREASON=="BONUS") %>
+                <% @totalBONUS=@totalBONUS.to_i+s.MTRSHORT.to_i%>
+                <% @totalBONUS1=@totalBONUS1.to_i+s.MTRSHORT.to_i%>
+              <% end %>
+
+              <% if(s.SHORTREASON=="ADMIN") %>
+                <% @totalADMIN=@totalADMIN.to_i+s.MTRSHORT.to_i%>
+                <% @totalADMIN1=@totalADMIN1.to_i+s.MTRSHORT.to_i%>
+              <% end %>
+
+              <% if(s.SHORTREASON=="CZ") %>
+                <% @totalCZ=@totalCZ.to_i+s.MTRSHORT.to_i%>
+                <% @totalCZ1=@totalCZ1.to_i+s.MTRSHORT.to_i%>
+              <% end %>
+
+              <% if(s.SHORTREASON=="XYZ") %>
+                <% @totalXYZ=@totalXYZ.to_i+s.MTRSHORT.to_i%>
+                <% @totalXYZ1=@totalXYZ1.to_i+s.MTRSHORT.to_i%>
+              <% end %>
+
+              <% if(s.SHORTREASON=="MF") %>
+                <% @totalMF=@totalMF.to_i+s.MTRSHORT.to_i%>
+                <% @totalMF1=@totalMF1.to_i+s.MTRSHORT.to_i%>
+              <% end %>
+
+              <% if(s.SHORTREASON=="MT") %>
+                <% @totalMT=@totalMT.to_i+s.MTRSHORT.to_i%>
+                <% @totalMT1=@totalMT1.to_i+s.MTRSHORT.to_i%>
+              <% end %>
+
+              <% if(s.SHORTREASON=="PF") %>
+                <% @totalPF=@totalPF.to_i+s.MTRSHORT.to_i%>
+                <% @totalPF1=@totalPF1.to_i+s.MTRSHORT.to_i%>
+              <% end %>
+
+              <% if(s.SHORTREASON=="CE") %>
+                <% @totalCE=@totalCE.to_i+s.MTRSHORT.to_i%>
+                <% @totalCE1=@totalCE1.to_i+s.MTRSHORT.to_i%>
+              <% end %>
+
+              <% if(s.SHORTREASON=="ROK") %>
+                <% @totalROK=@totalROK.to_i+s.MTRSHORT.to_i%>
+                <% @totalROK1=@totalROK1.to_i+s.MTRSHORT.to_i%>
+              <% end %>
+
+            <%end%>
+
+            <% @bonustotal=@totalBONUS+@totalXYZ+@totalCE %>
+            <% @totalREFUND+@totalADMIN %>
+            <% @MFtotal=@totalMF+@totalMT+@totalPF+@totalCZ+@totalROK %>
+            <% @totalREFUND+@totalADMIN+@totalCZ+@totalBONUS+@totalXYZ+@totalMF+@totalMT+@totalPF+@totalCE+@totalROK %>
+
+          <%end%>
+          <td width="60" height="19" ALIGN="CENTER"><B><%=(@totalBONUS1.to_i+@totalCE1.to_i+@totalXYZ1.to_i)%></b></td>
+          <td width="60" height="19" ALIGN="CENTER"> <b><%= @totalREFUND1.to_i+@totalADMIN1.to_i %></b></td>
+          <td width="60" height="19" ALIGN="CENTER"><b><%= @totalMF1.to_i+@totalMT1.to_i+@totalPF1.to_i+@totalCZ1.to_i+@totalROK1.to_i %></b></td>
+
+        </tr>
+      </table>
