@@ -37,7 +37,7 @@
   <td width="34%" height="19">&nbsp;</td>
   <td width="15%" height="19" align=center>HRK</td><td width="15%" height="19" align=center>LAT</td><td width="15%" height="19" align=center>MRL</td>
   <tr>
-    <td width="34%" height="19"><font size="2">CUSTOM HC VALUES FOR ALL GROUP</font></td>
+    <td width="34%" height="19"><font size="2">SIX MONTH PER DAY'S HC VALUES</font></td>
     <td width="15%" height="19" align=center><% hc = custom_hc_value('HRK') %><%= hc.blank? ? 'NA' : hc %></td>
     <td width="15%" height="19" align=center><% hc = custom_hc_value('LAT') %><%= hc.blank? ? 'NA' : hc %></td>
     <td width="15%" height="19" align=center><% hc = custom_hc_value('MRL') %><%= hc.blank? ? 'NA' : hc %></td>
@@ -88,7 +88,7 @@
       &nbsp;</td>
   </tr>
   <tr>
-    <td width="34%" height="19"><font size="2">CUSTOM EXP VALUES FOR ALL GROUP</font></td>
+    <td width="34%" height="19"><font size="2">SIX MONTH PER DAY'S EXP VALUES FOR ALL GROUP</font></td>
     <td width="15%" height="19" align=center><% exp = custom_exp_value('HRK') %><%= exp.blank? ? 'NA' : exp %></td>
     <td width="15%" height="19" align=center><% exp = custom_exp_value('LAT') %><%= exp.blank? ? 'NA' : exp %></td>
     <td width="15%" height="19" align=center><% exp = custom_exp_value('MRL') %><%= exp.blank? ? 'NA' : exp %></td>
@@ -148,44 +148,30 @@
   from counterdatas
   where ClusterName='HRK' and date='#{@session[:enddatehc]}' " )%>
       <% @c[0].credit %>
-
       <% @dateadj = Counterdata.find_by_sql("select DATE_SUB('#{@session[:startdatehc]}' , INTERVAL 1 DAY) as dateadj ")%>
-
       <% @lastmonthlastdate=@dateadj[0].dateadj%>
-
       <% @c1=Counterdata.find_by_sql("select sum(Credit)as credit
   from counterdatas
   where ClusterName='HRK' and date='#{@lastmonthlastdate}'")%>
-
       <%= @totcr4month = (@c[0].credit).to_i - (@c1[0].credit).to_i %>
-
-
     </td>
 
     <td width="15%" height="19" align=center>
       <% @c=Counterdata.find_by_sql("select sum(Credit)as credit
   from counterdatas
   where ClusterName='LAT' and date='#{@session[:enddatehc]}' " )%>
-
-
       <% @c1=Counterdata.find_by_sql("select sum(Credit)as credit
   from counterdatas
   where ClusterName='LAT' and date='#{@lastmonthlastdate}'")%>
-
       <%= @totcr4month = (@c[0].credit).to_i - (@c1[0].credit).to_i %>
-
       &nbsp;</td>
     <td width="15%" height="19" align=center>
-
       <% @c=Counterdata.find_by_sql("select sum(Credit)as credit
   from counterdatas
   where ClusterName='MRL' and date='#{@session[:enddatehc]}' " )%>
-
-
       <% @c1=Counterdata.find_by_sql("select sum(Credit)as credit
   from counterdatas
   where ClusterName='MRL' and date='#{@lastmonthlastdate}'")%>
-
       <%= @totcr4month = (@c[0].credit).to_i - (@c1[0].credit).to_i %>
       &nbsp;</td>
     <!--<td width="21%" height="19">

@@ -43,7 +43,7 @@ module ApplicationHelper
   end
 
   def sum_of_values_for_all_group(money_type,cluster_name,date1,date2)
-    Counterdata.sum("#{money_type}",:conditions => ["ClusterName=? and Date>=? and Date<=? ",cluster_name,date1,date2])
+    Counterdata.sum("#{money_type}",:conditions => ["ClusterName=? and Date>=? and Date<=? ",cluster_name,date1,date2]).to_i
   end
 
   def sum_of_os_for_cluster(cluster_name,date)

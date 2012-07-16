@@ -1,0 +1,13 @@
+<table align=center>
+  <tr><td ><font size=5>TODAY'S TOTAL % FOR <%= shopcount%> SHOPES :</td><td><font size=5>
+        <%if @TOTALSHOPPER.to_i <=59%>
+          <font color= red><%=@TOTALSHOPPER %><%= "%" %></font></td>
+    <%elsif @TOTALSHOPPER.to_i >59 and @TOTALSHOPPER.to_i <=69%>
+    <font color= blue><%= @TOTALSHOPPER %><%= "%" %></font></td>
+<%elsif @TOTALSHOPPER.to_i >69 and @TOTALSHOPPER.to_i <=80%>
+  <font color= green><%= @TOTALSHOPPER %><%= "%" %></font></td>
+<%elsif @TOTALSHOPPER.to_i >=81 %>
+  <font color= red><%=@TOTALSHOPPER %><%= "%" %></font></td>
+<%end%>
+</tr>
+</table>
