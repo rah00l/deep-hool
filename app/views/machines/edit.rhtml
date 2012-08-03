@@ -6,10 +6,10 @@
 <script>
 window.onload=function()
 {
-var mcname=document.getElementById('machine_MachineName');
+var mcname=document.getElementById('machine_machine_type_id');
 mcname.focus();
 var save=document.getElementById('save');
-save.disabled=true;
+//save.disabled=true;
 
 }
 
@@ -17,7 +17,8 @@ save.disabled=true;
 //DISPLAY SAVE BUTTON ON FILLING ALL VALUES
 function showsave()
 {
-	var cmbobj=document.getElementById("machine_MachineType");
+  alert("Hello");
+	var cmbobj=document.getElementById("machine_machine_type_id");
 	if(event.keyCode==13)
 	{
 	 	var btsave1 = document.getElementById("save");
@@ -183,7 +184,7 @@ function showsave()
 			
 			<% @z=Machine.find(params[:id])%>
 			<% @type=@z.MachineType %>
-		<select id="machine_MachineType" name="machine[MachineType]" onkeydown="showsave();" onblur="showsave();" >
+		<select id="machine_MachineType" name="machine[MachineType]" onkeydown="if(event.keyCode==13)  this.form.machine_machine_type_id.focus();" >
 		<% if(@type=="Single") %>
 		<option value="Single">Single</option>
 		<option value="DD">DD</option>
@@ -203,6 +204,10 @@ function showsave()
 </select> </font>
 
 			</td>
+                  <td><%= "Select New Machine TYpe" %><br/>
+                    <%= select :machine,:machine_type_id, get_machine_types, :prompt => "Select a Machine Type",:onblur => " showsave();" ,:onkeydown =>"alert('Pal PAL'); showsave();"%>
+
+                  </td>
 		</tr>
  				</table>
  				<br>

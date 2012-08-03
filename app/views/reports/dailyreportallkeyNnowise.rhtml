@@ -60,43 +60,7 @@
       <% @TotalMCSHORT=0%>
       <% @TotalCOLL=0 %>
 
-      <% @c= Machinedata.find_by_sql("select MTRSHORT,TSRIN,TSROUT,TMTRIN,TMTROUT,SRCOLL,MTRCOLL,CALCULATEBY,SCREEN_RATE_IN,SCREEN_RATE_OUT,MTR_RATE_IN,MTE_RATE_OUT,MULTIPLY_BY
-    from machinedatas
-    where CLUSTER_NAME='#{@session[:rrclustername]}' and
-
-    SHOP_NAME ='#{@session[:shoparray1][i].to_s}' and
-    TRANS_DATE>='#{@session[:startdatehc]}' and TRANS_DATE<='#{@session[:enddatehc]}'
-    order by digitno,charno") %>
-
-      <% @in1=0 %>
-      <% @out1=0 %>
-      <% @mpos1=0%>
-      <% @mneg1=0%>
-      <%for c in @c %>
-        <% if(c.CALCULATEBY=='S')%>
-          <% @in1=@in1.to_i+((c.TSRIN.to_i*c.SCREEN_RATE_IN.to_i*c.MULTIPLY_BY)/10).round%>
-          <% @out1=@out1.to_i+((c.TSROUT.to_i*c.SCREEN_RATE_OUT.to_i*c.MULTIPLY_BY)/10).round%>
-        <% else%>
-          <% @in1=@in1.to_i+((c.TMTRIN.to_i*c.MTR_RATE_IN.to_i*c.MULTIPLY_BY)/10).round%>
-          <% @out1=@out1.to_i+((c.TMTROUT.to_i*c.MTE_RATE_OUT.to_i*c.MULTIPLY_BY)/10).round%>
-        <%end%>
-
-        <%if c.MTRSHORT.to_i<0 %>
-          <% @mneg1=@mneg1.to_i+c.MTRSHORT.to_i%>
-        <% else %>
-          <% @mpos1=@mpos1.to_i+c.MTRSHORT.to_i%>
-        <% end %>
-      <% end %>
-
-      <% if @in1!=0 %>
-        <% @totalper=((@out1.to_i-@mneg1.to_i)*100)/(@in1.to_i-@mpos1.to_i)%>
-      <% else %>
-        <% @totalper=0%>
-      <% end %>
-      <% @totalper.round %>
-      <BR>
-
-      <%@totalamt=@totalper.round%>
+      <% percentage = percentage_calcutation_without_key(@session[:rrclustername],@session[:shoparray1][i].to_s,@session[:startdatehc],@session[:enddatehc])   %>
 
       <table>
         <tr><td colspan=16><font size=4>
@@ -107,10 +71,27 @@
                 <%end%>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span><%= @session[:shoparray1][i].to_s%></span>&nbsp;&nbsp;
-                <%= tot_percentage_color(@totalamt) %></b></td>
+                <%= tot_percentage_color(percentage) %></b></td>
         </tr>
       </table>
       <br></br>
+
+      <table  border="1" width ="95%"  cellpadding="0"  cellspacing="0"  bordercolor="black"   id="AutoNumber1" >
+              <tr bgcolor="#E7CF7C">
+                <th height="20" bgcolor="#E7CF7C" >Machine&nbsp;Type</th>
+                <th height="20" bgcolor="#E7CF7C" >No.of&nbsp;Machines</th>
+                <th height="20" bgcolor="#E7CF7C" >Percentage</th>
+              </tr>
+
+              <% mac_type_name = MachineType.find(:all).each do |mac_typ_name| %>
+                <% percentage_by_type = percentage_calcutation_by_type_without_key(@session[:rrclustername],@session[:shoparray1][i].to_s,@session[:startdatehc],@session[:enddatehc],mac_typ_name)   %>
+                <tr><td align=center width="50"><B><font size="3"><%= mac_typ_name.name %> <font/><B/></td>
+                        <td align=center width="50"><B><font size="3"><%= mac_typ_name.machines.find_all_by_ClusterName_and_ShopName(@session[:rrclustername],@session[:shoparray1][i].to_s).count %> <font/><B/></td>
+                              <td align=center width="150"><B><font size="3"><%= tot_percentage_color(percentage_by_type) %> <font/><B/></td></tr>
+                                  <% end %>
+             </table>
+
+        <br></br>
 
       <table  border="1" width ="95%"  cellpadding="0"  cellspacing="0"  bordercolor="black"   id="AutoNumber1" >
 

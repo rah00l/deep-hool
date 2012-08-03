@@ -1,7 +1,7 @@
 class Machine < ActiveRecord::Base
     #validates_uniqueness_of :MachineName, :on=>:create
     #validates_uniqueness_of :MachineName, :on=>:update
-    
+belongs_to :machine_type
     
    validates_presence_of :MachineNo, :on=>:update
    validates_presence_of :MachineNo, :on=>:create

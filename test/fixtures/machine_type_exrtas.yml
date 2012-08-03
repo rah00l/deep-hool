@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+one:
+  id: 1
+  cluster_name: MyString
+  shop_name: MyString
+  group_id: MyString
+  machine_type_id: 1
+  percent_value: 1
+two:
+  id: 2
+  cluster_name: MyString
+  shop_name: MyString
+  group_id: MyString
+  machine_type_id: 1
+  percent_value: 1
