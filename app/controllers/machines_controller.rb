@@ -2,36 +2,39 @@ class MachinesController < ApplicationController
   layout 'adminlayout'
   before_filter :login_required
   #DISPLAYING LIST BASED ON SELECTED VALUES
+  def edit_multiple
+    @machines = Machine.find(params[:machine_ids])
+  end
+
+  def update_multiple
+    @machines = Machine.find(params[:machine_ids])
+    @machines.each do |machine|
+      machine.update_attributes!(params[:machine])
+    end
+    flash[:confirm] = '<font color=green size=3><b>MACHINE/S UPDATED SUCCESSFULLY.</b></font>'
+    redirect_to :action=>'list'
+  end
+
   def search
     begin
-      p "in search"
       @session['groupcluster']=nil
       @session['groupshop']=nil
       @session['groupkey']=nil
-      p params[:machine][:ClusterName]
-      p params[:machine][:ShopName]
-      p params[:machine][:GroupID]
       if(params[:machine][:ClusterName]=="")
         @session['groupcluster']=@session[:clustername]
       else
         @session['groupcluster']=params[:machine][:ClusterName]
       end
-    
       if(params[:machine][:ShopName]=="")
         @session['groupshop']=@session[:shopname]
       else
         @session['groupshop']=params[:machine][:ShopName]
       end
-    
       if(params[:machine][:GroupID]=="")
         @session['groupkey']=@session[:Groupid]
       else
         @session['groupkey']=params[:machine][:GroupID]
       end
-    
-    
-   
-    
       redirect_to :action=>'list'
     rescue Exception=>ex
     end

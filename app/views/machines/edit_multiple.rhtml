@@ -1,0 +1,18 @@
+<h2><%= "Edit Multiple Machines" %></h2>
+<% form_tag :action => "update_multiple", :html => {:method => :put } do %>
+ <ul>
+   <h3 align="left"><%= "List Of Selected  Machines For Edit" %></h3>
+  <% for machine in @machines  %>
+    <%= hidden_field_tag "machine_ids[]",machine.id   %>
+   <li><%= machine.MachineName %>-<%= machine.MachineNo %></li><br />
+  <% end  %>
+</ul>
+
+<p>
+<h4><%=  "Select Machine Type"%>
+  <%= collection_select :machine , :machine_type_id ,MachineType.find(:all) , :id, :name %></h4>
+</p><br/>
+<p>
+  <%= submit_tag "Update " %>
+</p>
+<% end %>
