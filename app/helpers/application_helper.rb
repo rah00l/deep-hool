@@ -151,7 +151,64 @@ module ApplicationHelper
     return per
   end
 
-  def percentage_calcutation_by_type(cluster_name,shop_name,group_name,start_date,end_date,machine_type)
+  def percentage_calcutation_with_mc_name(cluster_name,shop_name,group_name,mc_name,start_date,end_date,date_diff)
+    machine_datas = Machinedata.find(:all,
+      :conditions=>["CLUSTER_NAME=? and SHOP_NAME =? and GROUP_ID=? and TRANS_DATE>=? and TRANS_DATE<=? and MACHINE_NAME=?",
+        cluster_name,shop_name,group_name,start_date,end_date,mc_name])
+    tsrin,tsrinvalue,tsrout,mtrpos,mtrneg =0,0,0,0,0
+    machine_datas.each do |machine_date|
+      if machine_date.CALCULATEBY!='M'
+        tsrin= tsrin + ((machine_date.TSRIN.to_i*machine_date.MULTIPLY_BY.to_i*machine_date.SCREEN_RATE_IN.to_i)/10).round
+        tsrout=tsrout+ ((machine_date.TSROUT.to_i*machine_date.MULTIPLY_BY.to_i*machine_date.SCREEN_RATE_OUT.to_i)/10).round
+      else
+        tsrin= tsrin+ ((machine_date.TMTRIN.to_i*machine_date.MULTIPLY_BY.to_i*machine_date.SCREEN_RATE_IN.to_i)/10).round
+        tsrout=tsrout+ ((machine_date.TMTROUT.to_i*machine_date.MULTIPLY_BY.to_i*machine_date.SCREEN_RATE_OUT.to_i)/10).round
+      end
+      if machine_date.MTRSHORT.to_i < 0
+        mtrneg=mtrneg+machine_date.MTRSHORT.to_i
+      else
+        mtrpos=mtrpos+machine_date.MTRSHORT.to_i
+      end
+    end
+
+    machinecount = Machinedata.count(:conditions=>["CLUSTER_NAME in (?) and SHOP_NAME=? and GROUP_ID=? and TRANS_DATE=?  and MACHINE_NAME=?",
+        cluster_name,shop_name,group_name,end_date,mc_name])
+
+   avg = machinecount!=0 ? (((((tsrin.to_f+mtrpos.to_f)-(tsrout.to_f-(mtrneg.to_f)))/machinecount)/date_diff.to_i)).round : 0
+
+    per = tsrin.to_i!=0?  (((tsrout.to_f-mtrneg.to_f).to_f*100)/(tsrin.to_f+mtrpos.to_f)).round : 0
+    return per,avg
+  end
+
+  def percentage_calcutation_with_mc_name_without_key(cluster_name,shop_name,mc_name,start_date,end_date,date_diff)
+    machine_datas = Machinedata.find(:all,
+      :conditions=>["CLUSTER_NAME=? and SHOP_NAME =? and TRANS_DATE>=? and TRANS_DATE<=? and MACHINE_NAME=?",cluster_name,shop_name,start_date,end_date,mc_name])
+    tsrin,tsrinvalue,tsrout,mtrpos,mtrneg =0,0,0,0,0
+    machine_datas.each do |machine_date|
+      if machine_date.CALCULATEBY!='M'
+        tsrin= tsrin + ((machine_date.TSRIN.to_i*machine_date.MULTIPLY_BY.to_i*machine_date.SCREEN_RATE_IN.to_i)/10).round
+        tsrout=tsrout+ ((machine_date.TSROUT.to_i*machine_date.MULTIPLY_BY.to_i*machine_date.SCREEN_RATE_OUT.to_i)/10).round
+      else
+        tsrin= tsrin+ ((machine_date.TMTRIN.to_i*machine_date.MULTIPLY_BY.to_i*machine_date.SCREEN_RATE_IN.to_i)/10).round
+        tsrout=tsrout+ ((machine_date.TMTROUT.to_i*machine_date.MULTIPLY_BY.to_i*machine_date.SCREEN_RATE_OUT.to_i)/10).round
+      end
+      if machine_date.MTRSHORT.to_i < 0
+        mtrneg=mtrneg+machine_date.MTRSHORT.to_i
+      else
+        mtrpos=mtrpos+machine_date.MTRSHORT.to_i
+      end
+    end
+
+    machinecount = Machinedata.count(:conditions=>["CLUSTER_NAME in (?) and SHOP_NAME=? and TRANS_DATE=?  and MACHINE_NAME=?",
+        cluster_name,shop_name,end_date,mc_name])
+
+   avg = machinecount!=0 ? (((((tsrin.to_f+mtrpos.to_f)-(tsrout.to_f-(mtrneg.to_f)))/machinecount)/date_diff.to_i)).round : 0
+
+    per = tsrin.to_i!=0?  (((tsrout.to_f-mtrneg.to_f).to_f*100)/(tsrin.to_f+mtrpos.to_f)).round : 0
+    return per,avg
+  end
+
+  def percentage_calcutation_by_type(cluster_name,shop_name,group_name,start_date,end_date,machine_type,date_diff)
     tot_tsrin,tot_tsrout,tot_mtrpos,tot_mtrneg =0,0,0,0,0
     machine_type.machines.find_all_by_ClusterName_and_ShopName_and_GroupID(cluster_name,shop_name,group_name).collect(&:MachineNo).each do |mac_no|
       machine_dates = Machinedata.find(:all,
@@ -177,11 +234,16 @@ module ApplicationHelper
     tot_mtrpos +=mtrpos.to_f
     tot_mtrneg +=mtrneg.to_f
     end
+
+    machinecount = machine_type.machines.find_all_by_ClusterName_and_ShopName_and_GroupID(cluster_name,shop_name,group_name).count
+
+    avg = machinecount!=0 ? (((((tot_tsrin.to_f+tot_mtrpos.to_f)-(tot_tsrout.to_f-(tot_mtrneg.to_f)))/machinecount)/date_diff.to_i)).round : 0
+
     per = tot_tsrin.to_i!=0 ?  (((tot_tsrout.to_f-tot_mtrneg.to_f).to_f*100)/(tot_tsrin.to_f+tot_mtrpos.to_f)).round : 0
-    return per
+    return per,avg
   end
 
-  def percentage_calcutation_by_type_without_key(cluster_name,shop_name,start_date,end_date,machine_type)
+  def percentage_calcutation_by_type_without_key(cluster_name,shop_name,start_date,end_date,machine_type,date_diff)
     tot_tsrin,tot_tsrout,tot_mtrpos,tot_mtrneg =0,0,0,0,0
     machine_type.machines.find_all_by_ClusterName_and_ShopName(cluster_name,shop_name).collect(&:MachineNo).each do |mac_no|
       machine_dates = Machinedata.find(:all,
@@ -207,8 +269,12 @@ module ApplicationHelper
     tot_mtrpos +=mtrpos.to_f
     tot_mtrneg +=mtrneg.to_f
     end
+    machinecount = machine_type.machines.find_all_by_ClusterName_and_ShopName(cluster_name,shop_name).count
+
+    avg = machinecount!=0 ? (((((tot_tsrin.to_f+tot_mtrpos.to_f)-(tot_tsrout.to_f-(tot_mtrneg.to_f)))/machinecount)/date_diff.to_i)).round : 0
+
     per = tot_tsrin.to_i!=0 ?  (((tot_tsrout.to_f-tot_mtrneg.to_f).to_f*100)/(tot_tsrin.to_f+tot_mtrpos.to_f)).round : 0
-    return per
+    return per,avg
   end
 
 end

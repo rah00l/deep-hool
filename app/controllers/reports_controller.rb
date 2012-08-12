@@ -255,16 +255,25 @@ class ReportsController < ApplicationController
       @count=0
       if(@machinesdata1.to_i>0)
         if(params[:key]=="KEYWISE" and params[:machine]=="NAMEWISE")
-          redirect_to :action=>'displaydailyreport'
+          session[:report_name] = "DAILY REPORT(KEY WISE AND NAMEWISE)"
+          session[:order] = 'MACHINE_NAME,digitno,charno'
+          redirect_to :action=>'displaydailykeywise'
         end
         if(params[:key]=="ALLKEYS" and params[:machine]=="NAMEWISE")
-          redirect_to :action => 'displaydailyallkeyNnamewise'
+          session[:report_name] = "DAILY REPORT(All KEYS NAMEWISE)"
+          session[:order] = 'MACHINE_NAME,digitno,charno'
+          redirect_to :action => 'displaydailyallkeys'
         end
         if(params[:key]=="ALLKEYS" and params[:machine]=="NOWISE")
-          redirect_to :action => 'dailyreportallkeyNnowise'
+          session[:order] = 'digitno,charno'
+          session[:report_name] = "DAILY REPORT(All KEYS NOWISE)"
+          redirect_to :action => 'displaydailyallkeys'
         end
         if(params[:key]=="KEYWISE" and params[:machine]=="NOWISE")
-          redirect_to :action => 'dailyreportkeywisennowise'
+          session[:report_name] = "DAILY REPORT(KEY WISE AND NOWISE)"
+          session[:order] = 'digitno,charno'
+#          redirect_to :action => 'displaydailykeywise'
+          redirect_to :action=>  'displaydailykeywise'
         end
       else
         flash[:notice]="NO RECORD FOUND"

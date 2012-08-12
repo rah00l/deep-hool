@@ -1,5 +1,5 @@
 <table  border="1" width ="95%"  cellpadding="0"  cellspacing="0"  bordercolor="black"   id="AutoNumber1" >
-  <% @mnamea=[]%>
+  <% mnamea=[]%>
   <tr bgcolor="#E7CF7C">
     <% Machinedata.find(:all,:select=>'distinct MACHINE_NAME',:conditions=>["CLUSTER_NAME in (?)
     and SHOP_NAME =?
@@ -7,82 +7,32 @@
     and TRANS_DATE>=?
     and TRANS_DATE<=?",
         @session[:clustarray],
-        @shp,
+        @session[:shoparray1][i].to_s,
         key.GroupID,
         @session[:startdatehc],
         session[:dailyvalue]],
       :order=>'MACHINE_NAME').each do |mdata|%>
 
       <%@machinecount=Machinedata.count(:conditions=>["CLUSTER_NAME in (?) and SHOP_NAME=? AND GROUP_ID=? and TRANS_DATE=?  and MACHINE_NAME=?",
-          @session[:clustarray],@shp,key.GroupID,session[:dailyvalue],mdata.MACHINE_NAME])%>
-      <% @mnamea<<mdata.MACHINE_NAME %>
+          @session[:clustarray],@session[:shoparray1][i].to_s,key.GroupID,session[:dailyvalue],mdata.MACHINE_NAME])%>
+      <% mnamea<<mdata.MACHINE_NAME %>
       <th height="20" bgcolor="#E7CF7C" ><%= mdata.MACHINE_NAME%>-<%= @machinecount %></th>
     <% end %>
   </tr>
-
   <tr>
-    <% @counter=0 %>
-    <% @ctval=0  %>
-    <% for @counter in 0..(@mnamea.length-1)%>
-      <% @tsrin=0 %>
-      <% @tsrinvalue=0 %>
-      <% @tsrout=0 %>
-      <% @mtrpos=0 %>
-      <% @mtrneg=0 %>
-  <%# @mnamea[@counter]='ljp' %>
-
-      <%Machinedata.find(:all,
-        :conditions=>["CLUSTER_NAME in (?) and SHOP_NAME=? AND GROUP_ID=? and TRANS_DATE<=? and TRANS_DATE>=? and MACHINE_NAME=?",
-          @session[:clustarray],@shp,key.GroupID,session[:dailyvalue],@session[:startdatehc],@mnamea[@counter]],
-        :order=>'Group_ID').each do |adata|%>
-
-        <% if adata.CALCULATEBY!='M'
-          @tsrin=(@tsrin+adata.TSRIN.to_i*adata.MULTIPLY_BY.to_i*adata.SCREEN_RATE_IN.to_i) %>
-      <%#	@tsrout=@tsrout+adata.TSROUT.to_i %>
-          <% @tsrout=(@tsrout+adata.TSROUT.to_i*adata.MULTIPLY_BY.to_i*adata.SCREEN_RATE_OUT.to_i) %>
-        <% else %>
-          <% @tsrin=@tsrin+adata.TMTRIN.to_i*adata.MULTIPLY_BY.to_i*adata.SCREEN_RATE_IN.to_i %>
-      <%# @tsrout=@tsrout+adata.TMTROUT.to_i %>
-          <% @tsrout=(@tsrout+adata.TMTROUT.to_i*adata.MULTIPLY_BY.to_i*adata.SCREEN_RATE_OUT.to_i) %>
-
-        <% end %>
-        <% if adata.MTRSHORT.to_i < 0 %>
-          <% @mtrneg=@mtrneg+adata.MTRSHORT.to_i %>
-        <% else
-          @mtrpos=@mtrpos+adata.MTRSHORT.to_i
-        end%>
-      <% end %>
-
-      <% @tsrin=@tsrin/10 %>
-      <% @tsrout=@tsrout/10 %>
-
+    <% for counter in 0..(mnamea.length-1)%>
+      <% per,avg = percentage_calcutation_with_mc_name(@session[:clustarray],@session[:shoparray1][i].to_s,key.GroupID,mnamea[counter],@session[:startdatehc],session[:dailyvalue],@session[:datediff].to_i) %>
       <td align=center width="950"><B><font size="3">
-            <% if @tsrin!=0 %>
-              <span><%=  (((@tsrout.to_f-@mtrneg.to_f)*100)/(@tsrin.to_f+@mtrpos.to_f)).round%> <%= "%" %></span>
-              <% else %>
-                <span> - </span>
-              <% end %>
-              <% @mnamea[@counter]%>
-              <%@machinecount=Machinedata.count(:conditions=>["CLUSTER_NAME in (?) and SHOP_NAME=? AND GROUP_ID=? and TRANS_DATE=?  and MACHINE_NAME=?",
-                  @session[:clustarray],@shp,key.GroupID,session[:dailyvalue],@mnamea[@counter]])%>
-
-              <% if @machinecount!=0 %>
-                <% avg = (((((@tsrin.to_f+@mtrpos.to_f)-(@tsrout.to_f-(@mtrneg.to_f)))/@machinecount)/@session[:datediff].to_i)).round %>
-              <%else%>
-                <%avg = 0%>
-              <% end %>
-
-              <% if avg < 0 %>
-                <span><font color=red><%= avg %></font></span>
-              <% elsif avg == 0 %>
-                <span> - </span>
-              <%else%>
-                <span><%= avg %></span>
-              <% end %>
-              </B>
+            <span><%= per %> %</span>
+            <% if avg < 0 %>
+              <span><font color=red><%= avg %></font></span>
+            <% elsif avg == 0 %>
+              <span> - </span>
+            <%else%>
+              <span><%= avg %></span>
+            <% end %>
           </font>
       </td>
-      <% @counter=@counter+1%>
     <% end %>
   </tr>
 </table>
