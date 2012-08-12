@@ -1,0 +1,36 @@
+<table  border="1" width ="95%"  cellpadding="0"  cellspacing="0"  bordercolor="black"   id="AutoNumber1" >
+  <% mnamea=[]%>
+  <tr bgcolor="#E7CF7C">
+    <% Machinedata.find(:all,:select=>'distinct MACHINE_NAME',
+      :conditions=>["CLUSTER_NAME in (?)
+    and SHOP_NAME =?
+    and TRANS_DATE>=?
+    and TRANS_DATE<=?",
+        @session[:clustarray],
+        @session[:shoparray1][i].to_s,
+        @session[:startdatehc],
+        session[:dailyvalue]],
+      :order=>'MACHINE_NAME').each do |mdata|%>
+      <%machinecount=Machinedata.count(:conditions=>["CLUSTER_NAME in (?) and SHOP_NAME=? and TRANS_DATE=?  and MACHINE_NAME=?",
+          @session[:clustarray],@session[:shoparray1][i].to_s,session[:dailyvalue],mdata.MACHINE_NAME])%>
+      <% mnamea<<mdata.MACHINE_NAME %>
+      <th height="20" bgcolor="#E7CF7C" ><%= mdata.MACHINE_NAME%>-<%= machinecount %></th>
+    <% end %>
+  </tr>
+  <tr>
+    <% for counter in 0..(mnamea.length-1)%>
+      <% per,avg = percentage_calcutation_with_mc_name_without_key(@session[:clustarray],@session[:shoparray1][i].to_s,mnamea[counter],@session[:startdatehc],session[:dailyvalue],@session[:datediff].to_i) %>
+      <td align=center width="950"><B><font size="3">
+            <span><%= per %> %</span>
+            <% if avg < 0 %>
+              <span><font color=red><%= avg %></font></span>
+            <% elsif avg == 0 %>
+              <span> - </span>
+            <%else%>
+              <span><%= avg %></span>
+            <% end %>
+          </font>
+      </td>
+    <% end %>
+  </tr>
+</table>
