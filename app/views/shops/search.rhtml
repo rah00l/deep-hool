@@ -17,7 +17,7 @@
       <table height="400" width="78%"  >
         <tr>
           <td height="400" width=100% align="center">
-            <% form_remote_tag :url=> {:action => 'index'},:method => 'get'  do  |f|%>
+            <% form_tag :action => 'index',:method => 'get'  do  |f|%>
               <%#= error_messages_for 'shop' %>
               <font  size= "4">
                 <% if session[:msg] %>
@@ -37,6 +37,7 @@
                             SELECT GROUP NAME</font></b></label>
                     </td>
                     <td width="128" height="16" align=left>
+                      <% @Cluster_Name=Cluster.find(:all,:order => "ClusterName") %>
                       <select id="shop_ClusterName" name="shop[ClusterName]">
                         <option value="">Select a Group</option>
                         <% @Cluster_Name.each do |c| %>
@@ -45,11 +46,11 @@
                       </select>
 
                     </td></tr>
-                  <tr><td valign="middle"><input type="submit" name="commit" value="Search " /></td></tr>
+                  <!--<tr><td valign="middle"><input type="submit" name="commit" value="Search " /></td></tr>-->
                 </table>
-                <%#= submit "SEARCH" %>
+                <%= submit_tag "SEARCH" %>
 
-                <%#= button_to_function 'Cancel' , remote_function(:url=> {:controller=>'shops',:action => "canceladd" }),:id=>'cancel', :style=>"font-family: Zurich BT; font-size: 10pt align=left" %>
+                <%= button_to_function 'Cancel' , remote_function(:url=> {:controller=>'shops',:action => "canceladd" }),:id=>'cancel', :style=>"font-family: Zurich BT; font-size: 10pt align=left" %>
               <% end %>
             </fieldset>
           </td>
