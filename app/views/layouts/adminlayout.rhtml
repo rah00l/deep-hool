@@ -3,8 +3,12 @@
 <html>
   <title>GamingStation</title>
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <%= stylesheet_link_tag "ddlevelsmenu-topbar" %>
     <%= javascript_include_tag "prototype","effects","application","jquery",:defaults %>
+    <%= stylesheet_link_tag 'calendar_date_select/silver.css' %>
+    <%= javascript_include_tag 'calendar_date_select/calendar_date_select.js'%>
+    <%= javascript_include_tag 'calendar_date_select/format_db.js'%>
     <script>
       function SHOWExpense()
       {
@@ -198,7 +202,7 @@
 
                                 <li><a href="#">Edit Data &gt;</a></font>
                                   <ul>
-                                    <li><%= link_to 'Daily Data', :controller => 'machinedata', :action => "dailydata" %></li>
+                                    <li><%= link_to 'Daily Data', :controller => 'machinedata', :action => "showmachinedata" %></li>
                                     <li><%= link_to 'Counter Data', :controller => 'counterdata', :action => "counterdata" %></li>
                                   </ul>
                                 </li>

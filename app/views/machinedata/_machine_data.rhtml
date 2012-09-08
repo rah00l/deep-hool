@@ -1,0 +1,331 @@
+<% form_tag :action=>'updatemachinedata' do %>
+<% @mc=Machinedata.find_first(["CLUSTER_NAME=? and SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and TRANS_DATE=?",@session[:ttclustername],@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttdate]])%>
+        <% if(@mc!=nil) %>
+  <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="96%" height="420">
+    <tr>
+      <td width="100%" height="50" >
+        <table border="1" cellpadding="0" cellspacing="1" style="border-collapse: collapse" bordercolor="#111111" width="553" height="100%">
+          <th width="171" >ShopName</th>
+          <th width="77" >KEY No.</th>
+          <th width="55"  >X</th>
+          <th width="240"  >Name/No</th>
+    </tr>
+    <tr>
+      <td width="171"  >
+        <input type="text" name="SHOPNAME" id="SHOPNAME" size=18 value="<%= @session[:ttshopname]%>" readonly/></td>
+      <td width="77"  >
+        <input type="text" name="KEY" id="KEY" size=7 value="<%= @session[:ttkeyno]%>" readonly/></td>
+      <td width="55"  >
+        
+          <input type="text" name="multiplyby" id="multiplyby" size=5 value="<%= @mc.MULTIPLY_BY.to_i %>" readonly/></td>
+        <td width="240">
+          <input type="text" name="T1" size=9 value="<%= @mc.MACHINE_NAME%>" readonly/>&nbsp;&nbsp<input type="text" name="MACHINENO" id="MACHINENO" size=8 value="<%= @session[:ttmachineno]%>" readonly/></td>
+      
+    </tr>
+  </table>
+  </td>
+  </tr>
+  <tr>
+    <td width="100%" height="1">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="100%" height="200">
+      <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" height="205">
+        <tr>
+          <th width="6%" height="19">Date</th>
+          <th width="15%" height="19">Setting</th>
+          <th width="10%" height="19">Sr.in</th>
+          <th width="8%" height="19">Sr.out</th>
+          <th width="5%" height="19">Sr.%</th>
+          <th width="8%" height="19">Mtr.in</th>
+          <th width="8%" height="19">Mtr.out</th>
+          <th width="8%" height="19">Mtr.%</th>
+          <th width="8%" height="19">Cal By</th>
+          <th width="8%" height="19">Mtr.Diffin</th>
+          <th width="8%" height="19">Mtr.Diffout</th>
+          <th width="8%" height="19">WHY</th>
+        </tr>
+        <tr>
+          <td width="7%" height="23" ></td>
+          <td width="15%" height="23"></td>
+          <td width="10%" height="23">
+            <input type="checkbox" name="check_SRIN" id="check_SRIN"  value="ON" onClick="ChangeSRINState();"/>
+            <input type="text" name="rate[SRIN]" id="rate_SRIN" size=5 value="<%=@mc.SCREEN_RATE_IN.to_i %>" readonly onkeypress="return onlyNumbers();"/>
+          </td>
+          <td width="8%" height="23">
+            <input type="checkbox" name="check_SROUT" id="check_SROUT"  value="ON" onClick="ChangeSROUTState();"/>
+            <input type="text" name="rate[SROUT]" id="rate_SROUT" size=5 value="<%=@mc.SCREEN_RATE_OUT.to_i %>" readonly onkeypress="return onlyNumbers();"/></td>
+          <td width="5%" height="23"></td>
+          <td width="8%" height="23">
+            <input type="checkbox" name="check_MTRIN" id="check_MTRIN"  value="ON" onClick="ChangeMTRINState();"/>
+            <input type="text" name="rate[MRIN]" id="rate_MRIN" size=5 value="<%=@mc.MTR_RATE_IN.to_i %>" readonly onkeypress="return onlyNumbers();"/></td>
+          <td width="8%" height="23">
+            <input type="checkbox" name="check_MTROUT" id="check_MTROUT"  value="ON" onClick="ChangeMTROUTState();"/>
+            <input type="text" name="rate[MROUT]" id="rate_MROUT" size=5 value="<%=@mc.MTE_RATE_OUT.to_i %>" readonly onkeypress="return onlyNumbers();"/></td>
+          <td width="8%" height="23"></td>
+          <td width="8%" height="23"></td>
+          <td width="8%" height="23"></td>
+          <td width="8%" height="23"></td>
+          <td width="8%" height="23"></td>
+        </tr>
+        <%end%>
+        <% daybefore=Date.parse(@session[:ttdate])-2 %>
+        <% yesterday=Date.parse(@session[:ttdate])-1 %>
+        <!--QUERY FOR FETCHING DAYBEFORE YESTERDAY'S DATA -->
+        <% @DATE2=Machinedata.find_first(["Cluster_Name=? and Shop_Name=? and TRANS_Date=? and Machine_No=?",@session[:ttclustername],@session[:ttshopname],daybefore,@session[:ttmachineno]])%>
+        <% if(@DATE2!=nil)%>
+          <tr>
+            <td width="7%" height="22" ><input type="text" name="T1" size=6 value="<%= daybefore %>" readonly /></td>
+            <td width="15%" height="22">
+              <input type="text" name="T1" size=21 value="<%= @DATE2.SETTING %>" readonly/></td>
+            <td width="10%" height="22">
+              <input type="text" name="T1" size=10 value="<%= @DATE2.SRIN.to_i %>" readonly/></td>
+            <td width="8%" height="22">
+              <input type="text" name="T1" size=11 value="<%= @DATE2.SROUT.to_i %>" readonly/></td>
+            <td width="5%" height="22"><input type="text" name="T1" size=5 value="<%= @DATE2.SRPER.to_i %>" readonly/></td>
+            <td width="8%" height="22"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRIN.to_i %>" readonly/></td>
+            <td width="8%" height="22"><input type="text" name="T1" size=5 value="<%= @DATE2.MTROUT.to_i %>" readonly/></td>
+            <td width="8%" height="22"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRPER.to_i %>" readonly/></td>
+            <td width="8%" height="22"><input type="text" name="T1" size=5 value="<%= @DATE2.CALCULATEBY %>" readonly/></td>
+            <td width="8%" height="22"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRDIFFIN.to_i %>" readonly/></td>
+            <td width="8%" height="22"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRDIFFOUT.to_i %>" readonly/></td>
+            <td width="8%" height="22"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRDIFFWHY %>" readonly/></td>
+          </tr>
+          <tr>
+            <td width="7%" height="22" ></td>
+            <td width="15%" height="22"></td>
+            <td width="10%" height="22">
+              <input type="text" name="T1" size=10 value="<%= @DATE2.PSRINVALUE.to_i %>" readonly/></td>
+            <td width="8%" height="22">
+              <input type="text" name="T1" size=11 value="<%= @DATE2.PSROUTVALUE.to_i %>" readonly/></td>
+            <td width="5%" height="22"></td>
+            <td width="8%" height="22"><input type="text" name="T1" size=5 value="<%= @DATE2.PMTRINVALUE.to_i %>" readonly/></td>
+            <td width="8%" height="22"><input type="text" name="T1" size=5 value="<%= @DATE2.PMTROUTVALUE.to_i %>" readonly/></td>
+            <td width="8%" height="22"></td>
+            <td width="8%" height="22"></td>
+            <td width="8%" height="22"></td>
+            <td width="8%" height="22"></td>
+            <td width="8%" height="22"></td>
+          </tr>
+        <% end%>
+        <!--QUERY FOR FETCHING YESTERDAY'S DATA -->
+        <% @DATE2=Machinedata.find_first(["Cluster_Name=? and Shop_Name=? and TRANS_Date=? and Machine_No=?",@session[:ttclustername],@session[:ttshopname],yesterday,@session[:ttmachineno]])%>
+        <% if(@DATE2!=nil)%>
+          <tr>
+            <td width="7%" height="23" ><input type="text" name="yesterday[date]" id="yesterday_date" size=6 value="<%=yesterday %>" readonly />
+            </td>
+            <td width="15%" height="23">
+              <input type="text" name="yesterday[SETTING]" id="yesterday_SETTING" size=21 value="<%= @DATE2.SETTING %>" readonly/></td>
+            <td width="10%" height="23">
+              <input type="text" name="yesterday[srin]" id="yesterday_srin" size=10 value="<%= @DATE2.SRIN.to_i %>" readonly/></td>
+            <td width="8%" height="23">
+              <input type="text" name="yesterday[srout]" id="yesterday_srout" size=11 value="<%= @DATE2.SROUT.to_i %>" readonly/></td>
+            <td width="5%" height="23"><input type="text" name="T1" size=5 value="<%= @DATE2.SRPER.to_i %>" readonly/></td>
+            <td width="8%" height="23"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRIN.to_i %>" readonly/></td>
+            <td width="8%" height="23"><input type="text" name="T1" size=5 value="<%= @DATE2.MTROUT.to_i %>" readonly/></td>
+            <td width="8%" height="23"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRPER.to_i %>" readonly/></td>
+            <td width="8%" height="23"><input type="text" name="T1" size=5 value="<%= @DATE2.CALCULATEBY %>" readonly/></td>
+            <td width="8%" height="23"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRDIFFIN.to_i %>" readonly/></td>
+            <td width="8%" height="23"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRDIFFOUT.to_i %>" readonly/></td>
+            <td width="8%" height="23"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRDIFFWHY %>" readonly/></td>
+          </tr>
+          <tr>
+            <td width="7%" height="22" ></td>
+            <td width="15%" height="22"><input type="hidden" name="yesterday[MTRSHORT]" id="yesterday_MTRSHORT" size=5 value="<%= @DATE2.MTRSHORT %>" readonly/></td>
+            <td width="10%" height="22">
+              <input type="text" name="yesterday[PSRIN]" id="yesterday_PSRIN" size=10 value="<%= @DATE2.PSRINVALUE.to_i %>" onFocus="this.select();" onblur="return CalTSRIN();" onkeypress="return onlyNumbers();" tabindex=0/></td>
+            <td width="8%" height="22">
+              <input type="text" name="yesterday[PSROUT]" id="yesterday_PSROUT" size=11 value="<%= @DATE2.PSROUTVALUE.to_i %>" onFocus="this.select();" onblur="return CalTSROUT();" onkeypress="return onlyNumbers();" /></td>
+            <td width="5%" height="22"></td>
+            <td width="8%" height="22"><input type="text" name="yesterday[PMTRIN]" id="yesterday_PMTRIN" size=5 value="<%= @DATE2.PMTRINVALUE.to_i %>" onFocus="this.select();" onblur="return CalTMTRIN();" onkeypress="return onlyNumbers();" /></td>
+            <td width="8%" height="22"><input type="text" name="yesterday[PMTROUT]" id="yesterday_PMTROUT" size=5 value="<%= @DATE2.PMTROUTVALUE.to_i %>" onFocus="this.select();" onblur="return CalTMTROUT();" onkeypress="return onlyNumbers();"/></td>
+            <td width="8%" height="22"></td>
+            <td width="8%" height="22"></td>
+            <td width="8%" height="22"></td>
+            <td width="8%" height="22"></td>
+            <td width="8%" height="22"></td>
+          </tr>
+        <% end%>
+        <!--QUERY FOR FETCHING YESTERDAY'S DATA -->
+        <% @DATE2=Machinedata.find_first(["Cluster_Name=? and Shop_Name=? and TRANS_Date=? and Machine_No=?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate],@session[:ttmachineno]])%>
+        <% if(@DATE2!=nil)%>
+          <tr>
+            <td width="7%" height="23" ><input type="text" name="today[date]" id="today_date"  size=6 value="<%= @session[:ttdate] %>"  readonly/>
+            </td>
+            <td width="15%" height="23">
+              <input type="text" name="today[SETTING]" size=21 id="today_SETTING" onFocus="this.select();"  value="<%= @DATE2.SETTING %>"/></td>
+            <td width="10%" height="23">
+              <input type="text" name="today[SRIN]" id="today_SRIN" size=10 value="<%= @DATE2.SRIN.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();" onBlur="return Srper(1);"/></td>
+            <td width="8%" height="23">
+              <input type="text" name="today[SROUT]" id="today_SROUT" size=11 value="<%= @DATE2.SROUT.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();" onBlur="return Srper(0);"/></td>
+            <td width="5%" height="23"><input type="text" name="today[SRPER]" id="today_SRPER"  size=5 value="<%= @DATE2.SRPER.to_i %>" readonly/></td>
+            <td width="8%" height="23"><input type="text" name="today[MTRIN]" id="today_MTRIN" size=5 value="<%= @DATE2.MTRIN.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();" onblur="return Mtrper(1);"/></td>
+            <td width="8%" height="23"><input type="text" name="today[MTROUT]" id="today_MTROUT" size=5 value="<%= @DATE2.MTROUT.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();"  onblur="CheckCalBy();"/></td>
+            <td width="8%" height="23"><input type="text" name="today[MTRPER]" id="today_MTRPER"  size=5 value="<%= @DATE2.MTRPER.to_i %>" readonly/></td>
+            <td width="8%" height="23"><input type="text" name="today[CALCULATEBY]" id="today_CALCULATEBY"  size=5 value="<%= @DATE2.CALCULATEBY %>" readonly/></td>
+            <td width="8%" height="23"><input type="text" name="today[MTRDIFFIN]" id="today_MTRDIFFIN"  size=5 value="<%= @DATE2.MTRDIFFIN.to_i %>" readonly/></td>
+            <td width="8%" height="23"><input type="text" name="today[MTRDIFFOUT]" id="today_MTRDIFFOUT" size=5 value="<%= @DATE2.MTRDIFFOUT.to_i %>" readonly/></td>
+            <td width="8%" height="23"><input type="text" name="today[MTRDIFFWHY]" id="today_MTRDIFFWHY" size=5 value="<%= @DATE2.MTRDIFFWHY %>" readonly/></td>
+          </tr>
+          <tr>
+            <td width="7%" height="21" ></td>
+            <td width="15%" height="21"></td>
+            <td width="10%" height="21">
+              <input type="text" name="today[PSRINVALUE]" id="today_PSRINVALUE" size=10 value="<%= @DATE2.PSRINVALUE.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();" onblur="CheckPRSIN();"/></td>
+            <td width="8%" height="21">
+              <input type="text" name="today[PSROUTVALUE]" id="today_PSROUTVALUE" size=11 value="<%= @DATE2.PSROUTVALUE.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();" onblur="CheckPRSOUT();"/></td>
+            <td width="5%" height="21"></td>
+            <td width="8%" height="21"><input type="text" name="today[PMTRINVALUE]" id="today_PMTRINVALUE" size=5 value="<%= @DATE2.PMTRINVALUE.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();" onblur="CheckPMTRIN();" ></td>
+            <td width="8%" height="21"><input type="text" name="today[PMTROUTVALUE]" id="today_PMTROUTVALUE" size=5 value="<%= @DATE2.PMTROUTVALUE.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();" onblur="CheckPMTROUT();"></td>
+            <td width="8%" height="21"></td>
+            <td width="8%" height="21"></td>
+            <td width="8%" height="21"></td>
+            <td width="8%" height="21"></td>
+            <td width="8%" height="21"></td>
+          </tr>
+          <tr>
+            <td width="7%" height="22" ></td>
+            <td width="15%" height="22"></td>
+            <td width="10%" height="22">
+              <input type="text" name="today[TSRIN]" id="today_TSRIN" size=10 value="<%= @DATE2.TSRIN.to_i*@DATE2.MULTIPLY_BY.to_i %>" readonly/></td>
+            <td width="8%" height="22">
+              <input type="text" name="today[TSROUT]" id="today_TSROUT" size=11 value="<%= @DATE2.TSROUT.to_i*@DATE2.MULTIPLY_BY.to_i %>" readonly/></td>
+            <td width="5%" height="22"><input type="text" name="T1" size=5 /></td>
+            <td width="8%" height="22"><input type="text" name="today[TMTRIN]" id="today_TMTRIN" size=5 value="<%= @DATE2.TMTRIN.to_i*@DATE2.MULTIPLY_BY.to_i %>" readonly>/</td>
+            <td width="8%" height="22"><input type="text" name="today[TMTROUT]" id="today_TMTROUT" size=5 value="<%= @DATE2.TMTROUT.to_i*@DATE2.MULTIPLY_BY.to_i%>" readonly/></td>
+            <td width="8%" height="22"><input type="text" name="T1" size=5 /></td>
+            <td width="8%" height="22"></td>
+            <td width="8%" height="22"> </td>
+            <td width="8%" height="22"><input type="hidden" name="today[LOSS]" id="today_LOSS" size=5 value="<%= @DATE2.LOSS %>" readonly/></td>
+            <td width="8%" height="22"></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td width="100%" height="1">&nbsp;</td>
+    </tr>
+    <tr>
+      <td width="100%" height="70">
+        <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" height=100%>
+          <tr>
+            <td width="34%" align=center>
+              <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="90%" height=70%>
+                <tr>
+                  <th>Sr.Coll</th></td>
+                  <th>Mtr.Coll</th></td>
+                  <th  >M-Short</td>
+                  <th  >Reason</td>
+                </tr>
+                <tr>
+                  <td><input type="text" name="today[SRCOLL]" id="today_SRCOLL" size=5 value="<%= @DATE2.SRCOLL.to_i %>" readonly></td>
+                  <td><input type="text" name="today[MTRCOLL]" id="today_MTRCOLL" size=5 value="<%= @DATE2.MTRCOLL.to_i %>" readonly></td>
+                  <td  ><input type="text" name="today[MTRSHORT]" id="today_MTRSHORT" size=5 value="<%= @DATE2.MTRSHORT.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbersplusminus();" onblur="CheckShort();"></td>
+                  <td  >
+                    <% @REASONS=Shop.find_by_sql("select * from shortreasons where McShortReason<>'#{@DATE2.SHORTREASON}' order by McShortReason") %>
+                    <select size="1" name="today[Shortreason]" id="today_Shortreason" onkeydown="return CheckShortReason();" >
+                      <option value="<%= @DATE2.SHORTREASON %>"><%= @DATE2.SHORTREASON %></option>
+                      <% @REASONS.each do |r| %>
+
+                        <option value="<%= r.McShortReason %>"><%= r.McShortReason %></option>
+                    <!--<option value="<%= @DATE2.SHORTREASON %>"><%= @DATE2.SHORTREASON %></option>-->
+                      <% end %>
+                    </select></td>
+                </tr>
+              </table>
+            </td>
+            <td width="33%" align=center>
+              <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" height="96">
+                <tr>
+                  <td width="100%" height="32" colspan="4" align=center>AVG</td>
+                </tr>
+                <tr>
+                  <th width="25%" height="32">30 Days</th>
+                  <th width="25%" height="32">10 Days</th>
+                  <th width="25%" height="32">S/R</th>
+                </tr>
+                <tr>
+                  <td width="25%" height="32">
+                    <input type="text" name="today[THIRTYDAYSAVG]" id="today_THIRTYDAYSAVG" size=5 value="<%= @DATE2.THIRTYDAYSAVG.to_i*@DATE2.MULTIPLY_BY %>" readonly></td>
+                  <td width="25%" height="32">
+                    <input type="text" name="today[TENDAYSAVG]" id="today_TENDAYSAVG" size=5 value="<%= @DATE2.TENDAYSAVG.to_i*@DATE2.MULTIPLY_BY %>" readonly></td>
+                  <td width="25%" height="32">
+                    <input type="text" name="today[SRAVG]" id="today_SRAVG" size=5 value="<%= @DATE2.SRAVG.to_i*@DATE2.MULTIPLY_BY %>" readonly></td>
+                </tr>
+              </table>
+          </td>
+          <% @keys=Counterdata.find(:first,:conditions=>["ClusterName=? and ShopName=? and DATE=?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]]) %>
+              <% if !@keys.nil? %>
+          <td width="33%" align=center>
+            <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="90%" height="70%">
+              <tr>
+                <th width="34%">Collection</th></td>
+                <th width="33%">Key</th>
+                <th width="33%" >S/E</th></td>
+              </tr>
+              <!-- <% @keys=Counterdata.find(:first,:conditions=>["ShopName=?",@session[:ttshopname]]) %>-->
+              
+              <tr >
+                <td width="34%" ><input type="text"  id="key_collections" name="key[collections]" size=5 value="<%= @session[:ttCOLL1].to_i %>" readonly></td>
+                <% if(@keys.KEY1.to_i!=0) %>
+                  <td width="33%" ><input type="text" name="key[collection1]" id="key_collection1" size=5 value="<%= @keys.KEY1.to_i %>" readonly></td>
+                  <td width="33%" ><input type="text" name="short[extra1]" id="short_extra1" size=5 value="<%= (@keys.KEY1.to_i)-(@session[:ttCOLL1].to_i) %>" readonly></td>
+                <% else%>
+                  <td width="33%" ><input type="text" name="key[collection1]" id="key_collection1" size=5 value="0" readonly></td>
+                  <td width="33%" ><input type="text" name="short[extra1]" id="short_extra1" size=5 value="<%= (@keys.KEY1.to_i)-(@session[:ttCOLL1].to_i) %>" readonly></td>
+                <% end%>
+              </tr>
+              <tr>
+                <td width="34%" ><input type="text"  id="key_collections2" name="key[collections2]" size=5 value="<%= @session[:ttCOLL2].to_i %>" readonly></td>
+                <% if(@keys.KEY2.to_i!=0) %>
+                  <td width="33%" ><input type="text" name="key[collection2]" id="key_collection2" size=5 value="<%= @keys.KEY2.to_i %>" readonly></td>
+                  <td width="33%" ><input type="text" name="short[extra2]" id="short_extra2" size=5 value="<%= (@keys.KEY2.to_i)-(@session[:ttCOLL2].to_i)%>" readonly></td>
+                <%else%>
+                  <td width="33%" ><input type="text" name="key[collection2]" id="key_collection2" size=5 value="0" readonly></td>
+                  <td width="33%" ><input type="text" name="short[extra2]" id="short_extra2" size=5 value="<%= (@keys.KEY2.to_i)-(@session[:ttCOLL2].to_i)%>" readonly></td>
+                <%end%>
+              </tr>
+              <tr>
+                <td width="34%" ><input type="text"  id="key_collections3" name="key[collections3]" size=5 value="<%= @session[:ttCOLL3].to_i %>" readonly></td>
+                <% if(@keys.KEY3.to_i!=0) %>
+                  <td width="33%" ><input type="text" name="key[collection3]" id="key_collection3" size=5 value="<%= @keys.KEY3.to_i %>" readonly></td>
+                  <td width="33%" ><input type="text" name="short[extra3]" id="short_extra3" size=5 value="<%= (@keys.KEY3.to_i)-(@session[:ttCOLL3].to_i) %>" readonly></td>
+                <%else%>
+                  <td width="33%" ><input type="text" name="key[collection3]" id="key_collection3" size=5 value="0" readonly></td>
+                  <td width="33%" ><input type="text" name="short[extra3]" id="short_extra3" size=5 value="0" readonly></td>
+                <%end%>
+              </tr>
+              <tr>
+                <td width="34%" ><input type="text"  id="key_collections4" name="key[collections4]" size=5 value="<%= @session[:ttCOLL4].to_i %>" readonly></td>
+                <% if(@keys.KEY4.to_i!=0) %>
+                  <td width="33%" ><input type="text" name="key[collection4]" id="key_collection4" size=5 value="<%= @keys.KEY4.to_i %>" readonly></td>
+                  <td width="33%" ><input type="text" name="short[extra4]" id="short_extra4" size=5 value="<%= (@keys.KEY4.to_i)-(@session[:ttCOLL4].to_i)%>" readonly></td>
+                <%else%>
+                  <td width="33%" ><input type="text" name="key[collection4]" id="key_collection4" size=5 value="0" readonly></td>
+                  <td width="33%" ><input type="text" name="short[extra4]" id="short_extra4" size=5 value="0" readonly></td>
+                  <%end%>
+                  <%end%>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td width="100%" height="30" align=center>
+      <div width=50% height=25 >
+        <%= submit_tag "UPDATE" ,:id=>'save',:onclick=>'return Check();',:onblur=>"this.form.yesterday_PSRIN.focus();"%>
+        <%= link_to 'COLLECTION' ,{ :controller=>'collection',:action => 'collection'}, :target=>'_blank'%>
+      </div>
+    </td>
+    <% submit_to_remote 'COLLECTION','COLLECTION',:before=>'SHOWCOLLECTION();'%>
+    <% link_to 'COLLECTION' ,url_for( :controller=>'collection',:action => 'collection'), { :popup => ['new_window','left=100,height=500,width=800,top=50,scrollbars=1,resizable=1,maximizable=1']}%>
+  </tr>
+  </table>
+  </td>
+  </tr>
+  </table>
+  </center>
+<% end %>
+<% end %>

@@ -1,7 +1,7 @@
 require 'csv'
 class MachinedataController < ApplicationController
   layout 'adminlayout'
-  before_filter :login_required
+#  before_filter :login_required,:machine_and_key_collection
 #  require 'ruby-debug'
 
   class Time
@@ -112,75 +112,133 @@ class MachinedataController < ApplicationController
     end
   end
 
-  def showdailydata
-    @session[:ttmachineno]=params[:MachineNo]
-    @session[:ttdate]=params[:date]
-    @machinedata = Machinedata.find_first(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and Machine_No=?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate],@session[:ttmachineno]])
-    if(@machinedata!=nil)
-      @colldata = Machinedata.find_all(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID='KEY 1'",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]])
-      @totalcoll=0
-      @colldata.each do |data|
-        if data.CALCULATEBY=='S'
-          @totalcoll=(@totalcoll.to_i+(((((data.TSRIN.to_i*data.SCREEN_RATE_IN.to_i)-(data.TSROUT.to_i*data.SCREEN_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i))
-        else
-          @totalcoll=(@totalcoll+(((((data.TMTRIN.to_i*data.MTR_RATE_IN.to_i)-(data.TMTROUT.to_i*data.MTE_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i))
-        end    
-      end
-      @session[:ttCOLL1]=@totalcoll
-      @colldata = Machinedata.find_all(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID='KEY 2'",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]])
-      @totalcoll=0
-      @colldata.each do |data|
-        if data.CALCULATEBY=='S'
-          @totalcoll=(@totalcoll.to_i+(((((data.TSRIN.to_i*data.SCREEN_RATE_IN.to_i)-(data.TSROUT.to_i*data.SCREEN_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i))
-        else
-          @totalcoll=(@totalcoll+(((((data.TMTRIN.to_i*data.MTR_RATE_IN.to_i)-(data.TMTROUT.to_i*data.MTE_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i))
-        end    
-      end
-      @session[:ttCOLL2]=@totalcoll
-      @colldata = Machinedata.find_all(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID='KEY 3'",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]])
-      @totalcoll=0
-      @colldata.each do |data|
-        if data.CALCULATEBY=='S'
-          @totalcoll=(@totalcoll.to_i+(((((data.TSRIN.to_i*data.SCREEN_RATE_IN.to_i)-(data.TSROUT.to_i*data.SCREEN_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i))
-        else
-          @totalcoll=(@totalcoll+(((((data.TMTRIN.to_i*data.MTR_RATE_IN.to_i)-(data.TMTROUT.to_i*data.MTE_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i))
-        end    
-      end
-      @session[:ttCOLL3]=@totalcoll
-      @colldata = Machinedata.find_all(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID='KEY 4'",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]])
-      @totalcoll=0
-      @colldata.each do |data|
-        if data.CALCULATEBY=='S'
-          @totalcoll=(@totalcoll.to_i+(((((data.TSRIN.to_i*data.SCREEN_RATE_IN.to_i)-(data.TSROUT.to_i*data.SCREEN_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i))
-        else
-          @totalcoll=(@totalcoll+(((((data.TMTRIN.to_i*data.MTR_RATE_IN.to_i)-(data.TMTROUT.to_i*data.MTE_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i))
-        end    
-      end
-      @session[:ttCOLL4]=@totalcoll
-      @keycoll=Counterdata.find(:first,:conditions=>["ClusterName=? and ShopName=? and DATE=?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]])
-      if(@keycoll!=nil)
-        if(@session[:ttkeyno]=="KEY 1")
-          @session[:ttKEYCOLL]=@keycoll.KEY1
-        end
-        if(@session[:ttkeyno]=="KEY 2")
-          @session[:ttKEYCOLL]=@keycoll.KEY2
-        end
-        if(@session[:ttkeyno]=="KEY 3")
-          @session[:ttKEYCOLL]=@keycoll.KEY3
-        end
-        if(@session[:ttkeyno]=="KEY 4")
-          @session[:ttKEYCOLL]=@keycoll.KEY4
-        end
-      end
-      redirect_to  :action=>'showmachinedata'
+  def showmachinedata
+    if params[:commit].eql?("Show Machine Data")
+          @session[:ttmachineno]=params[:MachineNo]
+          @session[:ttdate]=params[:date]
+
+          @machinedata = Machinedata.find_first(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and Machine_No=?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate],@session[:ttmachineno]])
+          if(@machinedata!=nil)
+            @colldata = Machinedata.find_all(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID='KEY 1'",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]])
+            @totalcoll=0
+            @colldata.each do |data|
+              if data.CALCULATEBY=='S'
+                @totalcoll=(@totalcoll.to_i+(((((data.TSRIN.to_i*data.SCREEN_RATE_IN.to_i)-(data.TSROUT.to_i*data.SCREEN_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i))
+              else
+                @totalcoll=(@totalcoll+(((((data.TMTRIN.to_i*data.MTR_RATE_IN.to_i)-(data.TMTROUT.to_i*data.MTE_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i))
+              end
+            end
+            @session[:ttCOLL1]=@totalcoll
+            @colldata = Machinedata.find_all(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID='KEY 2'",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]])
+            @totalcoll=0
+            @colldata.each do |data|
+              if data.CALCULATEBY=='S'
+                @totalcoll=(@totalcoll.to_i+(((((data.TSRIN.to_i*data.SCREEN_RATE_IN.to_i)-(data.TSROUT.to_i*data.SCREEN_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i))
+              else
+                @totalcoll=(@totalcoll+(((((data.TMTRIN.to_i*data.MTR_RATE_IN.to_i)-(data.TMTROUT.to_i*data.MTE_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i))
+              end
+            end
+            @session[:ttCOLL2]=@totalcoll
+            @colldata = Machinedata.find_all(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID='KEY 3'",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]])
+            @totalcoll=0
+            @colldata.each do |data|
+              if data.CALCULATEBY=='S'
+                @totalcoll=(@totalcoll.to_i+(((((data.TSRIN.to_i*data.SCREEN_RATE_IN.to_i)-(data.TSROUT.to_i*data.SCREEN_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i))
+              else
+                @totalcoll=(@totalcoll+(((((data.TMTRIN.to_i*data.MTR_RATE_IN.to_i)-(data.TMTROUT.to_i*data.MTE_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i))
+              end
+            end
+            @session[:ttCOLL3]=@totalcoll
+            @colldata = Machinedata.find_all(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID='KEY 4'",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]])
+            @totalcoll=0
+            @colldata.each do |data|
+              if data.CALCULATEBY=='S'
+                @totalcoll=(@totalcoll.to_i+(((((data.TSRIN.to_i*data.SCREEN_RATE_IN.to_i)-(data.TSROUT.to_i*data.SCREEN_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i))
+              else
+                @totalcoll=(@totalcoll+(((((data.TMTRIN.to_i*data.MTR_RATE_IN.to_i)-(data.TMTROUT.to_i*data.MTE_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i))
+              end
+            end
+            @session[:ttCOLL4]=@totalcoll
+            @keycoll=Counterdata.find(:first,:conditions=>["ClusterName=? and ShopName=? and DATE=?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]])
+            if(@keycoll!=nil)
+              if(@session[:ttkeyno]=="KEY 1")
+                @session[:ttKEYCOLL]=@keycoll.KEY1
+              end
+              if(@session[:ttkeyno]=="KEY 2")
+                @session[:ttKEYCOLL]=@keycoll.KEY2
+              end
+              if(@session[:ttkeyno]=="KEY 3")
+                @session[:ttKEYCOLL]=@keycoll.KEY3
+              end
+              if(@session[:ttkeyno]=="KEY 4")
+                @session[:ttKEYCOLL]=@keycoll.KEY4
+              end
+            end
+      #      redirect_to  :action=>'showmachinedata'
+          @colldata = Machinedata.find_all(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID='KEY 1'",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]])
+          @totalcoll=0
+          @colldata.each do |data|
+            if data.CALCULATEBY=='S'
+              @totalcoll=(@totalcoll.to_f+(((((data.TSRIN.to_f*data.SCREEN_RATE_IN.to_f)-(data.TSROUT.to_f*data.SCREEN_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f)).round
+            else
+              @totalcoll=(@totalcoll+(((((data.TMTRIN.to_f*data.MTR_RATE_IN.to_f)-(data.TMTROUT.to_f*data.MTE_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f)).round
+            end
+          end
+          @session[:ttCOLL1]=@totalcoll
+          @colldata = Machinedata.find_all(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID='KEY 2'",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]])
+          @totalcoll=0
+          @colldata.each do |data|
+            if data.CALCULATEBY=='S'
+              @totalcoll=(@totalcoll.to_f+(((((data.TSRIN.to_f*data.SCREEN_RATE_IN.to_f)-(data.TSROUT.to_f*data.SCREEN_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f)).round
+            else
+              @totalcoll=(@totalcoll+(((((data.TMTRIN.to_f*data.MTR_RATE_IN.to_f)-(data.TMTROUT.to_f*data.MTE_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f)).round
+            end
+          end
+          @session[:ttCOLL2]=@totalcoll
+          @colldata = Machinedata.find_all(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID='KEY 3'",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]])
+          @totalcoll=0
+          @colldata.each do |data|
+            if data.CALCULATEBY=='S'
+              @totalcoll=(@totalcoll.to_f+(((((data.TSRIN.to_f*data.SCREEN_RATE_IN.to_f)-(data.TSROUT.to_f*data.SCREEN_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f)).round
+            else
+              @totalcoll=(@totalcoll+(((((data.TMTRIN.to_f*data.MTR_RATE_IN.to_f)-(data.TMTROUT.to_f*data.MTE_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f)).round
+            end
+          end
+          @session[:ttCOLL3]=@totalcoll
+          @colldata = Machinedata.find_all(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID='KEY 4'",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]])
+          @totalcoll=0
+          @colldata.each do |data|
+            if data.CALCULATEBY=='S'
+              @totalcoll=(@totalcoll.to_f+(((((data.TSRIN.to_f*data.SCREEN_RATE_IN.to_f)-(data.TSROUT.to_f*data.SCREEN_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f)).round
+            else
+              @totalcoll=(@totalcoll+(((((data.TMTRIN.to_f*data.MTR_RATE_IN.to_f)-(data.TMTROUT.to_f*data.MTE_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i)).round
+            end
+          end
+          @session[:ttCOLL4]=@totalcoll
+          begin
+            @machinedata = Machinedata.find_first(["Cluster_Name=? and Shop_Name=? and TRANS_Date=? and Machine_No=?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate],@session[:ttmachineno]])
+            @session[:ttkeyno]=@machinedata.GROUP_ID
+          rescue Exception=>ex
+            puts ex.message
+          end
+          else
+            flash[:notice] ='<font color=red size=3><b>No Record found.</b></font>'
+      #      render :action=>'dailydata'
+          end
     else
-      flash[:notice] ='<font color=red size=3><b>No Record found.</b></font>'
-      render :action=>'dailydata'
+      render :action=>'showmachinedata'
     end
+
   end
 
 
-  def showmachinedata
+  def showmachinedata1
+#raise params[:machinedata][:ShopName].inspect
+
+collection_data = machine_and_key_collection(params[:machinedata][:ClusterName],params[:machinedata][:ShopName],params[:MachineNo],params[:date])
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+
     @colldata = Machinedata.find_all(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID='KEY 1'",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]])
     @totalcoll=0
     @colldata.each do |data|
@@ -327,7 +385,8 @@ class MachinedataController < ApplicationController
         check.update_attribute(:short_extra, short_extra)
       end
     end
-    redirect_to :action=>"dailydata"
+#    redirect_to :action=>"dailydata"
+render :action=>'showmachinedata'
   end
 
   def showcollection
@@ -385,4 +444,22 @@ class MachinedataController < ApplicationController
     return path
   end
 
+#  protected
+  def machine_and_key_collection(cluster_name,shop_name,machine_no,date)
+    machinedata = Machinedata.find_first(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and Machine_No=?",cluster_name,shop_name,date,machine_no])
+    if machinedata.present?
+      colldata = Machinedata.find_all(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID=?",cluster_name,shop_name,date,machinedata.GROUP_ID])
+      totalcoll=0
+      colldata.each do |data|
+        if data.CALCULATEBY=='S'
+          totalcoll = (totalcoll.to_i+(((((data.TSRIN.to_i*data.SCREEN_RATE_IN.to_i)-(data.TSROUT.to_i*data.SCREEN_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i))
+        else
+          totalcoll = (totalcoll+(((((data.TMTRIN.to_i*data.MTR_RATE_IN.to_i)-(data.TMTROUT.to_i*data.MTE_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i))
+        end
+      end
+      tot_coll = totalcoll
+    end
+    key = Machinedata.find_first(["Cluster_Name=? and Shop_Name=? and TRANS_Date=? and Machine_No=?",cluster_name,shop_name,date,machine_no])
+    return key,tot_coll
+  end
 end
