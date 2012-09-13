@@ -68,7 +68,7 @@
           <td width="8%" height="23"></td>
           <td width="8%" height="23"></td>
         </tr>
-        <%end%>
+       
         <% daybefore=Date.parse(@session[:ttdate])-2 %>
         <% yesterday=Date.parse(@session[:ttdate])-1 %>
         <!--QUERY FOR FETCHING DAYBEFORE YESTERDAY'S DATA -->
@@ -263,7 +263,6 @@
                 <th width="33%">Key</th>
                 <th width="33%" >S/E</th></td>
               </tr>
-              <!-- <% @keys=Counterdata.find(:first,:conditions=>["ShopName=?",@session[:ttshopname]]) %>-->
               
               <tr >
                 <td width="34%" ><input type="text"  id="key_collections" name="key[collections]" size=5 value="<%= @session[:ttCOLL1].to_i %>" readonly></td>
@@ -329,3 +328,4 @@
   </center>
 <% end %>
 <% end %>
+   <%end%>

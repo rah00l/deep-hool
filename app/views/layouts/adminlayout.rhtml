@@ -213,6 +213,7 @@
                             <li><font face="Zurich BT"><a href="#"><b><font size="2">Reports</font></b></a></font>
                               <ul>
                                 <li><%= link_to 'Reading Mistakes', :controller => 'clientdatas', :action => "readingmistakemain"%></li>
+                                <li><%= link_to 'Reading Mistakes New', :controller => 'reports', :action => "readingmistakemain"%></li>
                                 <li>
                                   <%= link_to 'Monthly Expence Report', :controller => 'reports', :action => "exreport"  %>
                                   <!--<%= link_to 'Monthly Expence report' ,url_for( :controller=>'reports',:action => 'exreport'), { :popup => ['new_window','left=100,height=500,width=800,top=50,scrollbars=1,resizable=1,maximizable=1']}%>-->

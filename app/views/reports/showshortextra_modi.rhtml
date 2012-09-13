@@ -29,7 +29,7 @@
                   <table border="1" width ="802"  cellpadding="0"  cellspacing="0" bordercolor="#111111"   id="AutoNumber1"  height="24"  left:2% >
                          <tr  bgcolor="#E1CEA2" align=center>
                       <th nowrap width="1%" height="22" >
-                        <font color=white face="Zurich BT" size="2">Shop Name</font></th>
+                        <font color=white face="Zurich BT" size="2">Cluster/Shop</font></th>
                       <th nowrap width="10%" height="22" >
                         <font color=white face="Zurich BT" size="2">KEY/DATE</font></th>
                       <%@m=@session[:days] %>
@@ -40,7 +40,17 @@
                       <th nowrap width="1%" height="22" >
                         <font color=white face="Zurich BT" size="2">TOTAL</font></th>
                     </tr>
-                    <% session[:shop_name].each do |@shp| %>
+                    <% selected_cluster = all_or_single_cluster_name(@session[:rrclustername]) %>
+
+                     <% selected_cluster.each do |cluster_name| %>
+                          <tr  bgcolor="" align=center>
+                      <th nowrap width="1%" height="22" >
+                        <font  size="2"><%= cluster_name %></font></th>
+
+                    </tr>
+                     <% Shop.find(:all,:select=>"ShopName",:conditions=>["ClusterName=?",cluster_name],:order=>"ShopName").collect(&:ShopName).each do |@shp|  %>
+                     <%# Shop.find(:all, :conditions=>["ClusterName=? ","#{cluster_name}"],:order => "ShopName").each do |@shp|%>
+                    <%# session[:shop_name].each do |@shp| %>
                       <% @flag=false %>
                       <% Group.find(:all,:conditions=>["ShopName=?",@shp],:order=>"GroupID").each do |key|%>
                         <tr>
@@ -86,6 +96,7 @@
                           <% end %>
                         </tr>
                       <% end %>
+                    <% end %>
                     <% end %>
                   </table>
                   <br/>

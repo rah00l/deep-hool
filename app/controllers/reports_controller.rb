@@ -13,9 +13,18 @@ class ReportsController < ApplicationController
     end
   end
 
+  def showreadingmistakes
+#    if params[:readingmistake][:ClusterName].eql?('ALL')
+#      @shop_name = Shop.all_shop_name_list
+#    else
+#      @shop_name = Shop.selected_shop_name_list(params[:machinedata][:ClusterName])
+#    end
+
+  end
+
 
   def machine_listing
-    if params[:machinedata][:ClusterName].eql?('ALL')
+      if params[:machinedata][:ClusterName].eql?('ALL')
         @shop_name = Shop.all_shop_name_list
       else
         @shop_name = Shop.selected_shop_name_list(params[:machinedata][:ClusterName])

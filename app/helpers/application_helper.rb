@@ -277,4 +277,13 @@ module ApplicationHelper
     return per,avg
   end
 
+  def all_or_single_cluster_name(selected_cluster)
+    selected_cluster.eql?('ALL')?  Cluster.find(:all).collect(&:ClusterName).sort  : selected_cluster
+  end
+
+
+  def reading_mistake(cluster_name,date)
+      Machinedata.find(:all,:select => "distinct (SHOP_NAME)",:conditions=>"CLUSTER_NAME='#{cluster_name}' and TRANS_DATE='#{date}'",:order => "SHOP_NAME")
+  end
+
 end
