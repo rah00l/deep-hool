@@ -187,6 +187,7 @@
                             <li><font face="Zurich BT"><a href="#"><b><font size="2">Utilities</font></b></a></font>
                               <ul>
                                 <li><%= link_to 'Change Password', :controller => 'users', :action => "password" %></li>
+                                <li><%= link_to 'Configurations', :controller => 'configurations', :action => "index" %></li>
                                 <li><%= link_to 'Purge Data ', :controller => 'purge', :action => "purgemain"%></li>
                                 <li><%= link_to 'Purge CounterData ', :controller => 'purge', :action => "purgecounterdata"%></li>
                                 <li><%= link_to 'Purge Machine Data' , :controller => 'purge', :action => "purgemachinedata"%></li>
@@ -202,7 +203,9 @@
 
                                 <li><a href="#">Edit Data &gt;</a></font>
                                   <ul>
-                                    <li><%= link_to 'Daily Data', :controller => 'machinedata', :action => "showmachinedata" %></li>
+                                    <li><%= link_to 'Daily Data', :controller => 'machinedata', :action => "dailydata" %></li>
+                                    <li><%#= link_to 'Daily Data New', :controller => 'machinedata', :action => "showmachinedata_modi" %></li>
+                                    <li><%= link_to 'Daily Data New', :controller => 'machinedata', :action => "editdata" %></li>
                                     <li><%= link_to 'Counter Data', :controller => 'counterdata', :action => "counterdata" %></li>
                                   </ul>
                                 </li>

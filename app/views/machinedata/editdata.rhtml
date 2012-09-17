@@ -1,0 +1,97 @@
+<html>
+  <head>
+    <script type="text/javascript">
+      jQuery("#MachineNo").live("keydown", function(event){
+          if (event.which == 13) {
+                event.preventDefault();
+                checkloader();
+                jQuery("form").submit();
+          }
+          function checkloader(){
+          jQuery('#loader').show();
+      }
+        }
+        );
+    </script>
+  </head>
+  <body>
+    <%# @session[:ttdate],@session[:ttclustername],@session[:ttkeyno],@session[:ttshopname] = nil %>
+    <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" height="100%">
+      <tr>
+        <td width="100%" height="1">&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="100%" height="50" align=center>
+          <% form_remote_tag :url=>{:action => :editdaily_data},:id => 'form' do %>
+            <table border="1" cellpadding="0" cellspacing="1" style="border-collapse: collapse" bordercolor="#111111" width="100%" height="100%">
+              <tr>
+              <th >Date</th>
+              <th  >Group&nbsp;Name</th>
+              <th  >Shop&nbsp;Name</th>
+              <th >No/Name</th>
+              <th  >KEY No.</th>
+              <th >X</th>
+              </tr>
+              <tr>
+                <td width="300">
+                  <% if(@session[:ttdate]==nil) %>
+                    <%date = Date.today-1%>
+                    <%= calendar_date_select_tag "date",date.strftime('%Y-%m-%d')  ,  :popup => "force" %>
+                  <%else%>
+                    <%= calendar_date_select_tag "date",@session[:ttdate].to_s,  :popup => "force" %>
+                  <%end%>
+                </td>
+                <td width="180">
+                  <% if(@session[:ttclustername]==nil or @session[:ttclustername]=="") %>
+                    <% @s=Cluster.find(:all,:order => "ClusterName") %>
+                    <%= collection_select(:machinedata, :ClusterName,  @s,  :ClusterName, :ClusterName,
+                      {:prompt   => "Select ClusterName"},
+                      {:onkeypress => "#{remote_function(:url  => {:controller=>'machinedata', :action => "getShop"},
+                        :with => "'ClusterName='+value")}",:onchange => "#{remote_function(:url  => {:controller=>'machinedata', :action => "getShop"},
+                        :with => "'ClusterName='+value")}"}) %>
+                  <%else%>
+                    <% @cluster=Cluster.find(:all,:conditions=>["ClusterName<>?",@session[:ttclustername]],:order => "ClusterName")%>
+                    <select id="machinedata_ClusterName" name="machinedata[ClusterName]" onchange="<%=remote_function(:url => {:action => 'getShop'},:with => "'ClusterName='+value")-%>">
+                      <option value="<%= @session[:ttclustername] %>"><%= @session[:ttclustername] %></option>
+                      <% @cluster.each do |c| %>
+                        <option value="<%= c.ClusterName %>"><%= c.ClusterName %></option>
+                      <% end %>
+                    </select>
+                  <%end%>
+                </td>
+                <td width="180">
+                  <div id="Shopdiv">
+                    <%= render :partial => 'shop'%>
+                  </div>
+                </td>
+                <td width="220">
+                  <input type=text name="MachineNo" id="MachineNo" size="5" onKeyUp="javascript:this.value=this.value.toUpperCase();"/>&nbsp;&nbsp;<input type="text" name="T1" size=5 value="<%= @mc.MACHINE_NAME rescue ''%>" readonly/></td>
+                <td  >
+                  <input type="text" name="KEY" id="KEY" size=7 value="<%= @session[:ttkeyno]%>" readonly/></td>
+                <td  >
+                  <input type="text" name="multiplyby" id="multiplyby" size=5 value="<%= @mc.MULTIPLY_BY.to_i rescue '' %>" readonly/></td>
+              <%end%>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td width="100%" height="1">
+          <div class="" align="center" id="loader" style="display:none;">
+            <img src='/images/spinner.gif' />
+          </div>
+        </td>
+      </tr>
+
+      <tr width="100%" height="270">
+        <td>
+          <div id="parent_dailydata_div">
+            <%#= render :partial=> "parent_dailydata_part"%>
+          </div>
+        </td>
+      </tr>
+      
+
+    </table>
+  </body>
+</html>

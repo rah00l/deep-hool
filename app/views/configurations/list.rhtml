@@ -1,0 +1,29 @@
+<h1>Listing configurations</h1>
+
+<table>
+  <tr>
+    <th>Location Name</th>
+    <th>Filesfolderpath</th>
+    <th>Backupfolderpath</th>
+    <th>Continue Copy</th>
+  </tr>
+  
+<% @configurations.each do |configuration| %>
+  <tr>
+     <td><%=h configuration.location_name %></td>
+    <td><%=h configuration.FilesFolderPath %></td>
+    <td><%=h configuration.BackupFolderPath %></td>
+    <td><%=h configuration.copy_continue? ? 'Activated' : 'Deactivated' %></td>
+    <td><%#=h configuration.Continue Copy %></td>
+    <td><%= link_to 'Edit', :action => 'edit', :id => configuration %></td>
+    <td><%= link_to 'Destroy', { :action => 'destroy', :id => configuration }, :confirm => 'Are you sure?', :method => :post %></td>
+  </tr>
+<% end %>
+</table>
+
+<%= link_to 'Previous page', { :page => @configuration_pages.current.previous } if @configuration_pages.current.previous %>
+<%= link_to 'Next page', { :page => @configuration_pages.current.next } if @configuration_pages.current.next %> 
+
+<br />
+
+<%= link_to 'New configuration', :action => 'new' %>

@@ -1,0 +1,23 @@
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="90%" height=70%>
+  <tr>
+    <th>Sr.Coll</th>
+    <th>Mtr.Coll</th>
+    <th>M-Short</th>
+    <th>Reason</th>
+  </tr>
+  <tr>
+    <td><input type="text" name="today[SRCOLL]" id="today_SRCOLL" size=5 value="<%= @DATE2.SRCOLL.to_i %>" readonly/></td>
+    <td><input type="text" name="today[MTRCOLL]" id="today_MTRCOLL" size=5 value="<%= @DATE2.MTRCOLL.to_i %>" readonly/></td>
+    <td><input type="text" name="today[MTRSHORT]" id="today_MTRSHORT" size=5 value="<%= @DATE2.MTRSHORT.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbersplusminus();" onblur="CheckShort();"/></td>
+    <td>
+      <% @REASONS=Shop.find_by_sql("select * from shortreasons where McShortReason<>'#{@DATE2.SHORTREASON}' order by McShortReason") %>
+      <select size="1" name="today[Shortreason]" id="today_Shortreason" onkeydown="return CheckShortReason();" >
+        <option value="<%= @DATE2.SHORTREASON %>"><%= @DATE2.SHORTREASON %></option>
+        <% @REASONS.each do |r| %>
+
+          <option value="<%= r.McShortReason %>"><%= r.McShortReason %></option>
+      <!--<option value="<%= @DATE2.SHORTREASON %>"><%= @DATE2.SHORTREASON %></option>-->
+        <% end %>
+      </select></td>
+  </tr>
+</table>

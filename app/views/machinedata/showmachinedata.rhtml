@@ -3,11 +3,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
 <script>
-  <% if params[:commit].eql?("Show Machine Data") %>
- 
 function SHOWCOLLECTION()
 {
-	 window.open('collection','myWin','toolbar=no, directories=no, location=yes, status=NO, menubar=no, resizable=yes, scrollbars=yes,left=0,top=0,alwaysRaised=yes');
+	 window.open('collection','myWin','toolbar=no, directories=no, location=yes, status=NO, menubar=no, resizable=yes, scrollbars=yes,left=0,top=0,alwaysRaised=yes'); 
 }
 function onlyNumbers(evt)
 	{
@@ -32,7 +30,7 @@ function SRAVGSETTING()
 	var rate_MRIN=document.getElementById("rate_MRIN").value;
 	var rate_MROUT=document.getElementById("rate_MROUT").value;
 	sratein=rate_SRIN
- 	srateout=rate_SROUT
+ 	srateout=rate_SROUT 
  	mratein=rate_MRIN
 	mrateout=rate_MROUT
 	cursrcoll= parseInt((((parseInt(tsrin)*parseInt(sratein))-(parseInt(tsrout)*parseInt(srateout)))/10)+parseInt(today_MTRSHORT));
@@ -72,7 +70,7 @@ function SRAVG()
 	var rate_MRIN=document.getElementById("rate_MRIN").value;
 	var rate_MROUT=document.getElementById("rate_MROUT").value;
 	sratein=rate_SRIN
- 	srateout=rate_SROUT
+ 	srateout=rate_SROUT 
  	mratein=rate_MRIN
 	mrateout=rate_MROUT
 	cursrcoll= parseInt((((parseInt(tsrin)*parseInt(sratein))-(parseInt(tsrout)*parseInt(srateout)))/10)+parseInt(today_MTRSHORT));
@@ -116,21 +114,20 @@ function SRAVG()
 						{
 							lastval=curmrcoll;
   						}
-
+				
 				}
 				lastval=Math.round(lastval);
   				if (condition!="false")
 			 		condition="false"
 			 	else
 			 	{
-
-				<% @mval=Machinedata.find(:first,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE=?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],Date.parse(@session[:ttdate])-1]) %>
-                                   <%if !@mval.nil?%>
- 				<% @machinevalues=Machinedata.find(:all,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE<?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],@session[:ttdate]],:order => "TRANS_DATE desc") %>
+				<% @mval=Machinedata.find(:first,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE=?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],Date.parse(@session[:ttdate])-1]) %>  
+					
+ 				<% @machinevalues=Machinedata.find(:all,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE<?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],@session[:ttdate]],:order => "TRANS_DATE desc") %>  
   				<%@srvalues=0 %>
   				<%@valcount=2%>
   				<%@machinevalues.each do |item|
-                      if(@mval.SETTING==item.SETTING and item.T_DATE!=nil)
+                      if(@mval.SETTING==item.SETTING and item.T_DATE!=nil) 
                         @valcount=@valcount+1
                         if item.CALCULATEBY=='S'
                           @srvalues=@srvalues+item.SRCOLL.to_i
@@ -152,15 +149,15 @@ function SRAVG()
                          else
                           	break
                          end
-
+                       
                       end
-
+                          
                     end
-                    %>
+                    %>    
  				<%begin%>
  	   				totalsum='<%=@srvalues.to_i %>'
  	   				totalcount='<%=@valcount.to_i %>'
-
+                                        
 	   				if (parseInt(totalcount)<=2)
 	   					totalcount=1;
 	   				else
@@ -170,7 +167,6 @@ function SRAVG()
    				<%rescue%>
 				<%end%>
 				}
-                                <%end%>
 }
 
 function THIRTYDAYSAVG()
@@ -187,7 +183,7 @@ function THIRTYDAYSAVG()
 	var rate_MRIN=document.getElementById("rate_MRIN").value;
 	var rate_MROUT=document.getElementById("rate_MROUT").value;
 	sratein=rate_SRIN
- 	srateout=rate_SROUT
+ 	srateout=rate_SROUT 
  	mratein=rate_MRIN
 	mrateout=rate_MROUT
 	cursrcoll= parseInt((((parseInt(tsrin)*parseInt(sratein))-(parseInt(tsrout)*parseInt(srateout)))/10)+parseInt(today_MTRSHORT));
@@ -204,7 +200,7 @@ function THIRTYDAYSAVG()
 		  <% @count=Machinedata.count(:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE<=? and T_Date!=""',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],@session[:ttdate]]) %>
 		  <% @countval30=1 %>
 		 <% if @count.to_i>29
-            @values30=Machinedata.find(:all,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE<?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],@session[:ttdate]],:order => "TRANS_DATE desc")
+            @values30=Machinedata.find(:all,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE<?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],@session[:ttdate]],:order => "TRANS_DATE desc")           
             @sumvalue30=0
             @flag=false
             @values30.each do |item|
@@ -243,12 +239,12 @@ function TENDAYSAVG()
 	var rate_MRIN=document.getElementById("rate_MRIN").value;
 	var rate_MROUT=document.getElementById("rate_MROUT").value;
 	sratein=rate_SRIN
- 	srateout=rate_SROUT
+ 	srateout=rate_SROUT 
  	mratein=rate_MRIN
 	mrateout=rate_MROUT
 	cursrcoll= parseInt((((parseInt(tsrin)*parseInt(sratein))-(parseInt(tsrout)*parseInt(srateout)))/10)+parseInt(today_MTRSHORT));
 	curmrcoll=parseInt((((parseInt(tmtrin)*parseInt(mratein))-(parseInt(tmtrout)*parseInt(mrateout)))/10)+parseInt(today_MTRSHORT));
-		  var today_TENDAYSAVG=document.getElementById('today_TENDAYSAVG');
+		  var today_TENDAYSAVG=document.getElementById('today_TENDAYSAVG');  
 		 if (today_cal=='S')
 		 {
 			lastval=cursrcoll;
@@ -260,7 +256,7 @@ function TENDAYSAVG()
 		  <% @count=Machinedata.count(:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE<=? and T_Date!=""',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],@session[:ttdate]]) %>
 		  <% @countval10=1 %>
 		 <% if @count.to_i>9
-            @values10=Machinedata.find(:all,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE<?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],@session[:ttdate]],:order => "TRANS_DATE desc")
+            @values10=Machinedata.find(:all,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE<?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],@session[:ttdate]],:order => "TRANS_DATE desc")           
             @sumvalue10=0
             @flag=false
             @values10.each do |item|
@@ -326,8 +322,8 @@ function SrperMTRSHORT(x)
 	var yesterday_SETTING=document.getElementById("yesterday_SETTING").value;
 	var today_TSRIN=document.getElementById("today_TSRIN");
 	var today_TSROUT=document.getElementById("today_TSROUT");
-	var yesterday_PSRIN=document.getElementById("yesterday_PSRIN");
-	var yesterday_PSROUT=document.getElementById("yesterday_PSROUT");
+	var yesterday_PSRIN=document.getElementById("yesterday_PSRIN");	
+	var yesterday_PSROUT=document.getElementById("yesterday_PSROUT");	
 	var today_SRIN=document.getElementById("today_SRIN");
 	var today_SROUT=document.getElementById("today_SROUT");
 	var today_SRPER=document.getElementById("today_SRPER");
@@ -337,7 +333,7 @@ function SrperMTRSHORT(x)
 	var rate_SRIN=document.getElementById("rate_SRIN").value;
 	var rate_SROUT=document.getElementById("rate_SROUT").value;
 	var rate_MRIN=document.getElementById("rate_MRIN").value;
-	var rate_MROUT=document.getElementById("rate_MROUT").value;
+	var rate_MROUT=document.getElementById("rate_MROUT").value;	
 	var yesterday_srin=document.getElementById("yesterday_srin");
 	var yesterday_srout=document.getElementById("yesterday_srout");
 	var yesterday_PSRINVALUE=document.getElementById("yesterday_PSRIN");
@@ -426,7 +422,7 @@ function SrperMTRSHORT(x)
 		  					{
 		  					outcal=parseInt(parseFloat(today_SROUT.value)*parseFloat(rate_SROUT));
 		  					}
-
+		  
 							today_SRPER.value=Math.round(((parseInt(outcal)-parseFloat(totalmtrshortneg))*100)/(parseInt(incal)+parseFloat(totalmtrshortpos)));
 						}
 						else
@@ -457,12 +453,11 @@ function SrperMTRSHORT(x)
 	else
 	{
 		<%@machinevalues1=Machinedata.find(:first,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE = ?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],@session[:ttdate]])%>
-                    <%if !@machinevalues1.nil?%>
           	      <%
-                    if @machinevalues1.CALCULATEBY!='M'
+                    if @machinevalues1.CALCULATEBY!='M' 
                       @machinevalues=Machinedata.find(:all,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE < ?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],@session[:ttdate]],:order => "TRANS_DATE desc")
                       @machinevalues.each do |item|
-                        if(@machinevalues1.SETTING==item.SETTING and item.T_DATE!=nil)
+                        if(@machinevalues1.SETTING==item.SETTING and item.T_DATE!=nil) 
                           if (item.CALCULATEBY!='M')
                             if item.MTRSHORT.to_i<0
                               @totalmtrshortneg=@totalmtrshortneg.to_i+item.MTRSHORT.to_i
@@ -493,11 +488,11 @@ function SrperMTRSHORT(x)
                         end
                       end
                       else
-                        if @machinevalues1.MTRSHORT.to_i<0
+                        if @machinevalues1.MTRSHORT.to_i<0 
                             @totalmtrshortneg=@machinevalues1.MTRSHORT.to_i
-                        else
+                        else 
                             @totalmtrshortpos=@machinevalues1.MTRSHORT.to_i
-                        end
+                        end 
                     end
                         %>
 			neg='<%= @totalmtrshortneg %>'
@@ -534,14 +529,13 @@ function SrperMTRSHORT(x)
 			today_SRPER.value=0;
 			}
 		}
-             <%end%>
 	var today_PSRINVALUE=document.getElementById("today_PSRINVALUE");
 	today_PSRINVALUE.value=today_SRIN.value;
 	var today_PSROUTVALUE=document.getElementById("today_PSROUTVALUE");
 	today_PSROUTVALUE.value=today_SROUT.value;
 	today_TSRIN.value=(parseInt(today_SRIN.value)-parseInt(yesterday_PSRIN.value))*mulby;
 	today_TSROUT.value=(parseInt(today_SROUT.value)-parseInt(yesterday_PSROUT.value))*mulby;
-return true;
+return true;	
 }
 function CheckShort()
 {
@@ -573,7 +567,7 @@ var i;
 var elOptNew = document.createElement('option');
   elOptNew.text = '';
   elOptNew.value = '';
-  today_Shortreason.add(elOptNew);
+  today_Shortreason.add(elOptNew); 
 today_Shortreason.options.selectedIndex=today_Shortreason.length+1;
 save.select();
 save.focus();
@@ -682,13 +676,13 @@ key_collections4.value=parseInt(newval)+parseInt(today_MTRCOLL.value)
 
 function CheckShortReason()
 {
-
+	
 	if(event.keyCode==9)
 	{
-
+	
 	var today_Shortreason=document.getElementById('today_Shortreason');
 	var save=document.getElementById('save');
-
+	
 	if(today_Shortreason.options[today_Shortreason.selectedIndex].text=="")
 	{
 		alert("PLEASE SELECT SHORT REASON");
@@ -699,7 +693,7 @@ function CheckShortReason()
 	{
 
 
-		save.select();
+		save.select();	
 		save.focus();
 		return true;
 	}
@@ -710,26 +704,26 @@ function CheckShortReason()
 function Mtrper(x)
 {
 	var mulby=document.getElementById("multiplyby").value;
-
+	
 	var today_TMTRIN=document.getElementById("today_TMTRIN");
 	var today_TMTROUT=document.getElementById("today_TMTROUT");
-
-	var yesterday_PMTRIN=document.getElementById("yesterday_PMTRIN");
-	var yesterday_PMTROUT=document.getElementById("yesterday_PMTROUT");
-
+	
+	var yesterday_PMTRIN=document.getElementById("yesterday_PMTRIN");	
+	var yesterday_PMTROUT=document.getElementById("yesterday_PMTROUT");	
+	
 	var today_MTRIN=document.getElementById("today_MTRIN");
 	var today_MTROUT=document.getElementById("today_MTROUT");
-
+	
 	var today_MTRPER=document.getElementById("today_MTRPER");
 
 	var today_PMTRINVALUE=document.getElementById("today_PMTRINVALUE");
 	today_PMTRINVALUE.value=today_MTRIN.value;
-
+	
 	var today_CALCULATEBY=document.getElementById("today_CALCULATEBY");
-
+	
 	var today_PMTROUTVALUE=document.getElementById("today_PMTROUTVALUE");
 	today_PMTROUTVALUE.value=today_MTROUT.value;
-
+	
 	today_TMTRIN.value=(parseInt(today_MTRIN.value)-parseInt(yesterday_PMTRIN.value))*mulby;
 
 	today_TMTROUT.value=(parseInt(today_MTROUT.value)-parseInt(yesterday_PMTROUT.value))*mulby;
@@ -747,7 +741,7 @@ function Mtrper(x)
 	today_CALCULATEBY.value="S"
 
 	}
-
+	
 
 	return true;
 }
@@ -757,7 +751,7 @@ var today_SRCOLL=document.getElementById("today_SRCOLL").value;
  var today_MTRCOLL=document.getElementById("today_MTRCOLL").value;
  var today_LOSS=document.getElementById("today_LOSS");
 
-
+ 
  					if(parseInt(today_SRCOLL)<0 || parseInt(today_MTRCOLL)<0)
 	                         today_LOSS.value='Loss'
                     else
@@ -814,7 +808,7 @@ var today_MTRSHORT=document.getElementById("today_MTRSHORT");
 var rate_SRIN=document.getElementById("rate_SRIN").value;
 var rate_SROUT=document.getElementById("rate_SROUT").value;
 var rate_MRIN=document.getElementById("rate_MRIN").value;
-var rate_MROUT=document.getElementById("rate_MROUT").value;
+var rate_MROUT=document.getElementById("rate_MROUT").value;	
 
 
 today_cal=document.getElementById('today_CALCULATEBY').value
@@ -826,10 +820,10 @@ var condition="false"
 					if((yesterday_srin.value!=yesterday_PSRINVALUE.value ) || (yesterday_PSRINVALUE.value==0 && yesterday_srin.value==0))
 					{
 						///Calculation for SR %
-
+						
 						if (today_TSRIN.value!=0)
 						{
-
+							
 							if (parseInt(today_MTRSHORT.value)<0)
 							{
 								totalmtrshortneg=parseInt(today_MTRSHORT.value);
@@ -841,9 +835,9 @@ var condition="false"
                     			totalmtrshortneg=0;
                     		}
 
-							//alert(totalmtrshortneg);
+							//alert(totalmtrshortneg);	
 							//alert(totalmtrshortpos);
-
+							
                     		if (today_cal=='S')
 		 					{
 								lastinval=Math.round((Math.round(parseInt(today_TSRIN.value)/parseInt(mulby))*parseInt(rate_SRIN))/10);
@@ -853,7 +847,7 @@ var condition="false"
 		 					{
 								//lastinval=Math.round((parseInt(today_TMTRIN.value)*parseInt(rate_MRIN))/10);
 								//lastoutval=Math.round((parseInt(today_TMTROUT.value)*parseInt(rate_MROUT))/10);
-
+								
 								lastinval=Math.round((Math.round(parseInt(today_TMTRIN.value)/parseInt(mulby))*parseInt(rate_MRIN))/10);
 								lastoutval=Math.round(Math.round((parseInt(today_TMTROUT.value)/parseInt(mulby))*parseInt(rate_MROUT))/10);
 
@@ -868,10 +862,10 @@ var condition="false"
 						}
 						condition="true";
 					}
-
+					
 					else
 					{
-
+						
 						condition="false";
 						if (parseInt(today_MTRSHORT.value)<0)
 						{
@@ -883,7 +877,7 @@ var condition="false"
                     		totalmtrshortpos=parseInt(today_MTRSHORT.value);
                     		totalmtrshortneg=0;
                     	}
-
+                    			
                     	if (today_cal=='S')
 		 				{
 							lastinval=Math.round((Math.round(parseInt(today_TSRIN.value)/parseInt(mulby))*parseInt(rate_SRIN))/10);
@@ -908,7 +902,7 @@ var condition="false"
                 		totalmtrshortpos=parseInt(today_MTRSHORT.value);
                 		totalmtrshortneg=0;
                 }
-
+                    			
                  if (today_cal=='S')
 		 		 {
 					lastinval=Math.round((Math.round(parseInt(today_TSRIN.value)/parseInt(mulby))*parseInt(rate_SRIN))/10);
@@ -930,39 +924,39 @@ var condition="false"
           	<% @sumvalueout=0%>
           	<% @totalmtrshortmperneg=0 %>
           	<% @totalmtrshortmperpos=0 %>
-        <%if !@machinevalues.nil? && !@mval.nil?%>
+
        	    <% @machinevalues.each do |item|
-                      if(@mval.SETTING==item.SETTING)
+                      if(@mval.SETTING==item.SETTING)  
                         if item.CALCULATEBY=='S'
-                          @sumvaluein=@sumvaluein.to_i+((item.TSRIN.to_i*item.SCREEN_RATE_IN.to_i)/10).round
+                          @sumvaluein=@sumvaluein.to_i+((item.TSRIN.to_i*item.SCREEN_RATE_IN.to_i)/10).round 
                           @sumvalueout=@sumvalueout.to_i+((item.TSROUT.to_i*item.SCREEN_RATE_OUT)/10).round
-
+                       
                         else
-                          @sumvaluein=@sumvaluein.to_i+((item.TMTRIN.to_i*item.MTR_RATE_IN)/10).round
-                          @sumvalueout=@sumvalueout.to_i+((item.TMTROUT.to_i*item.MTE_RATE_OUT)/10).round
-
+                          @sumvaluein=@sumvaluein.to_i+((item.TMTRIN.to_i*item.MTR_RATE_IN)/10).round 
+                          @sumvalueout=@sumvalueout.to_i+((item.TMTROUT.to_i*item.MTE_RATE_OUT)/10).round 
+                       
                         end
-                        if (item.MTRSHORT.to_i<0)
+                        if (item.MTRSHORT.to_i<0) 
                           @totalmtrshortmperneg=@totalmtrshortmperneg.to_i+item.MTRSHORT.to_i
-                        else
+                        else  
                           @totalmtrshortmperpos=@totalmtrshortmperpos.to_i+item.MTRSHORT.to_i
-                        end
+                        end  
                       else
                         #if ((item.SRIN==item.PSRINVALUE or (item.SRIN!=0 and item.PSRINVALUE!=0))   or (item.SROUT==item.PSROUTVALUE or (item.SROUT!=0 and item.PSROUTVALUE!=0)))
                         if ((item.SRIN!=0 and item.PSRINVALUE!=0) or (item.SROUT!=0 and item.PSROUTVALUE!=0))
                          if ((item.SRIN==item.PSRINVALUE )   or (item.SROUT==item.PSROUTVALUE ))
                           if item.CALCULATEBY=='S'
-                          @sumvaluein=@sumvaluein.to_i+((item.TSRIN.to_i*item.SCREEN_RATE_IN.to_i)/10).round
+                          @sumvaluein=@sumvaluein.to_i+((item.TSRIN.to_i*item.SCREEN_RATE_IN.to_i)/10).round 
                           @sumvalueout=@sumvalueout.to_i+((item.TSROUT.to_i*item.SCREEN_RATE_OUT)/10).round
-
+                       
                           else
-                            @sumvaluein=@sumvaluein.to_i+((item.TMTRIN.to_i*item.MTR_RATE_IN)/10).round
-                            @sumvalueout=@sumvalueout.to_i+((item.TMTROUT.to_i*item.MTE_RATE_OUT)/10).round
-
+                            @sumvaluein=@sumvaluein.to_i+((item.TMTRIN.to_i*item.MTR_RATE_IN)/10).round 
+                            @sumvalueout=@sumvalueout.to_i+((item.TMTROUT.to_i*item.MTE_RATE_OUT)/10).round 
+                       
                           end
-                          if (item.MTRSHORT.to_i<0)
+                          if (item.MTRSHORT.to_i<0) 
                             @totalmtrshortmperneg=@totalmtrshortmperneg.to_i+item.MTRSHORT.to_i
-                          else
+                          else  
                             @totalmtrshortmperpos=@totalmtrshortmperpos.to_i+item.MTRSHORT.to_i
                           end
                          else
@@ -971,7 +965,7 @@ var condition="false"
                         else
                           break
                         end
-                      end
+                      end   
                     end%>
           totalmshortneg='<%= @totalmtrshortmperneg.to_i %>';
           totalmshortpos='<%= @totalmtrshortmperpos.to_i %>';
@@ -1006,21 +1000,21 @@ var condition="false"
 		  if (totalin!=0)
 		  {
               //today_MTRPER.value=((parseFloat(totalout)-parseFloat(summtrshortneg))*100)/(parseFloat(totalin)+parseFloat(summtrshortpos));
-
+				
                                 today_MTRPER.value=Math.round(((parseFloat(totalout)-parseFloat(summtrshortneg))*100)/(parseFloat(totalin)+parseFloat(summtrshortpos)));
 
-
+             
            }
             else
               today_MTRPER.value=0
-
-
+            
+    		    		
 		  }
 
-<%end%>
 
 
 
+ 
 
 
 
@@ -1028,7 +1022,7 @@ var condition="false"
 
 function Srper(x)
 {
-
+	
 
 	var mulby=document.getElementById("multiplyby").value;
 	var today_CALCULATEBY=document.getElementById("today_CALCULATEBY").value;
@@ -1038,13 +1032,13 @@ function Srper(x)
 
 	var today_TSRIN=document.getElementById("today_TSRIN");
 	var today_TSROUT=document.getElementById("today_TSROUT");
-
-	var yesterday_PSRIN=document.getElementById("yesterday_PSRIN");
-	var yesterday_PSROUT=document.getElementById("yesterday_PSROUT");
-
+	
+	var yesterday_PSRIN=document.getElementById("yesterday_PSRIN");	
+	var yesterday_PSROUT=document.getElementById("yesterday_PSROUT");	
+	
 	var today_SRIN=document.getElementById("today_SRIN");
 	var today_SROUT=document.getElementById("today_SROUT");
-
+	
 	var today_SRPER=document.getElementById("today_SRPER");
 	var today_MTRIN=document.getElementById("today_MTRIN");
 	var today_CALCULATEBY=document.getElementById("today_CALCULATEBY");
@@ -1052,20 +1046,20 @@ function Srper(x)
 	var rate_SRIN=document.getElementById("rate_SRIN").value;
 	var rate_SROUT=document.getElementById("rate_SROUT").value;
 	var rate_MRIN=document.getElementById("rate_MRIN").value;
-	var rate_MROUT=document.getElementById("rate_MROUT").value;
+	var rate_MROUT=document.getElementById("rate_MROUT").value;	
 	var yesterday_srin=document.getElementById("yesterday_srin");
 	var yesterday_srout=document.getElementById("yesterday_srout");
 
 	var yesterday_PSRINVALUE=document.getElementById("yesterday_PSRIN");
 	var yesterday_PSROUTVALUE=document.getElementById("yesterday_PSROUT");
 	var yesterday_MTRSHORT=document.getElementById("yesterday_MTRSHORT");
-
+	
 	if(document.getElementById("today_SRIN").value.length==0)
 	{
 	document.getElementById("today_SRIN").value=0;
 	today_SRIN.value=0;
 	}
-
+	
 	if(document.getElementById("today_SROUT").value.length==0)
 	{
 	document.getElementById("today_SROUT").value=0;
@@ -1074,7 +1068,7 @@ function Srper(x)
 	//CalTSRIN();
 	//CalTSROUT();
 	//CalTMTRIN();
-	//CalTMTROUT();
+	//CalTMTROUT();	
 	//CALCULATEBY();
 	totalsumneg=0
 	totalsumpos=0
@@ -1087,16 +1081,16 @@ function Srper(x)
 
 	 <%@totalmtrshortpos=0%>
 	 <%@totalmtrshortneg=0%>
-
-
+	 
+	 
 	if (today_CALCULATEBY.value =='M')
 	{
 	if (today_MTRSHORT.value<0)
 		totalsumneg=parseInt(today_MTRSHORT.value);
-
+		
 	else
 		totalsumpos=parseInt(today_MTRSHORT.value);
-
+		
 		if (parseFloat(today_SRIN.value)!=0)
 		{
 		 var inval=parseInt((parseFloat(today_SRIN.value)*parseFloat(rate_SRIN))/10);
@@ -1118,16 +1112,16 @@ function Srper(x)
 		  	{
 		  	outcal=parseInt(parseFloat(today_SROUT.value)*parseFloat(rate_SROUT));
 		  	}
+		  
 
+		 
 
-
-
-
+			
 			today_SRPER.value=Math.round(((parseInt(outcal)-parseFloat(totalsumneg))*100)/(parseInt(incal)+parseFloat(totalsumpos)));
 			}
 			else
 			today_SRPER.value=0;
-
+	
 	//today_SRPER.value=Math.round((((parseFloat((parseInt(today_SROUT.value)*parseInt(rate_SROUT))/10))-parseInt(totalsumneg))*100)
 	//						/(parseInt(((parseInt(today_SRIN.value)*parseInt(rate_SRIN))/10))+parseInt(totalsumpos)));
 	}
@@ -1148,10 +1142,10 @@ function Srper(x)
 								totalmtrshortneg=parseInt(today_MTRSHORT.value);
                 			else
                     			totalmtrshortpos=parseInt(today_MTRSHORT.value);
-
+                    			
                     		//alert(totalmtrshortneg);
                     		//alert(totalmtrshortpos);
-
+                    		
 							var inval=parseInt((parseFloat(today_SRIN.value)*parseFloat(rate_SRIN))/10);
 		 					//alert(inval);
 		  					if(parseInt(inval)!=0)
@@ -1171,9 +1165,9 @@ function Srper(x)
 		  					{
 		  					outcal=parseInt(parseFloat(today_SROUT.value)*parseFloat(rate_SROUT));
 		  					}
-
+		  
 							today_SRPER.value=Math.round(((parseInt(outcal)-parseFloat(totalmtrshortneg))*100)/(parseInt(incal)+parseFloat(totalmtrshortpos)));
-
+							
 							//today_SRPER.value=Math.round((((parseInt((parseFloat(today_SROUT.value)*parseFloat(rate_SROUT))/10))-parseInt(totalmtrshortneg))*100)
 							///(parseInt(((parseFloat(today_SRIN.value)*parseFloat(rate_SRIN))/10))+parseInt(totalmtrshortpos)));
 						}
@@ -1181,36 +1175,36 @@ function Srper(x)
 						{
 							today_SRPER.value=0
 						}
-
+						
 					}
-
+					
 					else
 					{
-
+						
 						condition="false";
-
+					
 						if (parseInt(today_MTRSHORT.value)<0)
 							viewmneg=parseInt(viewmneg)+parseInt(today_MTRSHORT.value);
                 		else
                     		viewmpos=parseInt(viewmpos)+parseInt(today_MTRSHORT.value);
 
 					}
-
+					
 			}
 			else
 			{
-
-
-
+				
+              
+				
 				if (parseInt(today_MTRSHORT.value)<0)
 					viewmneg=parseInt(viewmneg)+parseInt(today_MTRSHORT.value);
                 else
                     viewmpos=parseInt(viewmpos)+parseInt(today_MTRSHORT.value);
-
-
-
-
-
+                    
+               
+                    
+                
+				
 			}
 
 		}
@@ -1223,16 +1217,15 @@ function Srper(x)
 	{
 		//alert("Conditions not applied");
 		<%@machinevalues1=Machinedata.find(:first,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE = ?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],@session[:ttdate]])%>
-                    <%if !@machinevalues1.nil?%>
           	<%
-                   	if @machinevalues1.CALCULATEBY!='M'
+                   	if @machinevalues1.CALCULATEBY!='M' 
                       @machinevalues=Machinedata.find(:all,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE < ?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],@session[:ttdate]],:order => "TRANS_DATE desc")
      				  @machinevalues.each do |item|
-                        #if(@mdata.SETTING==item.LASTSETTING) and ((item.SRIN==item.PSRINVALUE or (item.SRIN!=0 and item.PSRINVALUE!=0))   or (item.SROUT==item.PSROUTVALUE or (item.SROUT!=0 and item.PSROUTVALUE!=0)))
-                        #if(@mdata.SETTING==item1.SETTING) and ((item1.SRIN==item1.PSRINVALUE or (item1.SRIN!=0 and item1.PSRINVALUE!=0))   or (item1.SROUT==item1.PSROUTVALUE or (item1.SROUT!=0 and item1.PSROUTVALUE!=0)))
+                        #if(@mdata.SETTING==item.LASTSETTING) and ((item.SRIN==item.PSRINVALUE or (item.SRIN!=0 and item.PSRINVALUE!=0))   or (item.SROUT==item.PSROUTVALUE or (item.SROUT!=0 and item.PSROUTVALUE!=0)))  
+                        #if(@mdata.SETTING==item1.SETTING) and ((item1.SRIN==item1.PSRINVALUE or (item1.SRIN!=0 and item1.PSRINVALUE!=0))   or (item1.SROUT==item1.PSROUTVALUE or (item1.SROUT!=0 and item1.PSROUTVALUE!=0)))  
                         #if((@mdata.SETTING==item.SETTING) and ((item.SRIN==item.PSRINVALUE and (item.SRIN!=0 and item.PSRINVALUE!=0))   or (item.SROUT==item.PSROUTVALUE and (item.SROUT!=0 and item.PSROUTVALUE!=0))))
                         #LATEST##if((@mdata.SETTING==item1.SETTING) and ((item1.SRIN==item1.PSRINVALUE and ((item1.SRIN!=0 and item1.PSRINVALUE!=0) or(item1.SRIN==0 and item1.PSRINVALUE==0 and item1.T_DATE!=nil)))   or (item1.SROUT==item1.PSROUTVALUE and ((item1.SROUT!=0 and item1.PSROUTVALUE!=0)or(item1.SROUT==0 and item1.PSROUTVALUE==0 and item1.T_DATE!=nil)))))
-                        if(@machinevalues1.SETTING==item.SETTING and item.T_DATE!=nil)
+                        if(@machinevalues1.SETTING==item.SETTING and item.T_DATE!=nil) 
                           if (item.CALCULATEBY!='M')
                             if item.MTRSHORT.to_i<0
                               @totalmtrshortneg=@totalmtrshortneg.to_i+item.MTRSHORT.to_i
@@ -1247,7 +1240,7 @@ function Srper(x)
                           if ((item.SRIN!=0 and item.PSRINVALUE!=0) or (item.SROUT!=0 and item.PSROUTVALUE!=0))
                           	if ((item.SRIN==item.PSRINVALUE )   or (item.SROUT==item.PSROUTVALUE ))
                             	if (item.CALCULATEBY!='M')
-
+                              
                               		if item.MTRSHORT.to_i<0
                                 		@totalmtrshortneg=@totalmtrshortneg.to_i+item.MTRSHORT.to_i
                               		else
@@ -1261,15 +1254,15 @@ function Srper(x)
                             end
                           else
                             break
-                          end
+                          end  
                         end
                       end
                     else
-                        if @machinevalues1.MTRSHORT.to_i<0
+                        if @machinevalues1.MTRSHORT.to_i<0 
                             @totalmtrshortneg=@machinevalues1.MTRSHORT.to_i
-                        else
+                        else 
                             @totalmtrshortpos=@machinevalues1.MTRSHORT.to_i
-                        end
+                        end 
                     end
                         %>
 
@@ -1308,38 +1301,38 @@ function Srper(x)
 		  	{
 		  	outcal=parseInt(parseFloat(today_SROUT.value)*parseFloat(rate_SROUT));
 		  	}
+		  
 
-
-
+		 
 			//today_SRPER.value=Math.round((((parseFloat((parseFloat(today_SROUT.value)*parseFloat(rate_SROUT))/10))-parseFloat(totalmneg))*100)
 			// /(parseInt(((parseFloat(today_SRIN.value)*parseFloat(rate_SRIN))/10))+parseFloat(totalmpos)));
-
+			
 			today_SRPER.value=Math.round(((parseInt(outcal)-parseFloat(totalmneg))*100)/(parseInt(incal)+parseFloat(totalmpos)));
-
+			
 			}
 			else
-
+			
 			today_SRPER.value=0;
 			}
 		}
 
-
-<%end%>
-
-
-
+	
+	
+	
+	
+	
 	var today_PSRINVALUE=document.getElementById("today_PSRINVALUE");
 	today_PSRINVALUE.value=today_SRIN.value;
-
+	
 	var today_PSROUTVALUE=document.getElementById("today_PSROUTVALUE");
 	today_PSROUTVALUE.value=today_SROUT.value;
-
+	
 	today_TSRIN.value=(parseInt(today_SRIN.value)-parseInt(yesterday_PSRIN.value))*mulby;
 
 	today_TSROUT.value=(parseInt(today_SROUT.value)-parseInt(yesterday_PSROUT.value))*mulby;
 
-
-
+	
+	
 	if(x==0)
 	{
 	today_MTRIN.select();
@@ -1354,8 +1347,8 @@ function Srper(x)
 
 
 
-
-return true;
+	
+return true;	
 }
 
 function CheckPRSIN()
@@ -1364,7 +1357,7 @@ var today_PSRINVALUE=document.getElementById("today_PSRINVALUE");
 if(parseInt(today_PSRINVALUE.value.length)==0)
 today_PSRINVALUE.value=0;
 
-
+	
 }
 function CheckPRSOUT()
 {
@@ -1379,7 +1372,7 @@ var today_PMTRINVALUE=document.getElementById("today_PMTRINVALUE");
 if(parseInt(today_PMTRINVALUE.value.length)==0)
 today_PMTRINVALUE.value=0;
 
-
+	
 }
 function CheckPMTROUT()
 {
@@ -1424,13 +1417,13 @@ var today_MTRCOLL=document.getElementById("today_MTRCOLL");
 var rate_SRIN=document.getElementById("rate_SRIN").value;
 var rate_SROUT=document.getElementById("rate_SROUT").value;
 var rate_MRIN=document.getElementById("rate_MRIN").value;
-var rate_MROUT=document.getElementById("rate_MROUT").value;
+var rate_MROUT=document.getElementById("rate_MROUT").value;	
 
 var today_SRAVG=document.getElementById("today_SRAVG");
 /*
-(today_SETTING.value!=yes_SETTING.value)
+(today_SETTING.value!=yes_SETTING.value) 
 && (((yesterday_srin.value!=yesterday_PSRINVALUE.value ) && (yesterday_srout.value==yesterday_PSROUTVALUE.value)
-|| (yesterday_srout.value!=yesterday_PSROUTVALUE.value) && (yesterday_srin.value==yesterday_PSRINVALUE.value ))
+|| (yesterday_srout.value!=yesterday_PSROUTVALUE.value) && (yesterday_srin.value==yesterday_PSRINVALUE.value )) 
 ||
 ((yesterday_PSRINVALUE.value==0 ) || ( yesterday_PSROUTVALUE.value==0 )))
 )
@@ -1443,8 +1436,8 @@ if(today_SETTING.value!=yes_SETTING.value)
 	if((yesterday_srin.value!=yesterday_PSRINVALUE.value ) || (yesterday_PSRINVALUE.value==0 && yesterday_srin.value==0))
 	{
 	//alert("In srin val checking")
-
-
+	
+	
 	///Calculation for SR %
 	if (today_SRIN.value!=0)
 	{
@@ -1467,9 +1460,9 @@ if(today_SETTING.value!=yes_SETTING.value)
 		  	{
 		  	outcal=parseInt(parseFloat(today_SROUT.value)*parseFloat(rate_SROUT));
 		  	}
+		  
 
-
-
+		 
 
 			if(parseInt(today_MTRSHORT.value)<0)
 			{
@@ -1480,9 +1473,9 @@ if(today_SETTING.value!=yes_SETTING.value)
 			{
 			var neg=0;
 			var pos=today_MTRSHORT.value;
-
+				
 			}
-
+				
 			//alert(neg);
 			//alert(pos);
 			//alert(outcal);
@@ -1494,8 +1487,8 @@ if(today_SETTING.value!=yes_SETTING.value)
 	{
 		today_SRPER.value=0
 	}
-
-
+	
+	
 	////Calculation For Meter %
 	//alert("CHECK SETTING CALLED--------1");
 	sinval=0
@@ -1508,33 +1501,33 @@ if(today_SETTING.value!=yes_SETTING.value)
 	 }
 	else
 	{
-
+    	
     	sinval=parseFloat(sinval) + parseInt((parseFloat(today_TMTRIN.value)*parseFloat(rate_MRIN))/10);
 	    soutval=parseFloat(soutval) + parseInt((parseFloat(today_TMTROUT.value)*parseFloat(rate_MROUT))/10);
 	}
 
-
+	
 	totalmtrshortmper=parseFloat(totalmtrshortmper)+parseFloat(today_MTRSHORT.value);
-
+	
 	if (parseInt(sinval)!=0)
 	{
-
-
+	
+		
     	today_MTRPER.value=Math.round((parseFloat(soutval)-parseFloat(totalmtrshortmper))*100/parseFloat(sinval));
     }
 	else
 	{
     	today_MTRPER.value=0
     }
-
-
+    
+   
     THIRTYDAYSAVG();
 	TENDAYSAVG();
 	//sr avg FORMULA
-
+	
 	/*if(today_CALCULATEBY.value=='S')
 	{
-
+	
 		today_SRAVG.value=today_SRCOLL.value;
 	}
 	else
@@ -1584,8 +1577,8 @@ var today_MTRCOLL=document.getElementById("today_MTRCOLL");
 
 var today_SRAVG=document.getElementById("today_SRAVG");
 /*
-if ((today_SETTING.value==yes_SETTING.value)
-&& ((today_SRIN.value==yes_PSRINVALUE.value ||  (today_SRIN.value!=0 && yes_PSRINVALUE.value!=0))
+if ((today_SETTING.value==yes_SETTING.value) 
+&& ((today_SRIN.value==yes_PSRINVALUE.value ||  (today_SRIN.value!=0 && yes_PSRINVALUE.value!=0))  
  || (today_SROUT.value==yes_PSROUTVALUE.value ||  (today_SROUT.value!=0 && yes_PSROUTVALUE.value!=0))) )
 */
  if(today_SETTING.value!=yes_SETTING.value)
@@ -1593,12 +1586,12 @@ if ((today_SETTING.value==yes_SETTING.value)
 	if((yesterday_srin.value!=yes_PSRINVALUE.value ) || (yes_PSRINVALUE.value==0 && yesterday_srin.value==0))
 		{
 		//alert("SRAVG EQUAL");
-     	SRAVGSETTING();
+     	SRAVGSETTING();	
 		}
 	}
   else
  	{
-
+	
 	SRAVG();
 	}
 }
@@ -1640,14 +1633,14 @@ if(TSRIN.value<0 || TSROUT.value<0)
 		var today_SRIN=document.getElementById('today_SRIN');
 		today_SRIN.select();
 		today_SRIN.focus();
-
+		
 	}
 }
 else
 {
 	save.select();
 		save.focus();
-
+		
 }
 }
 
@@ -1728,14 +1721,14 @@ function CalSrcoll()
 
  var today_TMTRIN=document.getElementById("today_TMTRIN");
  var today_TMTROUT=document.getElementById("today_TMTROUT");
-
-
+ 
+ 
 
  var today_SRCOLL=document.getElementById("today_SRCOLL");
  var today_MTRCOLL=document.getElementById("today_MTRCOLL");
 
  var today_MTRSHORT=document.getElementById("today_MTRSHORT");
-
+ 
 var rate_SRIN=document.getElementById("rate_SRIN").value;
 
 var rate_SROUT=document.getElementById("rate_SROUT").value;
@@ -1743,11 +1736,11 @@ var rate_MRIN=document.getElementById("rate_MRIN").value;
 var rate_MROUT=document.getElementById("rate_MROUT").value;
 
 
+ 
 
-
-
+ 
   sratein=rate_SRIN
- srateout=rate_SROUT
+ srateout=rate_SROUT 
  mratein=rate_MRIN
  mrateout=rate_MROUT
 
@@ -1762,10 +1755,10 @@ today_SRCOLL.value = Math.round(today_SRCOLL1/10)+parseInt(today_MTRSHORT.value)
 today_MTRCOLL1 = parseInt((parseInt(today_TMTRIN.value)*parseInt(mratein))-(parseInt(today_TMTROUT.value)*parseInt(mrateout)));
   today_MTRCOLL.value = Math.round(today_MTRCOLL1/10)+parseInt(today_MTRSHORT.value);
 
+	
 
 
-
-
+ 
 }
 
 function CalTSRIN()
@@ -1774,17 +1767,17 @@ function CalTSRIN()
 	var today_SRIN=document.getElementById("today_SRIN").value;
 	var mulby=document.getElementById("multiplyby").value;
 	var TSRIN=document.getElementById("today_TSRIN");
-
+	
 	if(document.getElementById("yesterday_PSRIN").value.length==0)
 	{
 	document.getElementById("yesterday_PSRIN").value=0;
 	yes_PSRIN=0;
 	}
-
+	
 	TSRIN.value=(parseInt(today_SRIN)-parseInt(yes_PSRIN))*mulby;
-
+	
 	CALCULATEBY();
-
+	
 }
 
 function CalTSROUT()
@@ -1793,16 +1786,16 @@ function CalTSROUT()
 	var today_SROUT=document.getElementById("today_SROUT").value;
 	var mulby=document.getElementById("multiplyby").value;
 
-
+	
 	var TSROUT=document.getElementById("today_TSROUT");
-
+	
 	if(document.getElementById("yesterday_PSROUT").value.length==0)
 	{
 	document.getElementById("yesterday_PSROUT").value=0;
 	yes_PSROUT=0;
 	}
 
-
+	
 	TSROUT.value=(parseInt(today_SROUT)-parseInt(yes_PSROUT))*mulby;
 	CALCULATEBY();
 }
@@ -1815,17 +1808,17 @@ function CalTMTROUT()
 	var today_MTROUT=document.getElementById("today_MTROUT").value;
 	var TMTROUT=document.getElementById("today_TMTROUT");
 	var mulby=document.getElementById("multiplyby").value;
-
+	
 	if(document.getElementById("yesterday_PMTROUT").value.length==0)
 	{
 	document.getElementById("yesterday_PMTROUT").value=0;
 	yes_PMTROUT=0;
 	}
 
-
+	
 	TMTROUT.value=(parseInt(today_MTROUT)-parseInt(yes_PMTROUT))*mulby;
 	CALCULATEBY();
-
+	
 	today_SETTING.select();
 	today_SETTING.focus();
 }
@@ -1837,17 +1830,17 @@ function CalTMTRIN()
 	var mulby=document.getElementById("multiplyby").value;
 
 	var TMTRIN=document.getElementById("today_TMTRIN");
-
+	
 	if(document.getElementById("yesterday_PMTRIN").value.length==0)
 	{
 	document.getElementById("yesterday_PMTRIN").value=0;
 	yes_PMTRIN=0;
 	}
 
-
+	
 	TMTRIN.value=(parseInt(today_MTRIN)-parseInt(yes_PMTRIN))*mulby;
 	CALCULATEBY();
-
+	
 }
 
 function CalMTRDIFF()
@@ -1885,7 +1878,7 @@ var today_MTRDIFFWHY=document.getElementById('today_MTRDIFFWHY');
          if (MTRDIFFIN.value=='0' && MTRDIFFOUT.value!='0')
          {
             		today_MTRDIFFWHY.value='OUT'
-          }
+          }  		
           if (MTRDIFFIN.value!='0' && MTRDIFFOUT.value=='0')
           {
             		today_MTRDIFFWHY.value='IN'
@@ -1893,10 +1886,10 @@ var today_MTRDIFFWHY=document.getElementById('today_MTRDIFFWHY');
           if (MTRDIFFIN.value!='0' && MTRDIFFOUT.value!='0' )
           {
             		today_MTRDIFFWHY.value='IN/OUT'
-
+          		
 			}
-
-
+			
+	
 }
 
 function CALKEYSHORT()
@@ -2023,97 +2016,336 @@ SROUT.readOnly=true;
 //{
 	//new Ajax.Request("<%= url_for :controller=> :machinedata,:action=>'datavalue' %>",{method:'get'})
 //}
-
-<%end%>
-
 </script>
 </head>
 <body>
-
+<% form_tag :action=>'updatemachinedata' do %>
 <center>
   <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" height="420">
       <tr>
         <td width="100%" height="420" align=center>
           <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="96%" height="420">
-            <% form_tag :controller=>"machinedata",:action => "showmachinedata" do %>
             <tr>
               <td width="100%" height="50" >
-                <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse"  width="100%" height="100%">
+                <table border="1" cellpadding="0" cellspacing="1" style="border-collapse: collapse" bordercolor="#111111" width="553" height="100%">
+                  <th width="171" >ShopName</th>
+                  <th width="77" >KEY No.</th>
+                  <th width="55"  >X</th>
+                  <th width="240"  >Name/No</th>
+                  </tr>
                   <tr>
-                  <td width="50" >
-                    <b><font face="Arial" size="2">
-                        DATE</font></b>
-                  </td>
-                  <td width="300" >
-                    <!--<%= calendar_date_select_tag "date",Date.today.to_s,  :popup => "force" %> -->
-                    <% if(@session[:ttdate]==nil) %>
-                      <%date = Date.today-1%>
-                      <%= calendar_date_select_tag "date",date.strftime('%Y-%m-%d')  ,  :popup => "force" %>
-                    <%else%>
-                      <%= calendar_date_select_tag "date",@session[:ttdate].to_s,  :popup => "force" %>
+                    <td width="171"  >
+                      <input type="text" name="SHOPNAME" id="SHOPNAME" size=18 value="<%= @session[:ttshopname]%>" readonly/></td>
+                    <td width="77"  >
+                      <input type="text" name="KEY" id="KEY" size=7 value="<%= @session[:ttkeyno]%>" readonly/></td>
+                    <td width="55"  >
+                      <% @mc=Machinedata.find_first(["CLUSTER_NAME=? and SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and TRANS_DATE=?",@session[:ttclustername],@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttdate]])%>
+                      <% if(@mc!=nil) %>
+                        <input type="text" name="multiplyby" id="multiplyby" size=5 value="<%= @mc.MULTIPLY_BY.to_i %>" readonly/></td>
+                      <td width="240">
+                        <input type="text" name="T1" size=9 value="<%= @mc.MACHINE_NAME%>" readonly/>&nbsp;&nbsp<input type="text" name="MACHINENO" id="MACHINENO" size=8 value="<%= @session[:ttmachineno]%>" readonly/></td>
                     <%end%>
-                    &nbsp;
-                  </td>
-
-                    <td width="100">
-                    <label for="shop_CompanyID"><b><font face="Arial" size="2">
-                          GROUP NAME</font></b></label>
-                  </td>
-                  <td width="100">
-                    <% if(@session[:ttclustername]==nil or @session[:ttclustername]=="") %>
-                      <% @s=Cluster.find(:all,:order => "ClusterName") %>
-                      <%= collection_select(:machinedata, :ClusterName,  @s,  :ClusterName, :ClusterName,
-                        {:prompt   => "Select ClusterName"},
-                        {:onkeypress => "#{remote_function(:url  => {:controller=>'machinedata', :action => "getShop"},
-                          :with => "'ClusterName='+value")}",:onchange => "#{remote_function(:url  => {:controller=>'machinedata', :action => "getShop"},
-                          :with => "'ClusterName='+value")}"}) %>
-                    <%else%>
-                      <% @cluster=Cluster.find(:all,:conditions=>["ClusterName<>?",@session[:ttclustername]],:order => "ClusterName")%>
-                      <select id="machinedata_ClusterName" name="machinedata[ClusterName]" onchange="<%=remote_function(:url => {:action => 'getShop'},:with => "'ClusterName='+value")-%>">
-                        <option value="<%= @session[:ttclustername] %>"><%= @session[:ttclustername] %></option>
-                        <% @cluster.each do |c| %>
-                          <option value="<%= c.ClusterName %>"><%= c.ClusterName %></option>
-                        <% end %>
-                      </select>
-                    <%end%>
-                  </td>
-                <td width="100">
-                    <b><font face="Arial" size="2">
-                        SHOP NAME</font></b>
-                  </td>
-                  <td width="100" align="justify" >
-                    <div id="Shopdiv">
-                      <%= render :partial => 'shop'%>
-                    </div></td>
-
-                    <td width="100">
-                    <b><font face="Arial" size="2">
-                        MACHINE NO</font></b>
-                  </td>
-                  <td  width="100">
-                    <input type=text name="MachineNo" id="MachineNo" size="20" onKeyUp="javascript:this.value=this.value.toUpperCase();"/>
-                  </td>
-
-                  <td width="100" height="26" colspan=4 >
-
-                <%= submit_tag "Show Machine Data" ,:id=>'save'  %>
-            </td>
-
                   </tr>
                 </table>
               </td>
             </tr>
-            <%end%>
-    <tr>
+            <tr>
               <td width="100%" height="1">&nbsp;</td>
             </tr>
-<% if params[:commit].eql?("Show Machine Data") %>
-      <tr>
-        <td width="100%" height="420" align=center>
-		<%= render :partial=> "machine_data"%>
-        </td>
-      </tr>
-<%end%>
+            <tr>
+              <td width="100%" height="200">
+                <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" height="205">
+                  <tr>
+                    <th width="6%" height="19">Date</th>
+                    <th width="15%" height="19">Setting</th>
+                    <th width="10%" height="19">Sr.in</th>
+                    <th width="8%" height="19">Sr.out</th>
+                    <th width="5%" height="19">Sr.%</th>
+                    <th width="8%" height="19">Mtr.in</th>
+                    <th width="8%" height="19">Mtr.out</th>
+                    <th width="8%" height="19">Mtr.%</th>
+                    <th width="8%" height="19">Cal By</th>
+                    <th width="8%" height="19">Mtr.Diffin</th>
+                    <th width="8%" height="19">Mtr.Diffout</th>
+                    <th width="8%" height="19">WHY</th>
+                  </tr>
+                  <tr>
+                    <td width="7%" height="23" ></td>
+                    <td width="15%" height="23"></td>
+                    <td width="10%" height="23">
+                      <input type="checkbox" name="check_SRIN" id="check_SRIN"  value="ON" onClick="ChangeSRINState();"/>
+                      <input type="text" name="rate[SRIN]" id="rate_SRIN" size=5 value="<%=@mc.SCREEN_RATE_IN.to_i %>" readonly onkeypress="return onlyNumbers();"/>
+                    </td>
+                    <td width="8%" height="23">
+                      <input type="checkbox" name="check_SROUT" id="check_SROUT"  value="ON" onClick="ChangeSROUTState();"/>
+                      <input type="text" name="rate[SROUT]" id="rate_SROUT" size=5 value="<%=@mc.SCREEN_RATE_OUT.to_i %>" readonly onkeypress="return onlyNumbers();"/></td>
+                    <td width="5%" height="23"></td>
+                    <td width="8%" height="23">
+                      <input type="checkbox" name="check_MTRIN" id="check_MTRIN"  value="ON" onClick="ChangeMTRINState();"/>
+                      <input type="text" name="rate[MRIN]" id="rate_MRIN" size=5 value="<%=@mc.MTR_RATE_IN.to_i %>" readonly onkeypress="return onlyNumbers();"/></td>
+                    <td width="8%" height="23">
+                      <input type="checkbox" name="check_MTROUT" id="check_MTROUT"  value="ON" onClick="ChangeMTROUTState();"/>
+                      <input type="text" name="rate[MROUT]" id="rate_MROUT" size=5 value="<%=@mc.MTE_RATE_OUT.to_i %>" readonly onkeypress="return onlyNumbers();"/></td>
+                    <td width="8%" height="23"></td>
+                    <td width="8%" height="23"></td>
+                    <td width="8%" height="23"></td>
+                    <td width="8%" height="23"></td>
+                    <td width="8%" height="23"></td>
+                  </tr>
+                  <% daybefore=Date.parse(@session[:ttdate])-2 %>
+                  <% yesterday=Date.parse(@session[:ttdate])-1 %>
+                  <!--QUERY FOR FETCHING DAYBEFORE YESTERDAY'S DATA -->
+                  <% @DATE2=Machinedata.find_first(["Cluster_Name=? and Shop_Name=? and TRANS_Date=? and Machine_No=?",@session[:ttclustername],@session[:ttshopname],daybefore,@session[:ttmachineno]])%>
+                  <% if(@DATE2!=nil)%>
+                    <tr>
+                      <td width="7%" height="22" ><input type="text" name="T1" size=6 value="<%= daybefore %>" readonly /></td>
+                      <td width="15%" height="22">
+                        <input type="text" name="T1" size=21 value="<%= @DATE2.SETTING %>" readonly/></td>
+                      <td width="10%" height="22">
+                        <input type="text" name="T1" size=10 value="<%= @DATE2.SRIN.to_i %>" readonly/></td>
+                      <td width="8%" height="22">
+                        <input type="text" name="T1" size=11 value="<%= @DATE2.SROUT.to_i %>" readonly/></td>
+                      <td width="5%" height="22"><input type="text" name="T1" size=5 value="<%= @DATE2.SRPER.to_i %>" readonly/></td>
+                      <td width="8%" height="22"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRIN.to_i %>" readonly/></td>
+                      <td width="8%" height="22"><input type="text" name="T1" size=5 value="<%= @DATE2.MTROUT.to_i %>" readonly/></td>
+                      <td width="8%" height="22"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRPER.to_i %>" readonly/></td>
+                      <td width="8%" height="22"><input type="text" name="T1" size=5 value="<%= @DATE2.CALCULATEBY %>" readonly/></td>
+                      <td width="8%" height="22"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRDIFFIN.to_i %>" readonly/></td>
+                      <td width="8%" height="22"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRDIFFOUT.to_i %>" readonly/></td>
+                      <td width="8%" height="22"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRDIFFWHY %>" readonly/></td>
+                    </tr>
+                    <tr>
+                      <td width="7%" height="22" ></td>
+                      <td width="15%" height="22"></td>
+                      <td width="10%" height="22">
+                        <input type="text" name="T1" size=10 value="<%= @DATE2.PSRINVALUE.to_i %>" readonly/></td>
+                      <td width="8%" height="22">
+                        <input type="text" name="T1" size=11 value="<%= @DATE2.PSROUTVALUE.to_i %>" readonly/></td>
+                      <td width="5%" height="22"></td>
+                      <td width="8%" height="22"><input type="text" name="T1" size=5 value="<%= @DATE2.PMTRINVALUE.to_i %>" readonly/></td>
+                      <td width="8%" height="22"><input type="text" name="T1" size=5 value="<%= @DATE2.PMTROUTVALUE.to_i %>" readonly/></td>
+                      <td width="8%" height="22"></td>
+                      <td width="8%" height="22"></td>
+                      <td width="8%" height="22"></td>
+                      <td width="8%" height="22"></td>
+                      <td width="8%" height="22"></td>
+                    </tr>
+                  <% end%>
+                  <!--QUERY FOR FETCHING YESTERDAY'S DATA -->
+                  <% @DATE2=Machinedata.find_first(["Cluster_Name=? and Shop_Name=? and TRANS_Date=? and Machine_No=?",@session[:ttclustername],@session[:ttshopname],yesterday,@session[:ttmachineno]])%>
+                  <% if(@DATE2!=nil)%>
+                    <tr>
+                      <td width="7%" height="23" ><input type="text" name="yesterday[date]" id="yesterday_date" size=6 value="<%=yesterday %>" readonly />
+                      </td>
+                      <td width="15%" height="23">
+                        <input type="text" name="yesterday[SETTING]" id="yesterday_SETTING" size=21 value="<%= @DATE2.SETTING %>" readonly/></td>
+                      <td width="10%" height="23">
+                        <input type="text" name="yesterday[srin]" id="yesterday_srin" size=10 value="<%= @DATE2.SRIN.to_i %>" readonly/></td>
+                      <td width="8%" height="23">
+                        <input type="text" name="yesterday[srout]" id="yesterday_srout" size=11 value="<%= @DATE2.SROUT.to_i %>" readonly/></td>
+                      <td width="5%" height="23"><input type="text" name="T1" size=5 value="<%= @DATE2.SRPER.to_i %>" readonly/></td>
+                      <td width="8%" height="23"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRIN.to_i %>" readonly/></td>
+                      <td width="8%" height="23"><input type="text" name="T1" size=5 value="<%= @DATE2.MTROUT.to_i %>" readonly/></td>
+                      <td width="8%" height="23"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRPER.to_i %>" readonly/></td>
+                      <td width="8%" height="23"><input type="text" name="T1" size=5 value="<%= @DATE2.CALCULATEBY %>" readonly/></td>
+                      <td width="8%" height="23"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRDIFFIN.to_i %>" readonly/></td>
+                      <td width="8%" height="23"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRDIFFOUT.to_i %>" readonly/></td>
+                      <td width="8%" height="23"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRDIFFWHY %>" readonly/></td>
+                    </tr>
+                    <tr>
+                      <td width="7%" height="22" ></td>
+                      <td width="15%" height="22"><input type="hidden" name="yesterday[MTRSHORT]" id="yesterday_MTRSHORT" size=5 value="<%= @DATE2.MTRSHORT %>" readonly/></td>
+                      <td width="10%" height="22">
+                        <input type="text" name="yesterday[PSRIN]" id="yesterday_PSRIN" size=10 value="<%= @DATE2.PSRINVALUE.to_i %>" onFocus="this.select();" onblur="return CalTSRIN();" onkeypress="return onlyNumbers();" tabindex=0/></td>
+                      <td width="8%" height="22">
+                        <input type="text" name="yesterday[PSROUT]" id="yesterday_PSROUT" size=11 value="<%= @DATE2.PSROUTVALUE.to_i %>" onFocus="this.select();" onblur="return CalTSROUT();" onkeypress="return onlyNumbers();" /></td>
+                      <td width="5%" height="22"></td>
+                      <td width="8%" height="22"><input type="text" name="yesterday[PMTRIN]" id="yesterday_PMTRIN" size=5 value="<%= @DATE2.PMTRINVALUE.to_i %>" onFocus="this.select();" onblur="return CalTMTRIN();" onkeypress="return onlyNumbers();" /></td>
+                      <td width="8%" height="22"><input type="text" name="yesterday[PMTROUT]" id="yesterday_PMTROUT" size=5 value="<%= @DATE2.PMTROUTVALUE.to_i %>" onFocus="this.select();" onblur="return CalTMTROUT();" onkeypress="return onlyNumbers();"/></td>
+                      <td width="8%" height="22"></td>
+                      <td width="8%" height="22"></td>
+                      <td width="8%" height="22"></td>
+                      <td width="8%" height="22"></td>
+                      <td width="8%" height="22"></td>
+                    </tr>
+                  <% end%>
+                  <!--QUERY FOR FETCHING YESTERDAY'S DATA -->
+                  <% @DATE2=Machinedata.find_first(["Cluster_Name=? and Shop_Name=? and TRANS_Date=? and Machine_No=?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate],@session[:ttmachineno]])%>
+                  <% if(@DATE2!=nil)%>
+                    <tr>
+                      <td width="7%" height="23" ><input type="text" name="today[date]" id="today_date"  size=6 value="<%= @session[:ttdate] %>"  readonly/>
+                      </td>
+                      <td width="15%" height="23">
+                        <input type="text" name="today[SETTING]" size=21 id="today_SETTING" onFocus="this.select();"  value="<%= @DATE2.SETTING %>"/></td>
+                      <td width="10%" height="23">
+                        <input type="text" name="today[SRIN]" id="today_SRIN" size=10 value="<%= @DATE2.SRIN.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();" onBlur="return Srper(1);"/></td>
+                      <td width="8%" height="23">
+                        <input type="text" name="today[SROUT]" id="today_SROUT" size=11 value="<%= @DATE2.SROUT.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();" onBlur="return Srper(0);"/></td>
+                      <td width="5%" height="23"><input type="text" name="today[SRPER]" id="today_SRPER"  size=5 value="<%= @DATE2.SRPER.to_i %>" readonly/></td>
+                      <td width="8%" height="23"><input type="text" name="today[MTRIN]" id="today_MTRIN" size=5 value="<%= @DATE2.MTRIN.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();" onblur="return Mtrper(1);"/></td>
+                      <td width="8%" height="23"><input type="text" name="today[MTROUT]" id="today_MTROUT" size=5 value="<%= @DATE2.MTROUT.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();"  onblur="CheckCalBy();"/></td>
+                      <td width="8%" height="23"><input type="text" name="today[MTRPER]" id="today_MTRPER"  size=5 value="<%= @DATE2.MTRPER.to_i %>" readonly/></td>
+                      <td width="8%" height="23"><input type="text" name="today[CALCULATEBY]" id="today_CALCULATEBY"  size=5 value="<%= @DATE2.CALCULATEBY %>" readonly/></td>
+                      <td width="8%" height="23"><input type="text" name="today[MTRDIFFIN]" id="today_MTRDIFFIN"  size=5 value="<%= @DATE2.MTRDIFFIN.to_i %>" readonly/></td>
+                      <td width="8%" height="23"><input type="text" name="today[MTRDIFFOUT]" id="today_MTRDIFFOUT" size=5 value="<%= @DATE2.MTRDIFFOUT.to_i %>" readonly/></td>
+                      <td width="8%" height="23"><input type="text" name="today[MTRDIFFWHY]" id="today_MTRDIFFWHY" size=5 value="<%= @DATE2.MTRDIFFWHY %>" readonly/></td>
+                    </tr>
+                    <tr>
+                      <td width="7%" height="21" ></td>
+                      <td width="15%" height="21"></td>
+                      <td width="10%" height="21">
+                        <input type="text" name="today[PSRINVALUE]" id="today_PSRINVALUE" size=10 value="<%= @DATE2.PSRINVALUE.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();" onblur="CheckPRSIN();"/></td>
+                      <td width="8%" height="21">
+                        <input type="text" name="today[PSROUTVALUE]" id="today_PSROUTVALUE" size=11 value="<%= @DATE2.PSROUTVALUE.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();" onblur="CheckPRSOUT();"/></td>
+                      <td width="5%" height="21"></td>
+                      <td width="8%" height="21"><input type="text" name="today[PMTRINVALUE]" id="today_PMTRINVALUE" size=5 value="<%= @DATE2.PMTRINVALUE.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();" onblur="CheckPMTRIN();" ></td>
+                      <td width="8%" height="21"><input type="text" name="today[PMTROUTVALUE]" id="today_PMTROUTVALUE" size=5 value="<%= @DATE2.PMTROUTVALUE.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();" onblur="CheckPMTROUT();"></td>
+                      <td width="8%" height="21"></td>
+                      <td width="8%" height="21"></td>
+                      <td width="8%" height="21"></td>
+                      <td width="8%" height="21"></td>
+                      <td width="8%" height="21"></td>
+                    </tr>
+                    <tr>
+                      <td width="7%" height="22" ></td>
+                      <td width="15%" height="22"></td>
+                      <td width="10%" height="22">
+                        <input type="text" name="today[TSRIN]" id="today_TSRIN" size=10 value="<%= @DATE2.TSRIN.to_i*@DATE2.MULTIPLY_BY.to_i %>" readonly/></td>
+                      <td width="8%" height="22">
+                        <input type="text" name="today[TSROUT]" id="today_TSROUT" size=11 value="<%= @DATE2.TSROUT.to_i*@DATE2.MULTIPLY_BY.to_i %>" readonly/></td>
+                      <td width="5%" height="22"><input type="text" name="T1" size=5 /></td>
+                      <td width="8%" height="22"><input type="text" name="today[TMTRIN]" id="today_TMTRIN" size=5 value="<%= @DATE2.TMTRIN.to_i*@DATE2.MULTIPLY_BY.to_i %>" readonly>/</td>
+                      <td width="8%" height="22"><input type="text" name="today[TMTROUT]" id="today_TMTROUT" size=5 value="<%= @DATE2.TMTROUT.to_i*@DATE2.MULTIPLY_BY.to_i%>" readonly/></td>
+                      <td width="8%" height="22"><input type="text" name="T1" size=5 /></td>
+                      <td width="8%" height="22"></td>
+                      <td width="8%" height="22"> </td>
+                      <td width="8%" height="22"><input type="hidden" name="today[LOSS]" id="today_LOSS" size=5 value="<%= @DATE2.LOSS %>" readonly/></td>
+                      <td width="8%" height="22"></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td width="100%" height="1">&nbsp;</td>
+              </tr>
+              <tr>
+                <td width="100%" height="70">
+                  <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" height=100%>
+                    <tr>
+                      <td width="34%" align=center>
+                        <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="90%" height=70%>
+                          <tr>
+                            <th>Sr.Coll</th></td>
+                            <th>Mtr.Coll</th></td>
+                            <th  >M-Short</td>
+                              <th  >Reason</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="text" name="today[SRCOLL]" id="today_SRCOLL" size=5 value="<%= @DATE2.SRCOLL.to_i %>" readonly></td>
+                                  <td><input type="text" name="today[MTRCOLL]" id="today_MTRCOLL" size=5 value="<%= @DATE2.MTRCOLL.to_i %>" readonly></td>
+                                  <td  ><input type="text" name="today[MTRSHORT]" id="today_MTRSHORT" size=5 value="<%= @DATE2.MTRSHORT.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbersplusminus();" onblur="CheckShort();"></td>
+                                  <td  >
+                                    <% @REASONS=Shop.find_by_sql("select * from shortreasons where McShortReason<>'#{@DATE2.SHORTREASON}' order by McShortReason") %>
+                                    <select size="1" name="today[Shortreason]" id="today_Shortreason" onkeydown="return CheckShortReason();" >
+                                      <option value="<%= @DATE2.SHORTREASON %>"><%= @DATE2.SHORTREASON %></option>
+                                      <% @REASONS.each do |r| %>
 
+                                        <option value="<%= r.McShortReason %>"><%= r.McShortReason %></option>
+                                    <!--<option value="<%= @DATE2.SHORTREASON %>"><%= @DATE2.SHORTREASON %></option>-->
+                                      <% end %>
+                                    </select></td>
+                                </tr>
+                                </table>
+                                </td>
+                                <td width="33%" align=center>
+                                  <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" height="96">
+                                    <tr>
+                                      <td width="100%" height="32" colspan="4" align=center>AVG</td>
+                                    </tr>
+                                    <tr>
+                                      <th width="25%" height="32">30 Days</th>
+                                      <th width="25%" height="32">10 Days</th>
+                                      <th width="25%" height="32">S/R</th>
+                                    </tr>
+                                    <tr>
+                                      <td width="25%" height="32">
+                                        <input type="text" name="today[THIRTYDAYSAVG]" id="today_THIRTYDAYSAVG" size=5 value="<%= @DATE2.THIRTYDAYSAVG.to_i*@DATE2.MULTIPLY_BY %>" readonly></td>
+                                      <td width="25%" height="32">
+                                        <input type="text" name="today[TENDAYSAVG]" id="today_TENDAYSAVG" size=5 value="<%= @DATE2.TENDAYSAVG.to_i*@DATE2.MULTIPLY_BY %>" readonly></td>
+                                      <td width="25%" height="32">
+                                        <input type="text" name="today[SRAVG]" id="today_SRAVG" size=5 value="<%= @DATE2.SRAVG.to_i*@DATE2.MULTIPLY_BY %>" readonly></td>
+                                    </tr>
+                                  </table><% end%>
+                              </td>
+                              <td width="33%" align=center>
+                                <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="90%" height="70%">
+                                  <tr>
+                                    <th width="34%">Collection</th></td>
+                                    <th width="33%">Key</th>
+                                    <th width="33%" >S/E</th></td>
+                                  </tr>
+                                  <% @keys=Counterdata.find(:first,:conditions=>["ClusterName=? and ShopName=? and DATE=?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]]) %>
+                                  <tr >
+                                    <td width="34%" ><input type="text"  id="key_collections" name="key[collections]" size=5 value="<%= @session[:ttCOLL1].to_i %>" readonly></td>
+                                    <% if(@keys.KEY1.to_i!=0) %>
+                                      <td width="33%" ><input type="text" name="key[collection1]" id="key_collection1" size=5 value="<%= @keys.KEY1.to_i %>" readonly></td>
+                                      <td width="33%" ><input type="text" name="short[extra1]" id="short_extra1" size=5 value="<%= (@keys.KEY1.to_i)-(@session[:ttCOLL1].to_i) %>" readonly></td>
+                                    <% else%>
+                                      <td width="33%" ><input type="text" name="key[collection1]" id="key_collection1" size=5 value="0" readonly></td>
+                                      <td width="33%" ><input type="text" name="short[extra1]" id="short_extra1" size=5 value="<%= (@keys.KEY1.to_i)-(@session[:ttCOLL1].to_i) %>" readonly></td>
+                                    <% end%>
+                                  </tr>
+                                  <tr>
+                                    <td width="34%" ><input type="text"  id="key_collections2" name="key[collections2]" size=5 value="<%= @session[:ttCOLL2].to_i %>" readonly></td>
+                                    <% if(@keys.KEY2.to_i!=0) %>
+                                      <td width="33%" ><input type="text" name="key[collection2]" id="key_collection2" size=5 value="<%= @keys.KEY2.to_i %>" readonly></td>
+                                      <td width="33%" ><input type="text" name="short[extra2]" id="short_extra2" size=5 value="<%= (@keys.KEY2.to_i)-(@session[:ttCOLL2].to_i)%>" readonly></td>
+                                    <%else%>
+                                      <td width="33%" ><input type="text" name="key[collection2]" id="key_collection2" size=5 value="0" readonly></td>
+                                      <td width="33%" ><input type="text" name="short[extra2]" id="short_extra2" size=5 value="<%= (@keys.KEY2.to_i)-(@session[:ttCOLL2].to_i)%>" readonly></td>
+                                    <%end%>
+                                  </tr>
+                                  <tr>
+                                    <td width="34%" ><input type="text"  id="key_collections3" name="key[collections3]" size=5 value="<%= @session[:ttCOLL3].to_i %>" readonly></td>
+                                    <% if(@keys.KEY3.to_i!=0) %>
+                                      <td width="33%" ><input type="text" name="key[collection3]" id="key_collection3" size=5 value="<%= @keys.KEY3.to_i %>" readonly></td>
+                                      <td width="33%" ><input type="text" name="short[extra3]" id="short_extra3" size=5 value="<%= (@keys.KEY3.to_i)-(@session[:ttCOLL3].to_i) %>" readonly></td>
+                                    <%else%>
+                                      <td width="33%" ><input type="text" name="key[collection3]" id="key_collection3" size=5 value="0" readonly></td>
+                                      <td width="33%" ><input type="text" name="short[extra3]" id="short_extra3" size=5 value="0" readonly></td>
+                                    <%end%>
+                                  </tr>
+                                  <tr>
+                                    <td width="34%" ><input type="text"  id="key_collections4" name="key[collections4]" size=5 value="<%= @session[:ttCOLL4].to_i %>" readonly></td>
+                                    <% if(@keys.KEY4.to_i!=0) %>
+                                      <td width="33%" ><input type="text" name="key[collection4]" id="key_collection4" size=5 value="<%= @keys.KEY4.to_i %>" readonly></td>
+                                      <td width="33%" ><input type="text" name="short[extra4]" id="short_extra4" size=5 value="<%= (@keys.KEY4.to_i)-(@session[:ttCOLL4].to_i)%>" readonly></td>
+                                    <%else%>
+                                      <td width="33%" ><input type="text" name="key[collection4]" id="key_collection4" size=5 value="0" readonly></td>
+                                      <td width="33%" ><input type="text" name="short[extra4]" id="short_extra4" size=5 value="0" readonly></td>
+                                    <%end%>
+                                  </tr>
+                                </table>
+                              </td>
+                              </tr>
+                              </table>
+                              </td>
+                              </tr>
+                              <tr>
+                                <td width="100%" height="30" align=center>
+                                  <div width=50% height=25 >
+                                    <%= submit_tag "UPDATE" ,:id=>'save',:onclick=>'return Check();',:onblur=>"this.form.yesterday_PSRIN.focus();"%>
+                                    <%= link_to 'COLLECTION' ,{ :controller=>'collection',:action => 'collection'}, :target=>'_blank'%>
+                                  </div>
+                                </td>
+                                <% submit_to_remote 'COLLECTION','COLLECTION',:before=>'SHOWCOLLECTION();'%>
+                                <% link_to 'COLLECTION' ,url_for( :controller=>'collection',:action => 'collection'), { :popup => ['new_window','left=100,height=500,width=800,top=50,scrollbars=1,resizable=1,maximizable=1']}%>
+                              </tr>
+                              </table>
+                              </td>
+                              </tr>
+                              </table>
+                              </center>
+                            <% end %>
                             </body>
                             </html>

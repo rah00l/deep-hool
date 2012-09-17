@@ -1,0 +1,18 @@
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" height="96">
+  <tr>
+    <td width="100%" height="32" colspan="4" align=center>AVG</td>
+  </tr>
+  <tr>
+    <th width="25%" height="32">30 Days</th>
+    <th width="25%" height="32">10 Days</th>
+    <th width="25%" height="32">S/R</th>
+  </tr>
+  <tr>
+    <td width="25%" height="32">
+      <input type="text" name="today[THIRTYDAYSAVG]" id="today_THIRTYDAYSAVG" size=5 value="<%= @DATE2.THIRTYDAYSAVG.to_i*@DATE2.MULTIPLY_BY %>" readonly/></td>
+    <td width="25%" height="32">
+      <input type="text" name="today[TENDAYSAVG]" id="today_TENDAYSAVG" size=5 value="<%= @DATE2.TENDAYSAVG.to_i*@DATE2.MULTIPLY_BY %>" readonly/></td>
+    <td width="25%" height="32">
+      <input type="text" name="today[SRAVG]" id="today_SRAVG" size=5 value="<%= @DATE2.SRAVG.to_i*@DATE2.MULTIPLY_BY %>" readonly/></td>
+  </tr>
+</table>

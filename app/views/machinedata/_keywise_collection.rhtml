@@ -1,0 +1,48 @@
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="90%" height="70%">
+  <tr>
+    <th width="34%">Collection</th>
+    <th width="33%">Key</th>
+    <th width="33%" >S/E</th>
+  </tr>
+  <% @keys=Counterdata.find(:first,:conditions=>["ClusterName=? and ShopName=? and DATE=?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]]) %>
+  <tr >
+    <td width="34%" ><input type="text"  id="key_collections" name="key[collections]" size=5 value="<%= @session[:ttCOLL1].to_i %>" readonly/></td>
+    <% if(@keys.KEY1.to_i!=0) %>
+      <td width="33%" ><input type="text" name="key[collection1]" id="key_collection1" size=5 value="<%= @keys.KEY1.to_i %>" readonly/></td>
+      <td width="33%" ><input type="text" name="short[extra1]" id="short_extra1" size=5 value="<%= (@keys.KEY1.to_i)-(@session[:ttCOLL1].to_i) %>" readonly/></td>
+    <% else%>
+      <td width="33%" ><input type="text" name="key[collection1]" id="key_collection1" size=5 value="0" readonly/></td>
+      <td width="33%" ><input type="text" name="short[extra1]" id="short_extra1" size=5 value="<%= (@keys.KEY1.to_i)-(@session[:ttCOLL1].to_i) %>" readonly/></td>
+    <% end%>
+  </tr>
+  <tr>
+    <td width="34%" ><input type="text"  id="key_collections2" name="key[collections2]" size=5 value="<%= @session[:ttCOLL2].to_i %>" readonly/></td>
+    <% if(@keys.KEY2.to_i!=0) %>
+      <td width="33%" ><input type="text" name="key[collection2]" id="key_collection2" size=5 value="<%= @keys.KEY2.to_i %>" readonly/></td>
+      <td width="33%" ><input type="text" name="short[extra2]" id="short_extra2" size=5 value="<%= (@keys.KEY2.to_i)-(@session[:ttCOLL2].to_i)%>" readonly/></td>
+    <%else%>
+      <td width="33%" ><input type="text" name="key[collection2]" id="key_collection2" size=5 value="0" readonly/></td>
+      <td width="33%" ><input type="text" name="short[extra2]" id="short_extra2" size=5 value="<%= (@keys.KEY2.to_i)-(@session[:ttCOLL2].to_i)%>" readonly/></td>
+    <%end%>
+  </tr>
+  <tr>
+    <td width="34%" ><input type="text"  id="key_collections3" name="key[collections3]" size=5 value="<%= @session[:ttCOLL3].to_i %>" readonly/></td>
+    <% if(@keys.KEY3.to_i!=0) %>
+      <td width="33%" ><input type="text" name="key[collection3]" id="key_collection3" size=5 value="<%= @keys.KEY3.to_i %>" readonly/></td>
+      <td width="33%" ><input type="text" name="short[extra3]" id="short_extra3" size=5 value="<%= (@keys.KEY3.to_i)-(@session[:ttCOLL3].to_i) %>" readonly/></td>
+    <%else%>
+      <td width="33%" ><input type="text" name="key[collection3]" id="key_collection3" size=5 value="0" readonly/></td>
+      <td width="33%" ><input type="text" name="short[extra3]" id="short_extra3" size=5 value="0" readonly/></td>
+    <%end%>
+  </tr>
+  <tr>
+    <td width="34%" ><input type="text"  id="key_collections4" name="key[collections4]" size=5 value="<%= @session[:ttCOLL4].to_i %>" readonly/></td>
+    <% if(@keys.KEY4.to_i!=0) %>
+      <td width="33%" ><input type="text" name="key[collection4]" id="key_collection4" size=5 value="<%= @keys.KEY4.to_i %>" readonly/></td>
+      <td width="33%" ><input type="text" name="short[extra4]" id="short_extra4" size=5 value="<%= (@keys.KEY4.to_i)-(@session[:ttCOLL4].to_i)%>" readonly/></td>
+    <%else%>
+      <td width="33%" ><input type="text" name="key[collection4]" id="key_collection4" size=5 value="0" readonly/></td>
+      <td width="33%" ><input type="text" name="short[extra4]" id="short_extra4" size=5 value="0" readonly/></td>
+      <%end%>
+  </tr>
+</table>

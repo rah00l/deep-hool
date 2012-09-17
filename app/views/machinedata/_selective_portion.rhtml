@@ -1,0 +1,50 @@
+<% form_tag :controller=>"machinedata",:action => "showmachinedata_modi" do %>
+  <table border="1" cellpadding="0" cellspacing="1" style="border-collapse: collapse" bordercolor="#111111" width="100%" height="100%">
+    <th width="250" >Date</th>
+    <th width="171" >Group&nbsp;Name</th>
+    <th width="171" >Shop&nbsp;Name</th>
+    <th width="240"  >No/Name</th>
+    <th width="77" >KEY No.</th>
+    <th width="55"  >X</th>
+    <tr>
+      <td>
+        <% if(@session[:ttdate]==nil) %>
+          <%date = Date.today-1%>
+          <%= calendar_date_select_tag "date",date.strftime('%Y-%m-%d')  ,  :popup => "force" %>
+        <%else%>
+          <%= calendar_date_select_tag "date",@session[:ttdate].to_s,  :popup => "force" %>
+        <%end%>
+      </td>
+      <td width="171"  >
+        <% if(@session[:ttclustername]==nil or @session[:ttclustername]=="") %>
+          <% @s=Cluster.find(:all,:order => "ClusterName") %>
+          <%= collection_select(:machinedata, :ClusterName,  @s,  :ClusterName, :ClusterName,
+            {:prompt   => "Select ClusterName"},
+            {:onkeypress => "#{remote_function(:url  => {:controller=>'machinedata', :action => "getShop"},
+              :with => "'ClusterName='+value")}",:onchange => "#{remote_function(:url  => {:controller=>'machinedata', :action => "getShop"},
+              :with => "'ClusterName='+value")}"}) %>
+        <%else%>
+          <% @cluster=Cluster.find(:all,:conditions=>["ClusterName<>?",@session[:ttclustername]],:order => "ClusterName")%>
+          <select id="machinedata_ClusterName" name="machinedata[ClusterName]" onchange="<%=remote_function(:url => {:action => 'getShop'},:with => "'ClusterName='+value")-%>">
+            <option value="<%= @session[:ttclustername] %>"><%= @session[:ttclustername] %></option>
+            <% @cluster.each do |c| %>
+              <option value="<%= c.ClusterName %>"><%= c.ClusterName %></option>
+            <% end %>
+          </select>
+        <%end%>
+      </td>
+      <td width="171"  >
+        <div id="Shopdiv">
+          <%= render :partial => 'shop'%>
+        </div>
+      </td>
+      <td width="240">
+        <input type=text name="MachineNo" id="MachineNo" size="8" onKeyUp="javascript:this.value=this.value.toUpperCase();"/>
+        &nbsp;&nbsp<input type="text" name="T1" size=9 value="<%= @mc.MACHINE_NAME rescue ''%>" readonly/></td>
+      <td width="77"  >
+        <input type="text" name="KEY" id="KEY" size=7 value="<%= @session[:ttkeyno]%>" readonly/></td>
+      <td width="55"  >
+        <input type="text" name="multiplyby" id="multiplyby" size=5 value="<%= @mc.MULTIPLY_BY.to_i rescue '' %>" readonly/></td>
+    </tr>
+  </table>
+<%end%>
