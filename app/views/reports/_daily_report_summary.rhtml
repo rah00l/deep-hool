@@ -37,7 +37,7 @@
   <td width="34%" height="19">&nbsp;</td>
   <td width="15%" height="19" align=center>HRK</td><td width="15%" height="19" align=center>LAT</td><td width="15%" height="19" align=center>MRL</td>
   <tr>
-    <td width="34%" height="19"><font size="2">SIX MONTH PER DAY'S HC VALUES</font></td>
+    <td width="34%" height="19"><font size="2"><%= editable_title%></font></td>
     <td width="15%" height="19" align=center><% hc = custom_hc_value('HRK') %><%= hc.blank? ? 'NA' : hc %></td>
     <td width="15%" height="19" align=center><% hc = custom_hc_value('LAT') %><%= hc.blank? ? 'NA' : hc %></td>
     <td width="15%" height="19" align=center><% hc = custom_hc_value('MRL') %><%= hc.blank? ? 'NA' : hc %></td>

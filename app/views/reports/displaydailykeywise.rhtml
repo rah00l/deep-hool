@@ -56,13 +56,17 @@
 
         <% percentage = percentage_calcutation(@session[:rrclustername],@session[:shoparray1][i].to_s,key.GroupID,@session[:startdatehc],@session[:enddatehc])   %>
 
+<% percentage_for_all = percentage_calcutation_without_key(@session[:rrclustername],@session[:shoparray1][i].to_s,@session[:startdatehc],@session[:enddatehc])   %>
+
         <% short_extra = short_extra_values(@session[:startdatehc],@session[:enddatehc],@session[:rrclustername],@session[:shoparray1][i].to_s,key.GroupID) %>
         <table>
           <tr><td colspan=16><font size=4>
                 <b><span><%= key.GroupID %>&nbsp;&nbsp;S/E&nbsp;&nbsp;<%= se_value = short_extra.blank? ? '' : font_color(short_extra)  %></span>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <span><%= @session[:shoparray1][i].to_s%></span>&nbsp;&nbsp;
-                  <%= tot_percentage_color(percentage) %></b></td>
+                  <%= tot_percentage_color(percentage) %>  &nbsp;&nbsp;
+<%=  tot_percentage_color(percentage_for_all) if key.GroupID.to_s.eql?('KEY 1')%>
+</b></td>
           </tr>
         </table>
         <br></br>

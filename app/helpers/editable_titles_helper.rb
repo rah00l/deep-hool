@@ -1,0 +1,2 @@
+module EditableTitlesHelper
+end

@@ -1,0 +1,27 @@
+<h1>Listing editable_titles</h1>
+
+<table>
+  <tr>
+  <% for column in EditableTitle.content_columns %>
+    <th><%= column.human_name %></th>
+  <% end %>
+  </tr>
+  
+<% for editable_title in @editable_titles %>
+  <tr>
+  <% for column in EditableTitle.content_columns %>
+    <td><%=h editable_title.send(column.name) %></td>
+  <% end %>
+    <td><%= link_to 'Show', :action => 'show', :id => editable_title %></td>
+    <td><%= link_to 'Edit', :action => 'edit', :id => editable_title %></td>
+    <td><%= link_to 'Destroy', { :action => 'destroy', :id => editable_title }, :confirm => 'Are you sure?', :method => :post %></td>
+  </tr>
+<% end %>
+</table>
+
+<%= link_to 'Previous page', { :page => @editable_title_pages.current.previous } if @editable_title_pages.current.previous %>
+<%= link_to 'Next page', { :page => @editable_title_pages.current.next } if @editable_title_pages.current.next %> 
+
+<br />
+
+<%= link_to 'New editable_title', :action => 'new' %>
