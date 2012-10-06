@@ -286,4 +286,9 @@ module ApplicationHelper
       Machinedata.find(:all,:select => "distinct (SHOP_NAME)",:conditions=>"CLUSTER_NAME='#{cluster_name}' and TRANS_DATE='#{date}'",:order => "SHOP_NAME")
   end
 
+def editable_title
+edit_title =EditableTitle.find(:all) 
+ edit_title.empty? ? "SIX MONTH PER DAY'S HC VALUES" : edit_title.collect(&:content).first
+end 
+
 end
