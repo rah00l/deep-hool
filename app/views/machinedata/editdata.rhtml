@@ -12,6 +12,11 @@
       }
         }
         );
+        window.onload=function(){
+	    jQuery("#MachineNo").focus();
+	}
+
+        
     </script>
   </head>
   <body>
@@ -64,6 +69,7 @@
                     <%= render :partial => 'shop'%>
                   </div>
                 </td>
+                <% @mc=Machinedata.find_first(["CLUSTER_NAME=? and SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and TRANS_DATE=?",@session[:ttclustername],@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttdate]]) %>
                 <td width="220">
                   <input type=text name="MachineNo" id="MachineNo" size="5" onKeyUp="javascript:this.value=this.value.toUpperCase();"/>&nbsp;&nbsp;<input type="text" name="T1" size=5 value="<%= @mc.MACHINE_NAME rescue ''%>" readonly/></td>
                 <td  >

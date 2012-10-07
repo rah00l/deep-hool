@@ -3,6 +3,7 @@ class MachinedataController < ApplicationController
   layout 'adminlayout'
 #  before_filter :login_required,:machine_and_key_collection
 #  require 'ruby-debug'
+  
 
   class Time
     def yesterday
@@ -460,6 +461,98 @@ class MachinedataController < ApplicationController
 #    end
   end
 
+
+
+  def updatemachinedata_new
+    @prevmachinedata = Machinedata.find(:first,:conditions=>['Cluster_Name=? and Shop_Name=? and TRANS_Date=? and Machine_No=?',@session[:ttclustername],@session[:ttshopname],(Date.parse(@session[:ttdate])-1),@session[:ttmachineno]])
+    @prevmachinedata.PSRINVALUE=params[:yesterday][:PSRIN]
+    @prevmachinedata.PSROUTVALUE=params[:yesterday][:PSROUT]
+    @prevmachinedata.PMTRINVALUE=params[:yesterday][:PMTRIN]
+    @prevmachinedata.PMTROUTVALUE=params[:yesterday][:PMTROUT]
+    @mdata = Machinedata.find(:first,:conditions=>['Cluster_Name=? and Shop_Name=? and TRANS_Date=? and Machine_No=?',@session[:ttclustername],@session[:ttshopname],(Date.parse(@session[:ttdate])),@session[:ttmachineno]])
+    mulby=@session[:multiplyby]
+    @mdata.SRIN=params[:today][:SRIN]
+    @mdata.SROUT=params[:today][:SROUT]
+    @mdata.PSRINVALUE=params[:today][:PSRINVALUE]
+    @mdata.PSROUTVALUE=params[:today][:PSROUTVALUE]
+    @mdata.TSRIN=((params[:today][:TSRIN].to_f)/@session[:multiplyby].to_f).round
+    @mdata.TSROUT=((params[:today][:TSROUT].to_f)/@session[:multiplyby].to_f).round
+    @mdata.SRPER=params[:today][:SRPER]
+    @mdata.MTRSHORT=params[:today][:MTRSHORT]
+    mtrshort = @mdata.MTRSHORT.to_i/mulby.to_i
+    @mdata.SRCOLL=((((@mdata.TSRIN.to_f*params[:rate][:SRIN].to_f)-(@mdata.TSROUT.to_f*params[:rate][:SROUT].to_f))/10).round)+mtrshort.to_i####
+    @mdata.MTRIN=params[:today][:MTRIN]
+    @mdata.MTROUT=params[:today][:MTROUT]
+    @mdata.PMTRINVALUE=params[:today][:PMTRINVALUE]
+    @mdata.PMTROUTVALUE=params[:today][:PMTROUTVALUE]
+    @mdata.TMTRIN=((params[:today][:TMTRIN].to_f)/@session[:multiplyby].to_f).round
+    @mdata.TMTROUT=((params[:today][:TMTROUT].to_f)/@session[:multiplyby].to_f).round
+    @mdata.MTRPER=params[:today][:MTRPER]
+    @mdata.MTRCOLL=((((@mdata.TMTRIN.to_i*params[:rate][:MRIN].to_i)-(@mdata.TMTROUT.to_i* params[:rate][:MROUT].to_i))/10).round)+mtrshort.to_i
+    @mdata.CALCULATEBY=params[:today][:CALCULATEBY]
+    @mdata.MTRDIFFIN=params[:today][:MTRDIFFIN]
+    @mdata.MTRDIFFOUT=params[:today][:MTRDIFFOUT]
+    @mdata.MTRDIFFWHY=params[:today][:MTRDIFFWHY]
+    @mdata.LOSS=params[:today][:LOSS]
+    @mdata.SHORTREASON=params[:today][:Shortreason]
+    @mdata.THIRTYDAYSAVG=(params[:today][:THIRTYDAYSAVG].to_f/@session[:multiplyby].to_f).round
+    @mdata.TENDAYSAVG=(params[:today][:TENDAYSAVG].to_f/@session[:multiplyby].to_f).round
+    @mdata.SRAVG=(params[:today][:SRAVG].to_f/@session[:multiplyby].to_f).round
+    @mdata.SETTING=params[:today][:SETTING]
+    @mdata.SCREEN_RATE_IN=params[:rate][:SRIN]
+    @mdata.SCREEN_RATE_OUT=params[:rate][:SROUT]
+    @mdata.MTR_RATE_IN=params[:rate][:MRIN]
+    @mdata.MTE_RATE_OUT=params[:rate][:MROUT]
+    if(@prevmachinedata.SETTING!=@mdata.SETTING)
+      @mdata.LASTSETTING=params[:yesterday][:SETTING]
+    end
+    @prevmachinedata.save
+    @mdata.save
+    Group.find(:all,:select=>'GroupID',:conditions=>["ClusterName=? and ShopName=?",@session[:ttclustername],@session[:ttshopname]]).each do |key|
+      check = ShortExtra.find_by_date_and_cluster_name_and_shop_name_and_group_id((Date.parse(@session[:ttdate])),@session[:ttclustername],@session[:ttshopname],key.GroupID)
+      unless check.blank?
+        machine_data = Machinedata.find(:all,
+          :conditions=> ["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID=?",
+            @session[:ttclustername],@session[:ttshopname],(Date.parse(@session[:ttdate])),key.GroupID])
+        @tot_short_extra=0
+        machine_data.each do |data|
+          if data.CALCULATEBY.eql?('S')
+            short_extra = (((((data.TSRIN.to_f*data.SCREEN_RATE_IN.to_f)-(data.TSROUT.to_f*data.SCREEN_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f).round
+            @tot_short_extra = @tot_short_extra + short_extra
+          else
+            short_extra =(((((data.TMTRIN.to_f*data.MTR_RATE_IN.to_f)-(data.TMTROUT.to_f*data.MTE_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f).round
+            @tot_short_extra = @tot_short_extra + short_extra
+          end
+        end
+        keys = Counterdata.find(:first,:conditions=>["ClusterName=? and ShopName=? and DATE=?",
+            @session[:ttclustername],@session[:ttshopname],(Date.parse(@session[:ttdate]))])
+        if keys!= nil
+          if key.GroupID.eql?('KEY 1')
+            keyval=keys.KEY1.to_i
+          end
+          if key.GroupID=='KEY 2'
+            keyval=keys.KEY2.to_i
+          end
+          if key.GroupID=='KEY 3'
+            keyval=@keys.KEY3.to_i
+          end
+          if key.GroupID=='KEY 4'
+            keyval=@keys.KEY4.to_i
+          end
+        end
+        short_extra = (keyval.to_i - @tot_short_extra.to_i)
+        check.update_attribute(:short_extra, short_extra)
+      end
+    end
+#    redirect_to :action=>"dailydata"
+#render :action=>'showmachinedata'
+
+    redirect_to :controller=>'machinedata', :action=>'editdata'
+#    render :update do |page|
+#      page.redirect_to url_for(:controller=>'machinedata', :action=>'editdata')
+#    end
+  end
+
   def showcollection
     render :update do |page|
       page.redirect_to url_for(:controller=>'machinedata', :action=>'collection')
@@ -520,25 +613,29 @@ class MachinedataController < ApplicationController
   end
 
   def editdaily_data
-    if params[:machinedata][:ClusterName] && params[:machinedata][:ShopName] && params[:date] && params[:MachineNo] && params[:date]
-
+#    debugger
+    if params[:machinedata][:ClusterName] && params[:machinedata][:ShopName] && params[:date] && params[:MachineNo] && params[:date] && params[:multiplyby]
+#      @mc=Machinedata.find_first(["CLUSTER_NAME=? and SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and TRANS_DATE=?",@session[:ttclustername],@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttdate]])
       key_recored = Machinedata.find_first(["Cluster_Name=? and Shop_Name=? and TRANS_Date=? and Machine_No=?",
           "#{params[:machinedata][:ClusterName]}","#{params[:machinedata][:ShopName]}","#{params[:date]}","#{params[:MachineNo]}"])
 
       @key = key_recored.GROUP_ID  unless key_recored.blank?
-
+#      @multiply_by = key_recored.MULTIPLY_BY.to_i unless key_recored.blank?
       @machine_data = Machinedata.find_first(["CLUSTER_NAME=? and SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and TRANS_DATE=?",
           params[:machinedata][:ClusterName],params[:machinedata][:ShopName],@key,params[:MachineNo],params[:date]]) unless key_recored.blank?
 
       @session[:ttclustername],@session[:ttshopname],@session[:ttkeyno],@session[:ttdate],@session[:ttmachineno] = params[:machinedata][:ClusterName],params[:machinedata][:ShopName],@key,params[:date],params[:MachineNo]
+      @session[:multiplyby] = params[:multiplyby]
       render :update do |page|
           page << "jQuery('#loader').hide();"
-           if @machine_data.blank?
+           if @machine_data.blank? 
             page.alert("NO RECORD FOUND");
             page << "jQuery('#parent_dailydata_div').hide();"
           end
           page << "jQuery('#parent_dailydata_div').show();"
           page.replace_html 'parent_dailydata_div', :partial => 'parent_dailydata_part'
+          page << "document.getElementById('yesterday_PSRIN').focus();"
+#          page << "document.getElementById('MachineNo').value = #{@multiply_by}"
       end
     end
    
