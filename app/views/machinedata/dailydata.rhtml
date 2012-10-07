@@ -11,6 +11,7 @@
     <script language="JavaScript">
       window.onload=function()
       {
+        
         var machine=document.getElementById('MachineNo');
         machine.select();
         machine.focus();
@@ -21,7 +22,7 @@
         var charCode = e.which || e.keyCode;
         if (charCode > 31 && (charCode < 48 || charCode > 57))
           return false;
-    
+
         return true;
       }
       function showsave1()
@@ -29,7 +30,7 @@
         if(event.keyCode==32)
         {
           var btsave1 = document.getElementById("SHORT");
-      
+
           btsave1.disabled=false;
 
           btsave1.focus();
@@ -39,11 +40,11 @@
       //DISPLAY SAVE BUTTON ON FILLING ALL VALUES
       function showsave()
       {
-	
+
         if(event.keyCode==13)
         {
           var btsave1 = document.getElementById("save");
-      
+
           btsave1.disabled=false;
 
           btsave1.focus();
@@ -54,7 +55,7 @@
       //CHECK FOR VALIDATION OF FORM
       function Validate()
       {
-		
+
         var meterin=document.getElementById("entry_MeterIN");
         var meterout=document.getElementById("entry_MeterOUT");
         var screenout=document.getElementById("entry_ScreenOUT");
@@ -96,7 +97,7 @@
       {
         var screenout=document.getElementById("entry_ScreenOUT");
         var screenin=document.getElementById("entry_ScreenIN");
-	
+
         if(screenin.value==0 && screenout.value>=1)
         {
           alert("PLEASE ENTER VALID VALUE FOR SCREENIN AND SCREENOUT");
@@ -113,7 +114,7 @@
       //ONLOAD FUNCTION FOR SETTING DEFAULT VALUES SELECTED AND DATE DISPLAY 18 HOURS BEFORE DATE
       window.onload=function()
       {
-        var mcno = document.getElementById("entry_MachineNo");
+        var mcno = document.getElementById("MachineNo");
         mcno.select();
         mcno.focus();
       }
