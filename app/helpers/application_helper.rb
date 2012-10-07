@@ -51,11 +51,11 @@ module ApplicationHelper
   end
 
   def custom_hc_value(cluster_name)
-    DailyReportCustom.find_by_cluster_name(cluster_name).hc.to_i if DailyReportCustom.find_by_cluster_name(cluster_name)
+    DailyReportCustom.find_by_cluster_name(cluster_name).hc.to_s if DailyReportCustom.find_by_cluster_name(cluster_name)
   end
 
   def custom_exp_value(cluster_name)
-    DailyReportCustom.find_by_cluster_name(cluster_name).exp.to_i if DailyReportCustom.find_by_cluster_name(cluster_name)
+    DailyReportCustom.find_by_cluster_name(cluster_name).exp.to_s if DailyReportCustom.find_by_cluster_name(cluster_name)
   end
 
   def tot_percentage_color(number)
