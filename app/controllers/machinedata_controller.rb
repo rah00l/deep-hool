@@ -452,12 +452,12 @@ class MachinedataController < ApplicationController
         check.update_attribute(:short_extra, short_extra)
       end
     end
-#    redirect_to :action=>"dailydata"
+    redirect_to :action=>"dailydata"
 #render :action=>'showmachinedata'
 
-    render :update do |page|
-      page.redirect_to url_for(:controller=>'machinedata', :action=>'editdata')
-    end
+#    render :update do |page|
+#      page.redirect_to url_for(:controller=>'machinedata', :action=>'editdata')
+#    end
   end
 
   def showcollection
