@@ -627,9 +627,12 @@ class ClientdatasController < ApplicationController
           times=((Time.now().strftime("%H:%M:%S")).to_s).split(':')
           @con = Configuration.find_by_location_name('shivraj')
           @con_next = Configuration.find_by_location_name('anand')
-          @folderpath=@con.FilesFolderPath  if @con.copy_continue?
-          @folderpath_next = @con_next.FilesFolderPath  if @con_next.copy_continue?
-          if times[0].to_i>=@con.noofhours.to_i
+          @folderpath=@con.FilesFolderPath  if !@con.blank? && @con.copy_continue?
+          @folderpath_next = @con_next.FilesFolderPath  if !@con_next.blank? && @con_next.copy_continue?
+	    hours = @con.blank? ?  20 : @con.noofhours.to_i 
+	    hours = @con_next.blank? ? 20  : @con_next.noofhours.to_i
+
+          if times[0].to_i>= hours.to_i
             date=Date.today.strftime("%Y%m%d")
           else
             date=(Date.today-1).strftime("%Y%m%d")
@@ -656,10 +659,20 @@ class ClientdatasController < ApplicationController
             end
           end
 
+
+
+puts "===="*12
+puts "===="*12
+puts @folderpath
+puts @folderpath_next
+puts "===="*12
+puts "===="*12
+		
           pw=Dir.pwd()
           Dir.chdir(pw)
           filename=pw.to_s+"/"+fname
           begin
+		unless @folderpath.blank?	
             if File.directory?("#{@folderpath}")
               FileUtils.copy(filename, "#{@folderpath}")
 #              FileUtils.rm_r(filename)
@@ -667,7 +680,9 @@ class ClientdatasController < ApplicationController
               FileUtils.mkdir_p "#{@folderpath}"
               FileUtils.copy(filename, "#{@folderpath}")
             end
+		end
 
+		unless @folderpath_next.blank?	
             if File.directory?("#{@folderpath_next}")
               FileUtils.copy(filename, "#{@folderpath_next}")
               FileUtils.rm_r(filename)
@@ -675,10 +690,12 @@ class ClientdatasController < ApplicationController
               FileUtils.mkdir_p "#{@folderpath_next}"
               FileUtils.copy(filename, "#{@folderpath_next}")
             end
+		end
               
           rescue Exception=>ex
             puts ex.message()
           end
+
           @statusflag= Clientdata.find(:all,:conditions=>["ShopName in (?) and status=0 and date=?",shopval[i],session[:dateval]])
           @statusflag.each do |c|
             c.status=1
