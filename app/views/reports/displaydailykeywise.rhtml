@@ -61,14 +61,15 @@
         <% short_extra = short_extra_values(@session[:startdatehc],@session[:enddatehc],@session[:rrclustername],@session[:shoparray1][i].to_s,key.GroupID) %>
         <table>
           <%  if key.GroupID.to_s.eql?('KEY 1') && @key.count.to_i > 1%>
-          <tr><td colspan=16 align="right"><font size=4><b>Total %</b></td></tr>
+          <tr><td colspan=16><font size=4><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>Total % Per Shop = </span></font>
+               &nbsp;&nbsp;<%=  tot_percentage_color(percentage_for_all) if key.GroupID.to_s.eql?('KEY 1')&& @key.count.to_i > 1%></b></td></tr>
           <%end %>
           <tr><td colspan=16><font size=4>
                 <b><span><%= key.GroupID %>&nbsp;&nbsp;S/E&nbsp;&nbsp;<%= se_value = short_extra.blank? ? '' : font_color(short_extra)  %></span>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <span><%= @session[:shoparray1][i].to_s%></span>&nbsp;&nbsp;
                   <%= tot_percentage_color(percentage) %>  &nbsp;&nbsp;
-<%=  tot_percentage_color(percentage_for_all) if key.GroupID.to_s.eql?('KEY 1')&& @key.count.to_i > 1%>
+
 </b></td>
           </tr>
         </table>
