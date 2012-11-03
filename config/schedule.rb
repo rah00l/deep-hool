@@ -21,13 +21,13 @@ every 2.day, :at => "5am" do
 end
 
 
-every friday, :at => "4am" do
+every :friday, :at => "4am" do
   rake "log:clear"
-  rake "tmp:sessions:clear"
-  command  "rm -rf #{RAILS_ROOT}/tmp/cache"
+  rake "tmp:clear"
+#  command  "rm -rf #{RAILS_ROOT}/tmp/cache"
 end
 
 
-every :reboot do
-  commond "ruby script/server -e production -d"
-end
+#every :reboot do
+#  commond "ruby script/server -e production -d"
+#end

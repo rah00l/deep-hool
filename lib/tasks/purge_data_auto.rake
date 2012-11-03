@@ -1,4 +1,4 @@
-#For Weekly password reset functionality written following rake tasks .
+#Data Purging functionality :-
 namespace :purge_data do
   desc 'Daily Purging Data For Client_Date CounterCollection  And Counter_Data..!'
 	task :auto => :environment do
