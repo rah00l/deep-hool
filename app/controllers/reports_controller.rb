@@ -276,7 +276,7 @@ class ReportsController < ApplicationController
         if(params[:key]=="ALLKEYS" and params[:machine]=="NOWISE")
           session[:order] = 'digitno,charno'
           session[:report_name] = "DAILY REPORT(All KEYS NOWISE)"
-          redirect_to :action => 'displaydailyallkeys'
+          redirect_to :action => 'displaydailyallkeys_nowise'
         end
         if(params[:key]=="KEYWISE" and params[:machine]=="NOWISE")
           session[:report_name] = "DAILY REPORT(KEY WISE AND NOWISE)"
