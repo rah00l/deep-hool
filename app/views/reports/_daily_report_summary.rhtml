@@ -1,4 +1,6 @@
 <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="80%" id="AutoNumber2" height="85">
+
+  <!-- Start ---------------------------------------------  GROUP/TOT/HC ------------------------------------------>
   <tr>
     <td width="34%" height="19"><font size="2">GROUP/TOT/HC</font></td>
     <td width="45%" height="19" colspan="3"><% @c= Counterdata.find_by_sql("select sum(HC) as 'totalHC' from counterdatas where  Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}'")%>
@@ -6,6 +8,9 @@
     </td>
     <!--    <td width="21%" height="19"></td> -->
   </tr>
+  <!-- end ---------------------------------------------  GROUP/TOT/HC ------------------------------------------>
+
+  <!-- 2-Start ---------------------------------------------  AVG ------------------------------------------>
   <tr>
     <td width="34%" height="19"><font size="2">AVG</font><font size="2">/HC-(For Per Day) </font></td>
     <td width="45%" height="19" colspan="3">
@@ -16,38 +21,66 @@
       <%= @c[0].totalHC.to_i/@session[:datediff].to_i %>
     </td>
   </tr>
+  <!-- 2-End ---------------------------------------------  AVG ------------------------------------------>
+
+  <!-- 3-Start --------------------------------------------- TODAY'S HC ------------------------------------------>
   <tr>
     <td width="34%" height="19"><font size="2">TODAY'S HC</font></td>
     <td width="45%" height="19" colspan="3"><% @cc= Counterdata.find_by_sql("select sum(HC) as 'totalHC' from counterdatas where  Date='#{session[:dailyvalue]}'")%>
       <%= @cc[0].totalHC %>
     </td>
   </tr>
+  <!-- 3-End --------------------------------------------- TODAY'S HC ------------------------------------------>
+
+  <!-- 4-Start --------------------------------------------- TOTAL SL/SHOP HC ------------------------------------------>
   <tr>
-    <td width="34%" height="16"><font size="2">TOTAL SL/SHOP HC</font></td>
+    <td width="34%" height="16"><font size="2">TOTAL SL/GROUP HC</font></td>
     <td width="45%" height="16" colspan="3"><% @c= Counterdata.find_by_sql("select sum(HC) as 'totalHC' from counterdatas where ClusterName='#{@session[:rrclustername]}' and ShopName in (#{@session[:shoparray]}) and Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}'")%>
       <%= @c[0].totalHC %>
     </td>
   </tr>
+  <!-- 4-End --------------------------------------------- TOTAL SL/SHOP HC ------------------------------------------>
+
+  <!-- 5-Start --------------------------------------------- TODAYS SL/GROUP HC ------------------------------------------>
   <tr>
     <td width="34%" height="23"><font size="2">TODAYS SL/GROUP HC</font></td>
     <td width="45%" height="23" colspan="3"><% @c= Counterdata.find_by_sql("select sum(HC) as 'totalHC' from counterdatas where ClusterName='#{@session[:rrclustername]}' and Date='#{@session[:enddatehc]}'")%>
       <%= @c[0].totalHC %>
     </td>
   </tr>
+  <!-- 5-End --------------------------------------------- TODAYS SL/GROUP HC ------------------------------------------>
+
   <td width="34%" height="19">&nbsp;</td>
   <td width="15%" height="19" align=center>HRK</td><td width="15%" height="19" align=center>LAT</td><td width="15%" height="19" align=center>MRL</td>
+
+  <!-- 6-Start --------------------------------------------- DAYNA ------------------------------------------>
   <tr>
-    <td width="34%" height="19"><font size="2"><%= editable_title%></font></td>
+    <td width="34%" height="19"><font size="2"><%= editable_title_for_hc%></font></td>
     <td width="15%" height="19" align=center><% hc = custom_hc_value('HRK') %><%= hc.blank? ? 'NA' : hc %></td>
     <td width="15%" height="19" align=center><% hc = custom_hc_value('LAT') %><%= hc.blank? ? 'NA' : hc %></td>
     <td width="15%" height="19" align=center><% hc = custom_hc_value('MRL') %><%= hc.blank? ? 'NA' : hc %></td>
   </tr>
+  <!-- 6-End --------------------------------------------- DAYNA ------------------------------------------>
+  
+  <!-- 6-Start --------------------------------------------- DAYNA ------------------------------------------>
   <tr>
-    <td width="34%" height="19"><font size="2">HC VALUES FOR ALL GROUP</font></td>
+    <td width="34%" height="19"><font size="2"><%= editable_title_for_next %></font></td>
+    <td width="15%" height="19" align=center><% hc = custom_hc_value('HRK') %><%#= hc.blank? ? 'NA' : hc %></td>
+    <td width="15%" height="19" align=center><% hc = custom_hc_value('LAT') %><%#= hc.blank? ? 'NA' : hc %></td>
+    <td width="15%" height="19" align=center><% hc = custom_hc_value('MRL') %><%#= hc.blank? ? 'NA' : hc %></td>
+  </tr>
+  <!-- 6-End --------------------------------------------- DAYNA ------------------------------------------>
+
+  <!-- 7-Start --------------------------------------------- HC VALUES FOR ALL GROUP ------------------------------------------>
+  <tr>
+    <td width="34%" height="19"><font size="2">HC AVR FOR ALL GROUP</font></td>
     <td width="15%" height="19" align=center><% hc = sum_of_values_for_all_group('HC','HRK',session[:startdatehc],@session[:enddatehc]) %><%= hc.blank? ? 0 : hc/@session[:datediff] %></td>
     <td width="15%" height="19" align=center><% hc = sum_of_values_for_all_group('HC','LAT',session[:startdatehc],@session[:enddatehc]) %><%= hc.blank? ? 0 : hc/@session[:datediff] %></td>
     <td width="15%" height="19" align=center><% hc = sum_of_values_for_all_group('HC','MRL',session[:startdatehc],@session[:enddatehc]) %><%= hc.blank? ? 0 : hc/@session[:datediff] %></td>
   </tr>
+  <!-- 7-End --------------------------------------------- HC VALUES FOR ALL GROUP ------------------------------------------>
+
+  <!-- 8-Start --------------------------------------------- HC% FOR ALL GROUP ------------------------------------------>
   <tr>
     <td width="34%" height="19"><font size="2">HC% FOR ALL GROUP</font></td>
     <td width="15%" height="19" align=center>
@@ -87,21 +120,11 @@
       <% end %>
       &nbsp;</td>
   </tr>
-  <tr>
-    <td width="34%" height="19"><font size="2">SIX MONTH PER DAY'S EXP VALUES FOR ALL GROUP</font></td>
-    <td width="15%" height="19" align=center><% exp = custom_exp_value('HRK') %><%= exp.blank? ? 'NA' : exp %></td>
-    <td width="15%" height="19" align=center><% exp = custom_exp_value('LAT') %><%= exp.blank? ? 'NA' : exp %></td>
-    <td width="15%" height="19" align=center><% exp = custom_exp_value('MRL') %><%= exp.blank? ? 'NA' : exp %></td>
-  </tr>
+  
+   <!-- 8-End --------------------------------------------- HC% FOR ALL GROUP ------------------------------------------>
 
-  <tr>
-    <td width="34%" height="19"><font size="2">EXP VALUES FOR ALL GROUP</font></td>
-    <td width="15%" height="19" align=center><% exp = sum_of_values_for_all_group('EXP','HRK',session[:startdatehc],@session[:enddatehc]) %><%= exp.blank? ? 0 : exp %></td>
-    <td width="15%" height="19" align=center><% exp = sum_of_values_for_all_group('EXP','LAT',session[:startdatehc],@session[:enddatehc]) %><%= exp.blank? ? 0 : exp %></td>
-    <td width="15%" height="19" align=center><% exp = sum_of_values_for_all_group('EXP','MRL',session[:startdatehc],@session[:enddatehc]) %><%= exp.blank? ? 0 : exp %></td>
-  </tr>
-
-  <tr>
+   <!-- 9-Start --------------------------------------------- EXP% FOR ALL GROUP ------------------------------------------>
+   <tr>
     <td width="34%" height="19"><font size="2">EXP% FOR ALL GROUP</font></td>
     <td width="15%" height="19" align=center>
       <% @c1= Counterdata.find_by_sql("select sum(Exp) as 'totalExp' from counterdatas where ClusterName='HRK'  and Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}'")%>
@@ -139,8 +162,29 @@
         <%= 0%>
       <% end %>
       &nbsp;</td>
-    <!--<td width="21%" height="19">
-</td>--></tr>
+   </tr>
+   <!-- 9-End --------------------------------------------- EXP% FOR ALL GROUP ------------------------------------------>
+
+  <!-- 9-Start --------------------------------------------- SIX MONTH PER DAY'S EXP VALUES FOR ALL GROUP ------------------------------------------>
+  <tr>
+    <td width="34%" height="19"><font size="2">SIX MONTH PER DAY'S EXP VALUES FOR ALL GROUP</font></td>
+    <td width="15%" height="19" align=center><% exp = custom_exp_value('HRK') %><%= exp.blank? ? 'NA' : exp %></td>
+    <td width="15%" height="19" align=center><% exp = custom_exp_value('LAT') %><%= exp.blank? ? 'NA' : exp %></td>
+    <td width="15%" height="19" align=center><% exp = custom_exp_value('MRL') %><%= exp.blank? ? 'NA' : exp %></td>
+  </tr>
+  <!-- 9-End --------------------------------------------- SIX MONTH PER DAY'S EXP VALUES FOR ALL GROUP ------------------------------------------>
+
+  <!-- 9-Start --------------------------------------------- EXP VALUES FOR ALL GROUP ------------------------------------------>
+  <tr>
+    <td width="34%" height="19"><font size="2">TOT MONTH EXP FOR ALL GROUP</font></td>
+    <td width="15%" height="19" align=center><% exp = sum_of_values_for_all_group('EXP','HRK',session[:startdatehc],@session[:enddatehc]) %><%= exp.blank? ? 0 : exp %></td>
+    <td width="15%" height="19" align=center><% exp = sum_of_values_for_all_group('EXP','LAT',session[:startdatehc],@session[:enddatehc]) %><%= exp.blank? ? 0 : exp %></td>
+    <td width="15%" height="19" align=center><% exp = sum_of_values_for_all_group('EXP','MRL',session[:startdatehc],@session[:enddatehc]) %><%= exp.blank? ? 0 : exp %></td>
+  </tr>
+<!-- 9-End --------------------------------------------- EXP VALUES FOR ALL GROUP ------------------------------------------>
+
+
+  <!-- 11-Start --------------------------------------------- EXPTOTAL CR FOR THE MONTH ------------------------------------------>
   <tr>
     <td width="34%" height="19"><font size="2">TOTAL CR FOR THE MONTH</font></td>
     <td width="15%" height="19" align=center>
@@ -176,7 +220,11 @@
       &nbsp;</td>
     <!--<td width="21%" height="19">
 </td>--></tr>
-  <tr>
+  
+    <!-- 11-End --------------------------------------------- EXPTOTAL CR FOR THE MONTH ------------------------------------------>
+
+    <!-- 12-Start --------------------------------------------- OUTSTANNIG FOR SHOP ------------------------------------------> 
+    <tr>
     <td width="34%" height="19"><font size="2">OUTSTANNIG FOR SHOP</font></td>
     <td width="15%" height="19" align=center>
       <% os = sum_of_os_for_cluster('HRK',session[:enddatehc]) %><%= os.blank? ? 'NA' : os %>
@@ -190,6 +238,9 @@
     <!--<td width="21%" height="19" align=center>
 </td>-->
   </tr>
+ <!-- 12-End --------------------------------------------- OUTSTANNIG FOR SHOP ------------------------------------------>
+
+<!-- 13-Start --------------------------------------------- TOTAL SHOPES ------------------------------------------>
   <tr>
     <td width="34%" height="19"><font size="2">TOTAL SHOPES</font></td>
     <td width="15%" height="19" align=center>
@@ -210,7 +261,9 @@
       &nbsp;</td>
     <!--<td width="21%" height="19">
 </td>--> </tr>
+  <!-- 13-End --------------------------------------------- TOTAL SHOPES ------------------------------------------>
 
+  <!-- 14-Start --------------------------------------------- TOTAL MACHINES------------------------------------------>
   <tr>
     <td width="34%" height="19"><font size="2">TOTAL MACHINES</font></td>
 
@@ -222,4 +275,5 @@
       <%=  Machine.count(:machineno,:conditions => "clustername = 'MRL'")%></td>
     <!--<td width="21%" height="19">
 </td>--></tr>
+  <!-- 14-End --------------------------------------------- TOTAL MACHINES------------------------------------------>
 </table>
