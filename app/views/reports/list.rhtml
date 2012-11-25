@@ -35,7 +35,7 @@
                           <% @machines=Machinedata.count(
                             :conditions=>["Cluster_Name=? and Shop_Name=? and Machine_Name=? and Trans_Date=?",
                               @session[:rrclustername],item.ShopName,mname.MachineName,@session[:ttdate1]]) %>
-                          <td  align=center><%=@machines%>&nbsp;</td>
+                          <td  align=center><%=@machines.to_i.zero? ? '' : @machines.to_i %>&nbsp;</td>
                           <%  @totalcount= @totalcount.to_i+ @machines.to_i%>
                         <% end %>
                         <td  align=center><%=@totalcount%>&nbsp;</td>

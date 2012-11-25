@@ -20,7 +20,7 @@
             <% @to_totalcount=0 %>
             <% @machine_name.each do |mname|%>
               <% from_machine_count = machine_count(item,mname.MachineName,params[:from_date]) %>
-              <td  align=center><%=  from_machine_count%>&nbsp;</td>
+              <td  align=center><%= from_machine_count.to_i.zero? ? '' : from_machine_count %>&nbsp;</td>
               <%  @from_totalcount = @from_totalcount.to_i+ from_machine_count.to_i%>
             <% end %>
             <td  align=center><%=  @from_totalcount%>&nbsp;</td>
@@ -29,7 +29,7 @@
             <td align=center><%= item %>&nbsp;</td>
             <% @machine_name.each do |mname|%>
               <% to_machine_count = machine_count(item,mname.MachineName,params[:to_date]) %>
-              <td  align=center><%=  to_machine_count%>&nbsp;</td>
+              <td  align=center><%=  to_machine_count.to_i.zero? ? '' : to_machine_count.to_i %>&nbsp;</td>
               <%  @to_totalcount = @to_totalcount.to_i+ to_machine_count.to_i%>
             <% end %>
             <td  align=center><%= @to_totalcount %>&nbsp;</td>
@@ -39,7 +39,7 @@
             <% @machine_name.each do |mname|%>
               <% from_machine_count = machine_count(item,mname.MachineName,params[:from_date]) %>
               <% to_machine_count = machine_count(item,mname.MachineName,params[:to_date]) %>
-              <td  align=center><%=  from_machine_count - to_machine_count%>&nbsp;</td>
+              <td  align=center><%=  (from_machine_count - to_machine_count).to_i.zero? ? '' : (from_machine_count - to_machine_count).to_i %>&nbsp;</td>
             <% end %>
             <td  align=center><%= @from_totalcount - @to_totalcount %>&nbsp;</td>
           </tr>

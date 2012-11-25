@@ -73,6 +73,8 @@ module ApplicationHelper
   def sign_convey(number)
     if number.to_i>0
       return '-'+number.to_s
+    elsif number.to_i.zero?
+      return ''
     else
       return number.to_s.sub('-','')
     end
@@ -286,9 +288,14 @@ module ApplicationHelper
       Machinedata.find(:all,:select => "distinct (SHOP_NAME)",:conditions=>"CLUSTER_NAME='#{cluster_name}' and TRANS_DATE='#{date}'",:order => "SHOP_NAME")
   end
 
-def editable_title
-edit_title =EditableTitle.find(:all) 
- edit_title.empty? ? "SIX MONTH PER DAY'S HC VALUES" : edit_title.collect(&:content).first
-end 
+def editable_title_for_hc
+  edit_title = EditableTitle.find_by_content_type('HC')
+  edit_title.blank? ? "SIX MONTH PER DAY'S HC VALUES" : edit_title.content
+end
+
+def editable_title_for_next
+  edit_title = EditableTitle.find_by_content_type('next')
+  edit_title.blank? ? "" : edit_title.content
+end
 
 end
