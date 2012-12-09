@@ -298,4 +298,21 @@ def editable_title_for_next
   edit_title.blank? ? "" : edit_title.content
 end
 
+def editable_titles_for_first_half
+  EditableTitle.find_by_content_type('first half')
+end
+
+def editable_titles_for_second_half
+  EditableTitle.find_by_content_type('second half')
+end
+
+def get_settings_bgcolor(cluster_name,shop_name,machine_no,date,current_setting)
+    last_setting = Machinedata.find(:all,
+                     :select => "trans_date,machine_no,machine_name,setting,shop_name",
+                     :conditions => ["trans_date>? and cluster_name=? and shop_name=? and machine_no=?",date,cluster_name,shop_name,machine_no],
+                     :order => 'trans_date desc',:limit => 1)
+                  last_setting.collect(&:setting).to_s.eql?(current_setting) ? ''  : 'pink'
+
+end
+
 end

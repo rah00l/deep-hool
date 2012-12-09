@@ -104,12 +104,8 @@
       ul li:hover ul, ul li li:hover ul, ul li li li:hover ul, ul li.over ul, ul li li.over ul, ul li li li.over ul {
         display: block;
       }
-
     </style>
-
-
   </head>
-
   <body topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0" marginwidth="0" marginheight="0" >
     <center>
       <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="1000" id="AutoNumber1" height="427">
@@ -193,13 +189,14 @@
                                     <li><%= link_to 'Reports', :controller => 'editable_titles', :action => "index" %></li>
                                   </ul>
                                 </li>
-                                <li><%= link_to 'Purge Data ', :controller => 'purge', :action => "purgemain"%></li>
-                                <li><%= link_to 'Purge CounterData ', :controller => 'purge', :action => "purgecounterdata"%></li>
-                                <li><%= link_to 'Purge Machine Data' , :controller => 'purge', :action => "purgemachinedata"%></li>
+                                <li><%#= link_to 'Purge Data ', :controller => 'purge', :action => "purgemain"%></li>
+                                <li><%= link_to 'Purge Data ', :controller => 'purge', :action => "purgemain_modi"%></li>
+                                <!--<li><%#= link_to 'Purge CounterData ', :controller => 'purge', :action => "purgecounterdata"%></li>
+                                <li><%#= link_to 'Purge Machine Data' , :controller => 'purge', :action => "purgemachinedata"%></li>-->
 
                                 <li><%= link_to 'Update OB', :controller => 'previousrecords', :action => "search" %></li>
                                 <li><%= link_to 'Target Shop', :controller => 'targets', :action => "index" %></li>
-                                <li><%= link_to 'HC/EXP For Daily Report', :controller => 'daily_report_customs', :action => "index" %></li>
+                                <!--<li><%#= link_to 'HC/EXP For Daily Report', :controller => 'daily_report_customs', :action => "index" %></li>-->
                               </ul>
                             </li>
                             <li><font face="Zurich BT"><a href="#"><b><font size="2">Data Transfer</font></b></a></font>
@@ -229,6 +226,7 @@
 
                                 <li><%= link_to 'Monthly HC Report', :controller => 'reports', :action => "hcreport" %></li>
                                 <li><%= link_to 'Daily HC Report', :controller => 'reports', :action => "daily_hc" %></li>
+                                <li><%= link_to 'M/C Settings Report', :controller => 'reports', :action => "machine_settings_report" %></li>
                                 <li><a href="#">M/c Listing Report &gt;</a>
                                   <ul>
                                     <li><%= link_to 'M/c Listing', :controller => 'reports', :action => "mc_listing" %></li>

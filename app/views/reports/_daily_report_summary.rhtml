@@ -55,19 +55,25 @@
 
   <!-- 6-Start --------------------------------------------- DAYNA ------------------------------------------>
   <tr>
-    <td width="34%" height="19"><font size="2"><%= editable_title_for_hc%></font></td>
-    <td width="15%" height="19" align=center><% hc = custom_hc_value('HRK') %><%= hc.blank? ? 'NA' : hc %></td>
-    <td width="15%" height="19" align=center><% hc = custom_hc_value('LAT') %><%= hc.blank? ? 'NA' : hc %></td>
-    <td width="15%" height="19" align=center><% hc = custom_hc_value('MRL') %><%= hc.blank? ? 'NA' : hc %></td>
+    <% editable = editable_titles_for_first_half %>
+    <% unless editable.blank? %>
+    <td width="34%" height="19"><font size="2"><%= editable.content  %></font></td>
+    <td width="15%" height="19" align=center><%= editable.value_for_hrk %></td>
+    <td width="15%" height="19" align=center><%= editable.value_for_lat %></td>
+    <td width="15%" height="19" align=center><%= editable.value_for_mrl %></td>
+    <%  end %>
   </tr>
   <!-- 6-End --------------------------------------------- DAYNA ------------------------------------------>
   
   <!-- 6-Start --------------------------------------------- DAYNA ------------------------------------------>
   <tr>
-    <td width="34%" height="19"><font size="2"><%= editable_title_for_next %></font></td>
-    <td width="15%" height="19" align=center><% hc = custom_hc_value('HRK') %><%#= hc.blank? ? 'NA' : hc %></td>
-    <td width="15%" height="19" align=center><% hc = custom_hc_value('LAT') %><%#= hc.blank? ? 'NA' : hc %></td>
-    <td width="15%" height="19" align=center><% hc = custom_hc_value('MRL') %><%#= hc.blank? ? 'NA' : hc %></td>
+    <% editable = editable_titles_for_second_half %>
+    <% unless editable.blank? %>
+    <td width="34%" height="19"><font size="2"><%= editable.content  %></font></td>
+    <td width="15%" height="19" align=center><%= editable.value_for_hrk %></td>
+    <td width="15%" height="19" align=center><%= editable.value_for_lat %></td>
+    <td width="15%" height="19" align=center><%= editable.value_for_mrl %></td>
+    <%  end %>
   </tr>
   <!-- 6-End --------------------------------------------- DAYNA ------------------------------------------>
 

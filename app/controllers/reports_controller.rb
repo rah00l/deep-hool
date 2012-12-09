@@ -23,6 +23,15 @@ class ReportsController < ApplicationController
   end
 
 
+  def machine_settings_report
+    
+  end
+
+  def machine_settings
+    
+  end
+
+
   def machine_listing
       if params[:machinedata][:ClusterName].eql?('ALL')
         @shop_name = Shop.all_shop_name_list

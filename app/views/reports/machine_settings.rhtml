@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title> Admin</title>
+  </head>
+  <body>
+    <h1 align="center"><font color="#6C3401" face="Zurich BT" size="5">M/C Settings Report</font></h1>
+    <table border="1" width ="202"  cellpadding="0"  cellspacing="0" bordercolor="#111111"   id="AutoNumber1"  height="24"  left:2% >
+    <% selected_cluster = all_or_single_cluster_name(params[:machine_settings][:ClusterName]) %>
+    <% selected_cluster.each do |cluster_name| %>
+             <h2 align="center"><font color="#6C3401" face="Zurich BT" size="2"><%=  cluster_name %> &nbsp;&nbsp;<%= date = Date.parse(params[:date]).strftime("%d-%m-%Y") if params[:date]%></font></h2>
+        <table border="1" width ="202"  cellpadding="0"  cellspacing="0" bordercolor="#111111"   id="AutoNumber1"  height="24"  left:2% >
+               <tr  bgcolor="" align=center>
+            <th nowrap width="1%" height="22" >
+              <font color=white face="Zurich BT" size="4">M/C NO</font></th>
+            <th nowrap width="1%" height="22" >
+              <font color=white face="Zurich BT" size="4">M/C NAME</font></th>
+            <th nowrap width="100%" height="22" >
+              <font color=white face="Zurich BT" size="4">T SET</font></th>
+          </tr>
+           <% Machinedata.find(:all,
+                               :select => "machine_no,machine_name,setting,shop_name",
+                               :conditions => ["trans_date=? and cluster_name=?",params[:date],cluster_name],
+                               :order => "shop_name,machine_no").each do |data| %>
+               <tr bgcolor="" align=center>
+                 <td><font size="4"></font><%= data.machine_no %></td>
+                 <td><font size="4"></font><%= data.machine_name %></td>
+                 <td width="100%" bgcolor="<%= get_settings_bgcolor(cluster_name,data.shop_name,data.machine_no,params[:date],data.setting) %>"><font size="4"></font><%= data.setting %></td>
+          </tr>
+           <%end%>
+
+        </table>
+      <%end%>
+    </table>
+    <br/>
+  </body>
+</html>
