@@ -10,6 +10,7 @@ namespace :purge_data do
 
     count_data_max_date = Countercollection.maximum(:date)
     Counterdata.delete_all(["date!=? and status=?",count_data_max_date,1])
+
   end
 end
 

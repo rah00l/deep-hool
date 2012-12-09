@@ -1943,9 +1943,11 @@ rate_MROUT.readOnly=true;
 
 function ChangeSRINState()
 {
+
+
 var SRIN=document.getElementById("rate_SRIN");
 var checkSRIN=document.getElementById("check_SRIN");
-
+<% if @session['user']['usertype'].eql?('SuperAdmin') %>
 if(checkSRIN.checked==true)
 {
 	SRIN.readOnly=false;
@@ -1956,13 +1958,16 @@ else
 {
 SRIN.readOnly=true;
 }
+<%else%>
+  alert('You are not authorise to edit this..!');
+<%end%>
 }
 
 function ChangeSROUTState()
 {
 var SROUT=document.getElementById("rate_SROUT");
 var checkSROUT=document.getElementById("check_SROUT");
-
+<% if @session['user']['usertype'].eql?('SuperAdmin') %>
 if(checkSROUT.checked==true)
 {
 	SROUT.readOnly=false;
@@ -1973,12 +1978,16 @@ else
 {
 SROUT.readOnly=true;
 }
+<%else%>
+  alert('You are not authorise to edit this..!');
+<%end%>
+
 }
 function ChangeMTRINState()
 {
 var SROUT=document.getElementById("rate_MRIN");
 var checkSROUT=document.getElementById("check_MTRIN");
-
+<% if @session['user']['usertype'].eql?('SuperAdmin') %>
 if(checkSROUT.checked==true)
 {
 	SROUT.readOnly=false;
@@ -1990,6 +1999,9 @@ else
 SROUT.readOnly=true;
 
 }
+<%else%>
+  alert('You are not authorise to edit this..!');
+<%end%>
 }
 
 
@@ -1997,7 +2009,7 @@ function ChangeMTROUTState()
 {
 var SROUT=document.getElementById("rate_MROUT");
 var checkSROUT=document.getElementById("check_MTROUT");
-
+<% if @session['user']['usertype'].eql?('SuperAdmin') %>
 if(checkSROUT.checked==true)
 {
 	SROUT.readOnly=false;
@@ -2009,6 +2021,9 @@ else
 SROUT.readOnly=true;
 
 }
+<%else%>
+  alert('You are not authorise to edit this..!');
+<%end%>
 
 }
 
