@@ -1,5 +1,6 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
+#    require 'ruby-debug'
   def previous_month_avg_hc(cluster_name,shop_name,date)
     date = date.to_s
     first_date,last_date = get_last_months_last_date(date)
@@ -309,8 +310,9 @@ end
 def get_settings_bgcolor(cluster_name,shop_name,machine_no,date,current_setting)
     last_setting = Machinedata.find(:all,
                      :select => "trans_date,machine_no,machine_name,setting,shop_name",
-                     :conditions => ["trans_date>? and cluster_name=? and shop_name=? and machine_no=?",date,cluster_name,shop_name,machine_no],
+                     :conditions => ["trans_date<=? and cluster_name=? and shop_name=? and machine_no=?",date,cluster_name,shop_name,machine_no],
                      :order => 'trans_date desc',:limit => 1)
+#                   debugger
                   last_setting.collect(&:setting).to_s.eql?(current_setting) ? ''  : 'pink'
 
 end
