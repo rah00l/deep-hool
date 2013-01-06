@@ -55,7 +55,7 @@
 
   <!-- 6-Start --------------------------------------------- DAYNA ------------------------------------------>
   <tr>
-    <% editable = editable_titles_for_first_half %>
+    <% editable = EditableTitle.find(:all,:order=>"content_type").each do |editable| %>
     <% unless editable.blank? %>
     <td width="34%" height="19"><font size="2"><%= editable.content  %></font></td>
     <td width="15%" height="19" align=center><%= editable.value_for_hrk %></td>
@@ -63,18 +63,19 @@
     <td width="15%" height="19" align=center><%= editable.value_for_mrl %></td>
     <%  end %>
   </tr>
+    <%  end %>
   <!-- 6-End --------------------------------------------- DAYNA ------------------------------------------>
   
   <!-- 6-Start --------------------------------------------- DAYNA ------------------------------------------>
-  <tr>
-    <% editable = editable_titles_for_second_half %>
-    <% unless editable.blank? %>
-    <td width="34%" height="19"><font size="2"><%= editable.content  %></font></td>
-    <td width="15%" height="19" align=center><%= editable.value_for_hrk %></td>
-    <td width="15%" height="19" align=center><%= editable.value_for_lat %></td>
-    <td width="15%" height="19" align=center><%= editable.value_for_mrl %></td>
-    <%  end %>
-  </tr>
+<!--  <%#*<tr>%>
+    <%# editable = editable_titles_for_second_half %>
+    <%# unless editable.blank? %>
+    <%#*<td width="34%" height="19"><font size="2"><%= editable.content  %></font></td>%>
+    <%#*<td width="15%" height="19" align=center><%= editable.value_for_hrk %></td>%>
+    <%#*<td width="15%" height="19" align=center><%= editable.value_for_lat %></td>%>
+    <%#*<td width="15%" height="19" align=center><%= editable.value_for_mrl %></td>%>
+    <%#  end %>
+  <%#*</tr>%>-->
   <!-- 6-End --------------------------------------------- DAYNA ------------------------------------------>
 
   <!-- 7-Start --------------------------------------------- HC VALUES FOR ALL GROUP ------------------------------------------>
