@@ -23,6 +23,15 @@ class ReportsController < ApplicationController
   end
 
 
+  def cr
+#    if params[:date1].to_date <= params[:date2].to_date
+#
+#    else
+#      flash[:notice] ='<font color=red size=3><b>Please select proper dates</b></font>'
+#      redirect_to :back
+#		end
+  end
+
   def machine_settings_report
     
   end

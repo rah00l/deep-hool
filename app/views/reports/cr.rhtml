@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title> Admin</title>
+  </head>
+  <body>
+    <h1 align="center"><font color="#6C3401" face="Zurich BT" size="5">Credit Report</font></h1>
+    <table border="1" width ="202"  cellpadding="0"  cellspacing="0" bordercolor="#111111"   id="AutoNumber1"  height="24"  left:2% >
+    <% selected_cluster = all_or_single_cluster_name(params[:cr][:ClusterName]) %>
+    <% credit_grand_tot = 0 %>
+    <% selected_cluster.each do |cluster_name| %>
+               <!--<h2 align="center"><font color="#6C3401" face="Zurich BT" size="2"><%  cluster_name %> &nbsp;&nbsp;DATE-1- <% date1 = Date.parse(params[:date1]).strftime("%d/%m/%Y") if params[:date1]%> DATE-2 - <% date2 = Date.parse(params[:date2]).strftime("%d/%m/%Y") if params[:date2]%></font></h2>-->
+             <!--<table border="1" width ="202"  cellpadding="0"  cellspacing="0" bordercolor="#111111"   id="AutoNumber1"  height="24"  left:2% >-->
+             <tr  bgcolor="" align=center>
+            <th nowrap width="1%" height="22" >
+              <font color=white face="Zurich BT" size="2"><%= cluster_name %></font></th>
+            <th nowrap width="1%" height="22" >
+              <font color=white face="Zurich BT" size="2">SHOP NAME</font></th>
+            <th nowrap width="1%" height="22" >
+              <font color=white face="Zurich BT" size="2"><%=  date1 %></font></th>
+            <th nowrap width="100%" height="22" >
+              <font color=white face="Zurich BT" size="2"><%=  date2 %></font></th>
+            <th nowrap width="100%" height="22" >
+              <font color=white face="Zurich BT" size="2">Total</font></th>
+          </tr>
+          <% credit_tot = 0 %>
+          <% Shop.find(:all,:conditions=>["ClusterName=?",cluster_name],:order=>"ShopName").collect(&:ShopName).each do |shop_name|  %>
+            <tr bgcolor="" align=center>
+              <td><font size="2"></font></td>
+              <td><font size="2"></font><%= shop_name %></td>
+              <td><font size="2"><%= first_credit = get_credit(cluster_name,shop_name,params[:date1]) %></font></td>
+              <td><font size="2"><%= second_credit = get_credit(cluster_name,shop_name,params[:date2]) %></font></td>
+              <td><font size="2"><%= tot = get_credit_difference(first_credit,second_credit) %></font></td>
+              <% credit_tot +=  tot %>
+            <%end%>
+          </tr>
+          <tr bgcolor="#E1CEA2" align="center">
+            <th  nowrap width="1%" height="22" >
+              <font color=white face="Zurich BT" size="2"><%= cluster_name %>'s Total</font>
+            </th>
+            <th  nowrap width="1%" height="22" >
+              <font color=white face="Zurich BT" size="2"></font>
+            </th>
+            <th  nowrap width="1%" height="22" >
+              <font color=white face="Zurich BT" size="2"></font>
+            </th>
+            <th  nowrap width="1%" height="22" >
+              <font color=white face="Zurich BT" size="2"></font>
+            </th>
+            <th  nowrap width="1%" height="22" >
+              <font color=white face="Zurich BT" size="2"><%= credit_tot %></font>
+            </th>
+            <%  credit_grand_tot += credit_tot%>
+           <%end%>
+          </tr>
+                    <tr bgcolor="#E1CEA2" align="center">
+            <th  nowrap width="1%" height="22" >
+              <font color=white face="Zurich BT" size="2">Grand Total</font>
+            </th>
+            <th  nowrap width="1%" height="22" >
+              <font color=white face="Zurich BT" size="2"></font>
+            </th>
+            <th  nowrap width="1%" height="22" >
+              <font color=white face="Zurich BT" size="2"></font>
+            </th>
+            <th  nowrap width="1%" height="22" >
+              <font color=white face="Zurich BT" size="2"></font>
+            </th>
+            <th  nowrap width="1%" height="22" >
+              <font color=white face="Zurich BT" size="2"><%= credit_grand_tot %></font>
+            </th>
+          </tr>
+        </table>
+    <!--</table>-->
+    <br/>
+  </body>
+</html>
