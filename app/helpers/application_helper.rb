@@ -1,6 +1,6 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-#    require 'ruby-debug'
+#  require 'ruby-debug'
   def previous_month_avg_hc(cluster_name,shop_name,date)
     date = date.to_s
     first_date,last_date = get_last_months_last_date(date)
@@ -177,7 +177,7 @@ module ApplicationHelper
     machinecount = Machinedata.count(:conditions=>["CLUSTER_NAME in (?) and SHOP_NAME=? and GROUP_ID=? and TRANS_DATE=?  and MACHINE_NAME=?",
         cluster_name,shop_name,group_name,end_date,mc_name])
 
-   avg = machinecount!=0 ? (((((tsrin.to_f+mtrpos.to_f)-(tsrout.to_f-(mtrneg.to_f)))/machinecount)/date_diff.to_i)).round : 0
+    avg = machinecount!=0 ? (((((tsrin.to_f+mtrpos.to_f)-(tsrout.to_f-(mtrneg.to_f)))/machinecount)/date_diff.to_i)).round : 0
 
     per = tsrin.to_i!=0?  (((tsrout.to_f-mtrneg.to_f).to_f*100)/(tsrin.to_f+mtrpos.to_f)).round : 0
     return per,avg
@@ -205,7 +205,7 @@ module ApplicationHelper
     machinecount = Machinedata.count(:conditions=>["CLUSTER_NAME in (?) and SHOP_NAME=? and TRANS_DATE=?  and MACHINE_NAME=?",
         cluster_name,shop_name,end_date,mc_name])
 
-   avg = machinecount!=0 ? (((((tsrin.to_f+mtrpos.to_f)-(tsrout.to_f-(mtrneg.to_f)))/machinecount)/date_diff.to_i)).round : 0
+    avg = machinecount!=0 ? (((((tsrin.to_f+mtrpos.to_f)-(tsrout.to_f-(mtrneg.to_f)))/machinecount)/date_diff.to_i)).round : 0
 
     per = tsrin.to_i!=0?  (((tsrout.to_f-mtrneg.to_f).to_f*100)/(tsrin.to_f+mtrpos.to_f)).round : 0
     return per,avg
@@ -232,10 +232,10 @@ module ApplicationHelper
           mtrpos=mtrpos+machine_date.MTRSHORT.to_i
         end
       end
-    tot_tsrout +=tsrout.to_f
-    tot_tsrin +=tsrin.to_f
-    tot_mtrpos +=mtrpos.to_f
-    tot_mtrneg +=mtrneg.to_f
+      tot_tsrout +=tsrout.to_f
+      tot_tsrin +=tsrin.to_f
+      tot_mtrpos +=mtrpos.to_f
+      tot_mtrneg +=mtrneg.to_f
     end
 
     machinecount = machine_type.machines.find_all_by_ClusterName_and_ShopName_and_GroupID(cluster_name,shop_name,group_name).count
@@ -267,10 +267,10 @@ module ApplicationHelper
           mtrpos=mtrpos+machine_date.MTRSHORT.to_i
         end
       end
-    tot_tsrout +=tsrout.to_f
-    tot_tsrin +=tsrin.to_f
-    tot_mtrpos +=mtrpos.to_f
-    tot_mtrneg +=mtrneg.to_f
+      tot_tsrout +=tsrout.to_f
+      tot_tsrin +=tsrin.to_f
+      tot_mtrpos +=mtrpos.to_f
+      tot_mtrneg +=mtrneg.to_f
     end
     machinecount = machine_type.machines.find_all_by_ClusterName_and_ShopName(cluster_name,shop_name).count
 
@@ -286,35 +286,44 @@ module ApplicationHelper
 
 
   def reading_mistake(cluster_name,date)
-      Machinedata.find(:all,:select => "distinct (SHOP_NAME)",:conditions=>"CLUSTER_NAME='#{cluster_name}' and TRANS_DATE='#{date}'",:order => "SHOP_NAME")
+    Machinedata.find(:all,:select => "distinct (SHOP_NAME)",:conditions=>"CLUSTER_NAME='#{cluster_name}' and TRANS_DATE='#{date}'",:order => "SHOP_NAME")
   end
 
-def editable_title_for_hc
-  edit_title = EditableTitle.find_by_content_type('HC')
-  edit_title.blank? ? "SIX MONTH PER DAY'S HC VALUES" : edit_title.content
-end
+  def editable_title_for_hc
+    edit_title = EditableTitle.find_by_content_type('HC')
+    edit_title.blank? ? "SIX MONTH PER DAY'S HC VALUES" : edit_title.content
+  end
 
-def editable_title_for_next
-  edit_title = EditableTitle.find_by_content_type('next')
-  edit_title.blank? ? "" : edit_title.content
-end
+  def editable_title_for_next
+    edit_title = EditableTitle.find_by_content_type('next')
+    edit_title.blank? ? "" : edit_title.content
+  end
 
-def editable_titles_for_first_half
-  EditableTitle.find_by_content_type('first half')
-end
+  def editable_titles_for_first_half
+    EditableTitle.find_by_content_type('first half')
+  end
 
-def editable_titles_for_second_half
-  EditableTitle.find_by_content_type('second half')
-end
+  def editable_titles_for_second_half
+    EditableTitle.find_by_content_type('second half')
+  end
 
-def get_settings_bgcolor(cluster_name,shop_name,machine_no,date,current_setting)
+  def get_settings_bgcolor(cluster_name,shop_name,machine_no,date,current_setting)
     last_setting = Machinedata.find(:all,
-                     :select => "trans_date,machine_no,machine_name,setting,shop_name",
-                     :conditions => ["trans_date<=? and cluster_name=? and shop_name=? and machine_no=?",date,cluster_name,shop_name,machine_no],
-                     :order => 'trans_date desc',:limit => 1)
-#                   debugger
-                  last_setting.collect(&:setting).to_s.eql?(current_setting) ? ''  : 'pink'
+      :select => "trans_date,machine_no,machine_name,setting,shop_name",
+      :conditions => ["trans_date<=? and cluster_name=? and shop_name=? and machine_no=?",date,cluster_name,shop_name,machine_no],
+      :order => 'trans_date desc',:limit => 1)
+    #                   debugger
+    last_setting.collect(&:setting).to_s.eql?(current_setting) ? ''  : 'pink'
 
-end
+  end
+
+  def get_credit(cluster_name,shop_name,date)
+    countdata = Counterdata.find_by_ClusterName_and_ShopName_and_Date(cluster_name,shop_name,date.to_date)
+    countdata.blank? ? 0 : countdata.Credit
+  end
+
+  def get_credit_difference(first_credit,second_credit)
+    (second_credit.to_i - first_credit.to_i).to_i
+  end
 
 end
