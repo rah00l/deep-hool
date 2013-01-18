@@ -2,6 +2,7 @@ class ShopsController < ApplicationController
   layout 'adminlayout'
   require 'ftools'
   require 'chronic'
+#  require 'ruby-debug'
   before_filter :login_required
   
   def roundval(val)
@@ -86,6 +87,7 @@ class ShopsController < ApplicationController
   end
 
   def updatedb
+  
     begin
       @con=Configuration.find(1)
       @folderpath=@con.FilesFolderPath
@@ -98,6 +100,10 @@ class ShopsController < ApplicationController
       IO.foreach("#{@session['file']}"){|block| values<<block}
       d=values.to_s.split('COUNTER')
       data=d[0].to_a
+
+
+       
+
       begin
         Dir.chdir(pw)
         for i in 0..(data.length-1)
@@ -119,6 +125,8 @@ class ShopsController < ApplicationController
           @olddate=Date.parse("#{@oldmdata1.TRANS_DATE}")
           @datediff=@currdate-@olddate
           @actualdatediff=@datediff-1
+
+          
           if @actualdatediff!=0
             for i in 1..@actualdatediff
               @mdata=Machinedata.new()
@@ -138,6 +146,7 @@ class ShopsController < ApplicationController
               @mdata.PMTRINVALUE=@mdata.MTRIN
               @mdata.PMTROUTVALUE=@mdata.MTROUT
               @mdata.MTRSHORT=0
+              
               @mdetails=Machine.find(:first,:conditions=>['MachineNo=? and GroupID=? and ShopName=?and ClusterName=?',@mdata.MACHINE_NO,@mdata.GROUP_ID,@mdata.SHOP_NAME,@mdata.CLUSTER_NAME])
               @mdata.MACHINE_NAME=@mdetails.MachineName
               @mdata.SCREEN_RATE_IN=@mdetails.SrateIn
@@ -145,6 +154,8 @@ class ShopsController < ApplicationController
               @mdata.MTR_RATE_IN=@mdetails.MrateIn
               @mdata.MTE_RATE_OUT=@mdetails.MrateOut
               @mdata.MULTIPLY_BY=@mdetails.Multiplyby
+
+              
               @oldmdatanew=Machinedata.find(:first,:conditions=>['TRANS_DATE=? and SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=?',@mdata.TRANS_DATE-1,@sname,@gid,@mno,@clustername])
               oldsrin=@oldmdatanew.PSRINVALUE
               oldsrout=@oldmdatanew.PSROUTVALUE
@@ -154,11 +165,17 @@ class ShopsController < ApplicationController
               @mdata.TSROUT=(@mdata.SROUT.to_i-oldsrout.to_i)
               @mdata.TMTRIN=(@mdata.MTRIN.to_i-oldmtrin.to_i)
               @mdata.TMTROUT=(@mdata.MTROUT.to_i-oldmtrout.to_i)
+
+              
               @mdata.MTRDIFFIN=((@mdata.MTR_RATE_IN.to_i*@mdata.TMTRIN.to_i)-(@mdata.SCREEN_RATE_IN.to_i*@mdata.TSRIN.to_i))/10
               @mdata.MTRDIFFOUT=((@mdata.MTE_RATE_OUT.to_i*@mdata.TMTROUT.to_i)-(@mdata.SCREEN_RATE_OUT.to_i*@mdata.TSROUT.to_i))/10
-              mtrshort = @mdata.MTRSHORT.to_i/@mdata.MULTIPLY_BY.to_i
+
+
+              mtrshort = @mdata.MTRSHORT.to_i/@mdata.MULTIPLY_BY.to_i unless (@mdata.MULTIPLY_BY.to_i).zero?
               @mdata.SRCOLL=(((@mdata.TSRIN.to_i*@mdata.SCREEN_RATE_IN.to_i)-(@mdata.TSROUT.to_i*@mdata.SCREEN_RATE_OUT.to_i))/10)+mtrshort.to_i####
               @mdata.MTRCOLL=(((@mdata.TMTRIN.to_i*@mdata.MTR_RATE_IN.to_i)-(@mdata.TMTROUT.to_i*@mdata.MTE_RATE_OUT.to_i))/10)+mtrshort.to_i
+
+
               if @mdata.MTRDIFFIN.to_i==0 and @mdata.MTRDIFFOUT.to_i==0
                 @mdata.MTRDIFFWHY='NO'
               elsif @mdata.MTRDIFFIN.to_i==0 and @mdata.MTRDIFFOUT.to_i!=0
@@ -168,6 +185,8 @@ class ShopsController < ApplicationController
               else
                 @mdata.MTRDIFFWHY='IN/OUT'
               end
+
+              
               @mdata.SETTING=@oldmdata1.SETTING
               @mdata.LASTSETTING=@oldmdata1.SETTING
               if @mdata.TSRIN<0 or @mdata.TSROUT<0
@@ -213,6 +232,7 @@ class ShopsController < ApplicationController
                   end
                 end
               end
+               
               if @srin.to_i!=0
                 outval=((@mdata.SROUT.to_f*@mdata.SCREEN_RATE_OUT.to_f)/10).to_i
                 if outval!=0
@@ -407,6 +427,7 @@ class ShopsController < ApplicationController
               end
               @mdata.digitno=digitn
               @mdata.charno=charn
+              
               @mdata.save
             end
           end
@@ -424,7 +445,10 @@ class ShopsController < ApplicationController
         #puts ex.message()
         @rescueflag=true
       end
+
       replicatecounterdata(d[1].to_s)
+
+
       if(a==true)
         @con=Configuration.find(1)
         @folderpath=@con.FilesFolderPath
@@ -489,19 +513,19 @@ class ShopsController < ApplicationController
           page << "document.getElementById('aux_div').style.visibility = 'visible'"
           page.alert("PROBLEM IN FILE UPLOADED!")
           d=Dir.pwd()
-          if File.directory?("C:\ErrorLogs")
-            f="C:/ErrorLogs"
+          if File.directory?("/tmpt")
+            f="/tmpt"
             Dir.chdir(f)
-            fp=File.new("Error.log","a")
+            fp=File.new("Upload_Errors.log","a")
             fp.write(Time.now.to_s+"-"+a.to_s)
             fp.write("\n")
             fp.close()
             Dir.chdir(d)
           else
-            e="C:/"
+            e="/tmpt"
             Dir.chdir(e)
-            FileUtils.mkdir_p 'ErrorLogs'
-            f="C:/ErrorLogs"
+#            FileUtils.mkdir_p 'ErrorLogs'
+            f="/tmpt"
             Dir.chdir(f)
             fp=File.new("Error.log","a")
             fp.write(Time.now.to_s+"-"+a.to_s)
@@ -695,6 +719,7 @@ class ShopsController < ApplicationController
           end
         end
       end
+      
       if srin.to_i!=0
         outval=((@mdata.SROUT.to_f*@mdata.SCREEN_RATE_OUT.to_f)/10).to_i
         if outval!=0
@@ -708,9 +733,11 @@ class ShopsController < ApplicationController
         else
           incal=roundval((@mdata.SRIN.to_f*@mdata.SCREEN_RATE_IN.to_f))
         end
+
+  
                           
         begin
-          @cal=roundval(((outcal.to_i-@totalmtrshortneg.to_f)*100)/(incal.to_i+@totalmtrshortpos.to_f))
+          @cal=roundval(((outcal.to_i-@totalmtrshortneg.to_f)*100)/(incal.to_i+@totalmtrshortpos.to_f)) unless (incal.to_i+@totalmtrshortpos.to_f).zero?
         rescue Exception=>ex
           @cal=0
         end
@@ -821,6 +848,8 @@ class ShopsController < ApplicationController
         else
           @valcount=@valcount.to_i-1
         end
+
+        
         @mdata.SRAVG=roundval(@srvalues.to_f/(@valcount.to_i))
       rescue Exception=>ex
         @mdata.SRAVG=@srvalues
@@ -881,8 +910,9 @@ class ShopsController < ApplicationController
           end
         end
       end
+
       if @sinval.to_i!=0
-        @cal1=roundval((roundval((@sroutval.to_f*@mdata.MTE_RATE_OUT.to_f)/10)-@totalmtrshortmperneg.to_f)*100/(roundval((@sinval.to_f*@mdata.MTR_RATE_IN.to_f)/10)+@totalmtrshortmperpos.to_f))
+        @cal1=roundval((roundval((@sroutval.to_f*@mdata.MTE_RATE_OUT.to_f)/10)-@totalmtrshortmperneg.to_f)*100/(roundval((@sinval.to_f*@mdata.MTR_RATE_IN.to_f)/10)+@totalmtrshortmperpos.to_f)) unless (roundval((@sinval.to_f*@mdata.MTR_RATE_IN.to_f)/10)+@totalmtrshortmperpos.to_f).zero?
       else
         @cal1=0
       end
