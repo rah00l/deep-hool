@@ -16,6 +16,11 @@ every 1.day, :at=> '1am'  do
   rake "password_reset:for_users_expired"
 end
 
+every :friday, :at=> '8.30am'  do
+  command "find /home/UpCCndM9Q/shivraj_backup/ -type f -mtime +3 -exec rm {}\;"
+  command "find /home/UpCCndM9Q/anand_backup/ -type f -mtime +3 -exec rm {}\;"
+end
+
 every 2.day, :at => "5am" do
   rake "purge_data_auto:purge_data"
 end
@@ -24,10 +29,10 @@ end
 every :friday, :at => "4am" do
   rake "log:clear"
   rake "tmp:clear"
-#  command  "rm -rf #{RAILS_ROOT}/tmp/cache"
+#  exec  "rm -rf #{RAILS_ROOT}/tmp/cache"
 end
 
 
-#every :reboot do
-#  commond "ruby script/server -e production -d"
-#end
+every :reboot do
+#  exec "ruby script/server -e production -d"
+end
