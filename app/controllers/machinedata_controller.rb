@@ -568,19 +568,50 @@ class MachinedataController < ApplicationController
   end
 
   def data_upload
-    #    file_path = save_data_file(params[:import_file])
-    file_path = "/home/rahul/Desktop/abc/exp_20120210.csv"
+    file_path = @session['filename']
     if File.extname(file_path)==".csv"
       @csv_records = parse_csv_file(file_path)
-      @csv_records.each_with_index do |column,i|
-        machinedata_parsing_csv(column,i)
+      @csv_records.each do |data|
+        Machinedata.update_machinedata(data)
       end
     end
-    redirect_to :controller=>'machinedata', :action=>'file_upload'
-    flash[:confirm] = '<font color=green size=4><b>DATA SUCCESSFULLY UPLOADED.</b></font>'
+
+    move_file_at_backup_location
+    render :update do |page|
+      
+      page << "document.getElementById('aux_div').style.visibility = 'visible'"
+      page.alert("DATA UPLOADED SUCCESSFULLY !")
+      page.redirect_to url_for(:controller=>'shops', :action=>'receiveddata' ,:type => "imp")
+    end
+    #    redirect_to :controller=>'machinedata', :action=>'file_upload'
+    #    flash[:confirm] = '<font color=green size=4><b>DATA SUCCESSFULLY UPLOADED.</b></font>'
   end
 
   def file_upload
+  end
+
+  def move_file_at_backup_location
+    @con=Configuration.find(1)
+    @folderpath=@con.filefolder_imp
+    @backupfolder=@con.backupfolder_imp
+    if File.directory?("#{@backupfolder}")
+    else
+      FileUtils.mkdir_p "#{@backupfolder}"
+    end
+    basedir = "#{@folderpath}/"
+    targetdir="#{@backupfolder}/"
+    pw=Dir.pwd()
+    Dir.chdir(basedir)
+    @files=@session['file']
+    i=0
+    begin
+      @files.each { |file|
+        if File.file?(basedir + file)
+          File.move(basedir + file, targetdir + file)
+        end
+      }
+      Dir.chdir(pw)
+    end
   end
 
   def machinedata_parsing_csv(column,i)
@@ -591,10 +622,18 @@ class MachinedataController < ApplicationController
   def parse_csv_file(file_path)
     @csv_records = []
     #    FasterCSV.new(File.open(file_path), :headers => :first_row)do |row|
-    CSV::Reader.parse(File.new(file_path, "r").read) do |row|
-      @csv_records << row
-    end
+    data= File.read(file_path)
+    sep = data.match(/\t/)
+    col_seprator = sep.nil? ? "," : "\t"
+    rows = CSV.read(file_path)
+    rows.collect {|row| [@csv_records << row.to_s.split(col_seprator) ]}
     @csv_records
+#    rows = CSV.read(file_path, {:col_sep => col_seprator})
+#    rows.each do |row|
+#    a = row.to_s.split(col_seprator)
+#      @csv_records << row
+#    end
+#    @csv_records
   end
 
   def utf8_value(val)

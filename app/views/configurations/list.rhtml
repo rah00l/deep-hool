@@ -5,6 +5,8 @@
     <th>Location Name</th>
     <th>Filesfolderpath</th>
     <th>Backupfolderpath</th>
+    <th>Filesfolderpath For Auto</th>
+    <th>Backupfolderpath For Auto</th>
     <th>Continue Copy</th>
   </tr>
   
@@ -13,6 +15,8 @@
      <td><%=h configuration.location_name %></td>
     <td><%=h configuration.FilesFolderPath %></td>
     <td><%=h configuration.BackupFolderPath %></td>
+    <td><%=h configuration.filefolder_imp %></td>
+    <td><%=h configuration.backupfolder_imp %></td>
     <td><%=h configuration.copy_continue? ? 'Activated' : 'Deactivated' %></td>
     <td><%#=h configuration.Continue Copy %></td>
     <td><%= link_to 'Edit', :action => 'edit', :id => configuration %></td>

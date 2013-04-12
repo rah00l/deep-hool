@@ -202,7 +202,7 @@
                             <li><font face="Zurich BT"><a href="#"><b><font size="2">Data Transfer</font></b></a></font>
                               <ul>
                                 <li><%= link_to 'Received Data', :controller => 'shops', :action => "receiveddata" %></li>
-
+                                <li><%= link_to 'IMP Received Data', :controller => 'shops', :action => "receiveddata" ,:type => "imp"%></li>
                                 <li><a href="#">Edit Data &gt;</a></font>
                                   <ul>
                                     <li><%= link_to 'Daily Data', :controller => 'machinedata', :action => "dailydata" %></li>
@@ -276,6 +276,7 @@
                             <li><font face="Zurich BT"><a href="#"><b><font size="2">Data Transfer</font></b></a></font>
                               <ul>
                                 <li><%= link_to 'Received Data', :controller => 'shops', :action => "receiveddata" %></li>
+                                
 
                                 <li><a href="#">Edit Data &gt;</a></font>
                                   <ul>
