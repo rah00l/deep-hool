@@ -326,4 +326,19 @@ module ApplicationHelper
     (second_credit.to_i - first_credit.to_i).to_i
   end
 
+  def get_filefolder_infomation(type)
+    con=Configuration.find(1)
+    folderpath = type.eql?('imp') ? con.filefolder_imp : con.FilesFolderPath
+    basedir = "#{folderpath}/"
+    a=Dir.pwd()
+    if File.directory?(basedir)
+    else
+      FileUtils.mkdir_p basedir
+      Dir.chdir(a)
+    end
+    @pw=Dir.pwd()
+    Dir.chdir(basedir)
+    @files = Dir.glob("*")
+  end
+
 end

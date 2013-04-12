@@ -16,6 +16,23 @@ class ShopsController < ApplicationController
       return (val).round
     end
   end
+
+  def receiveddata
+    session[:type] = params[:type]
+#    @con=Configuration.find(1)
+#    @folderpath = params[:type].eql?('imp') ? @con.BackupFolderPath : @con.FilesFolderPath
+#    basedir = "#{@folderpath}/"
+#    a=Dir.pwd()
+#    if File.directory?(basedir)
+#    else
+#      FileUtils.mkdir_p basedir
+#      Dir.chdir(a)
+#    end
+#    @pw=Dir.pwd()
+#    Dir.chdir(basedir)
+#    @files = Dir.glob("*")
+#    redirect_to :action => 'receiveddata'
+  end
  
   def getfilename
     begin

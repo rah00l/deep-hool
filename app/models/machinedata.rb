@@ -4,53 +4,73 @@ class Machinedata < ActiveRecord::Base
   
   def self.update_machinedata(data)
     Machinedata.transaction do
-    mdata = Machinedata.find_by_CLUSTER_NAME_and_SHOP_NAME_and_TRANS_DATE_and_GROUP_ID_and_MACHINE_NO(data[0],data[1],data[2],data[3],data[4])
-    unless mdata.blank?
-      pmcndata = Machinedata.find_by_CLUSTER_NAME_and_SHOP_NAME_and_TRANS_DATE_and_GROUP_ID_and_MACHINE_NO(data[0],data[1],(Date.parse(data[2])-1).to_s,data[3],data[4])
-      oldsrin=pmcndata.PSRINVALUE
-      oldsrout=pmcndata.PSROUTVALUE
-      oldmtrin=pmcndata.PMTRINVALUE
-      oldmtrout=pmcndata.PMTROUTVALUE
-      tsrin = (data[5].to_i-oldsrin.to_i)
-      tsrout = (data[6].to_i-oldsrout.to_i)
-      tmtrin = (data[7].to_i-oldmtrin.to_i)
-      tmtrout = (data[8].to_i-oldmtrout.to_i)
-      srper = cal_sr_percentage(data,mdata)
-      mtrper = cal_mtr_percentage(data,mdata)
-      mtrdiffin=((mdata.MTR_RATE_IN.to_i*tmtrin.to_i)-(mdata.SCREEN_RATE_IN.to_i*tsrin.to_i))/10
-      mtrdiffout=((mdata.MTE_RATE_OUT.to_i*tmtrout.to_i)-(mdata.SCREEN_RATE_OUT.to_i*tsrout.to_i))/10
-      mtrshort = (mdata.MTRSHORT.to_i/mdata.MULTIPLY_BY.to_i)
-      srcoll=(((tsrin.to_i*mdata.SCREEN_RATE_IN.to_i)-(tsrout.to_i*mdata.SCREEN_RATE_OUT.to_i))/10)+mtrshort.to_i
-      mtrcoll=(((tmtrin.to_i*mdata.MTR_RATE_IN.to_i)-(tmtrout.to_i*mdata.MTE_RATE_OUT.to_i))/10)+mtrshort.to_i
-      cal_by = mdata.CALCULATEBY.eql? "S"
-      curcoll = cal_by == true ? srcoll : mtrcoll
-      thirtydaysavg = cal_daysavg(data,mdata,curcoll,30)
-      tendaysavg = cal_daysavg(data,mdata,curcoll,10)
-      sravg = sr_avg(data,mdata,curcoll,pmcndata)
-      mdata.update_attributes(:SRIN=>data[5],:SROUT=>data[6],:MTRIN=>data[7],:MTROUT=>data[8],
-        :PSRINVALUE=>data[5],:PSROUTVALUE=>data[6],:PMTRINVALUE=>data[7],:PMTROUTVALUE=>data[8],
-        :TSRIN=>tsrin,:TSROUT=>tsrout,:TMTRIN=>tmtrin,:TMTROUT=>tmtrout,
-        :SRPER=>srper,:MTRPER=>mtrper,:MTRDIFFIN=>mtrdiffin,:MTRDIFFOUT=>mtrdiffout,
-        :SRCOLL=>srcoll,:MTRCOLL=>mtrcoll,
-        :THIRTYDAYSAVG=>thirtydaysavg,:TENDAYSAVG=>tendaysavg,
-        :SRAVG=>sravg)
+      mdata = Machinedata.find_by_CLUSTER_NAME_and_SHOP_NAME_and_TRANS_DATE_and_GROUP_ID_and_MACHINE_NO(data[0],data[1],data[2],data[3],data[4])
+      unless mdata.blank?
+        pmcndata = Machinedata.find_by_CLUSTER_NAME_and_SHOP_NAME_and_TRANS_DATE_and_GROUP_ID_and_MACHINE_NO(data[0],data[1],(Date.parse(data[2])-1).to_s,data[3],data[4])
+        oldsrin=pmcndata.PSRINVALUE
+        oldsrout=pmcndata.PSROUTVALUE
+        oldmtrin=pmcndata.PMTRINVALUE
+        oldmtrout=pmcndata.PMTROUTVALUE
+        tsrin = (data[5].to_i-oldsrin.to_i)
+        tsrout = (data[6].to_i-oldsrout.to_i)
+        tmtrin = (data[7].to_i-oldmtrin.to_i)
+        tmtrout = (data[8].to_i-oldmtrout.to_i)
+        srper = cal_sr_percentage(data,mdata)
+        
+        mtrper = cal_mtr_percentage_latest(data,mdata,pmcndata,tsrin,tsrout,tmtrin,tmtrout)
+      
+        mtrdiffin=((mdata.MTR_RATE_IN.to_i*tmtrin.to_i)-(mdata.SCREEN_RATE_IN.to_i*tsrin.to_i))/10
+        mtrdiffout=((mdata.MTE_RATE_OUT.to_i*tmtrout.to_i)-(mdata.SCREEN_RATE_OUT.to_i*tsrout.to_i))/10
+
+        mtrshort = (mdata.MTRSHORT.to_i/mdata.MULTIPLY_BY.to_i)
+        srcoll=(((tsrin.to_i*mdata.SCREEN_RATE_IN.to_i)-(tsrout.to_i*mdata.SCREEN_RATE_OUT.to_i))/10)+mtrshort.to_i
+        mtrcoll=(((tmtrin.to_i*mdata.MTR_RATE_IN.to_i)-(tmtrout.to_i*mdata.MTE_RATE_OUT.to_i))/10)+mtrshort.to_i
+        cal_by = mdata.CALCULATEBY.eql? "S"
+        curcoll = cal_by == true ? srcoll : mtrcoll
+        thirtydaysavg = cal_daysavg(data,mdata,curcoll,30)
+        tendaysavg = cal_daysavg(data,mdata,curcoll,10)
+        
+        sravg = sr_avg(data,mdata,curcoll,pmcndata)
+
+        cal_by_value = check_cal_by(tsrin,tsrout)
+      
+        mdata.update_attributes(:SRIN=>data[5],:SROUT=>data[6],:MTRIN=>data[7],:MTROUT=>data[8],
+          :PSRINVALUE=>data[5],:PSROUTVALUE=>data[6],:PMTRINVALUE=>data[7],:PMTROUTVALUE=>data[8],
+          :TSRIN=>tsrin,:TSROUT=>tsrout,:TMTRIN=>tmtrin,:TMTROUT=>tmtrout,
+          :SRPER=>srper,:MTRPER=>mtrper,:MTRDIFFIN=>mtrdiffin,:MTRDIFFOUT=>mtrdiffout,
+          :SRCOLL=>srcoll,:MTRCOLL=>mtrcoll,
+          :THIRTYDAYSAVG=>thirtydaysavg,:TENDAYSAVG=>tendaysavg,
+          :SRAVG=>sravg,:CALCULATEBY => cal_by_value)
+
+      end
     end
+  end
+
+  def self.check_cal_by(tsrin,tsrout)
+    if((tsrin.to_i < 0 ) ||  (tsrout <0))
+        "M"
+    else
+        "S"
     end
   end
 
 
+
   def self.sr_avg(data,mdata,curcoll,pmcndata)
+
     condition = false
     if mdata.SETTING!=pmcndata.SETTING
       if mdata.SRIN!=pmcndata.SRIN  || pmcndata.PSRINVALUE.value==0 && pmcndata.SRIN==0
-        curcoll*data.MULTIPLY_BY
+        sr_avg = curcoll*mdata.MULTIPLY_BY
         condition=true
       else
-        curcoll
+        sr_avg = curcoll
       end
     else
-      curcoll
+      sr_avg = curcoll
     end
+
+    
     if condition!=false
       condition=false
     else
@@ -98,6 +118,7 @@ class Machinedata < ActiveRecord::Base
       end
 
     end
+    return sr_avg 
   end
 
   def self.cal_daysavg(data,mdata,coll,days)
@@ -204,6 +225,149 @@ class Machinedata < ActiveRecord::Base
     end
   end
 
+  def self.cal_mtr_percentage_latest(data,mdata,pmcndata,tsrin,tsrout,tmtrin,tmtrout)
+    
+    condition="false"
+    if(mdata.SETTING!=pmcndata.SETTING)
+      if((pmcndata.SRIN != pmcndata.PSRINVALUE) || (pmcndata.PSRINVALUE == 0 && pmcndata.SRIN == 0))
+        if (mdata.TSRIN!=0)
+          if mdata.MTRSHORT.to_i < 0
+            totalmtrshortneg = mdata.MTRSHORT.to_i;
+            totalmtrshortpos=0;
+          else
+            totalmtrshortpos=mdata.MTRSHORT.to_i;
+            totalmtrshortneg=0;
+          end
+          if mdata.CALCULATEBY == 'S'
+            lastinval = ((tsrin/mdata.MULTIPLY_BY)*mdata.SCREEN_RATE_IN)/10
+            lastoutval = ((tsrout/mdata.MULTIPLY_BY)*mdata.SCREEN_RATE_OUT)/10
+          else
+            lastinval = ((tmtrin/mdata.MULTIPLY_BY)*mdata.MTR_RATE_IN)/10
+            lastoutval = ((tmtrout/mdata.MULTIPLY_BY)*mdata.MTE_RATE_OUT)/10
+          end
+          mtr_percent = (((lastoutval.to_f-totalmtrshortneg.to_f)*100) / (lastinval.to_f)).round
+          return mtr_percent
+        else
+          mtr_percent = 0
+          condition="true"
+        end
+      else
+        condition="false";
+        if mdata.MTRSHORT.to_i < 0
+          totalmtrshortneg = mdata.MTRSHORT.to_i
+          totalmtrshortpos = 0;
+        else
+          totalmtrshortpos = mdata.MTRSHORT.to_i
+          totalmtrshortneg = 0
+        end
+        if mdata.CALCULATEBY == 'S'
+          lastinval = ((tsrin/mdata.MULTIPLY_BY)*mdata.SCREEN_RATE_IN)/10
+          lastoutval = ((tsrout/mdata.MULTIPLY_BY)*mdata.SCREEN_RATE_OUT)/10
+        else
+          lastinval = ((tmtrin/mdata.MULTIPLY_BY)*mdata.MTR_RATE_IN)/10
+          lastoutval = ((tmtrout/mdata.MULTIPLY_BY)*mdata.MTE_RATE_OUT)/10
+        end
+      end
+    else
+        
+      if mdata.MTRSHORT.to_i < 0
+        totalmtrshortneg=mdata.MTRSHORT.to_i;
+        totalmtrshortpos=0;
+      else
+        totalmtrshortpos=mdata.MTRSHORT.to_i;
+        totalmtrshortneg=0;
+      end
+
+      if mdata.CALCULATEBY == 'S'
+        lastinval = ((tsrin/mdata.MULTIPLY_BY)*mdata.SCREEN_RATE_IN)/10
+        lastoutval = ((tsrout/mdata.MULTIPLY_BY)*mdata.SCREEN_RATE_OUT)/10
+      else
+        lastinval = ((tmtrin/mdata.MULTIPLY_BY)*mdata.MTR_RATE_IN)/10
+        lastoutval = ((tmtrout/mdata.MULTIPLY_BY)*mdata.MTE_RATE_OUT)/10
+      end
+    end
+
+    if condition!="false"
+      condition="false"
+    else
+      @mval=Machinedata.find(:first,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE=?',
+          data[1],data[3],data[4],data[0],Date.parse(data[2])-1],
+        :order => "TRANS_DATE desc")
+      @machinevalues=Machinedata.find(:all,
+        :conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE<?',
+          data[1],data[3],data[4],data[0],data[2]],
+        :order => "TRANS_DATE desc")
+      @sumvaluein=0
+      @sumvalueout=0
+      @totalmtrshortmperneg=0
+      @totalmtrshortmperpos=0
+
+      @machinevalues.each do |item|
+        if(@mval.SETTING==item.SETTING)
+          if item.CALCULATEBY=='S'
+            @sumvaluein=@sumvaluein.to_i+((item.TSRIN.to_i*item.SCREEN_RATE_IN.to_i)/10).round
+            @sumvalueout=@sumvalueout.to_i+((item.TSROUT.to_i*item.SCREEN_RATE_OUT)/10).round
+
+          else
+            @sumvaluein=@sumvaluein.to_i+((item.TMTRIN.to_i*item.MTR_RATE_IN)/10).round
+            @sumvalueout=@sumvalueout.to_i+((item.TMTROUT.to_i*item.MTE_RATE_OUT)/10).round
+
+          end
+          if (item.MTRSHORT.to_i<0)
+            @totalmtrshortmperneg=@totalmtrshortmperneg.to_i+item.MTRSHORT.to_i
+          else
+            @totalmtrshortmperpos=@totalmtrshortmperpos.to_i+item.MTRSHORT.to_i
+          end
+        else
+          if ((item.SRIN!=0 and item.PSRINVALUE!=0) or (item.SROUT!=0 and item.PSROUTVALUE!=0))
+            if ((item.SRIN==item.PSRINVALUE )   or (item.SROUT==item.PSROUTVALUE ))
+              if item.CALCULATEBY=='S'
+                @sumvaluein=@sumvaluein.to_i+((item.TSRIN.to_i*item.SCREEN_RATE_IN.to_i)/10).round
+                @sumvalueout=@sumvalueout.to_i+((item.TSROUT.to_i*item.SCREEN_RATE_OUT)/10).round
+              else
+                @sumvaluein=@sumvaluein.to_i+((item.TMTRIN.to_i*item.MTR_RATE_IN)/10).round
+                @sumvalueout=@sumvalueout.to_i+((item.TMTROUT.to_i*item.MTE_RATE_OUT)/10).round
+              end
+              if (item.MTRSHORT.to_i<0)
+                @totalmtrshortmperneg=@totalmtrshortmperneg.to_i+item.MTRSHORT.to_i
+              else
+                @totalmtrshortmperpos=@totalmtrshortmperpos.to_i+item.MTRSHORT.to_i
+              end
+            else
+              break
+            end
+          else
+            break
+          end
+        end
+      end
+      totalmshortneg = @totalmtrshortmperneg.to_i
+      totalmshortpos = @totalmtrshortmperpos.to_i
+      totalsumin =  @sumvaluein.to_i
+      totalsumout =  @sumvalueout.to_i
+      #
+      totalin = totalsumin.to_i+lastinval.to_i
+      totalout= totalsumout.to_i + lastoutval.to_i
+      summtrshortneg = totalmshortneg
+      summtrshortpos = totalmshortpos
+
+      if mdata.MTRSHORT.to_i < 0
+        summtrshortneg = totalmshortneg.to_i + mdata.MTRSHORT.to_i
+      else
+        summtrshortpos = totalmshortpos.to_i + mdata.MTRSHORT.to_i
+      end
+
+      if (totalin!=0)
+        #        mtr_percent = Math.round(((parseFloat(totalout)-parseFloat(summtrshortneg))*100)/(parseFloat(totalin)+parseFloat(summtrshortpos)));
+        mtr_percent = (((totalout.to_f - summtrshortneg.to_f)*100)/(totalin.to_f + summtrshortpos.to_f)).round
+        return mtr_percent  
+      else
+        mtr_percent = 0
+      end
+    end
+
+  end
+
   def self.cal_mtr_percentage(data,mdata)
     if data[5]!=0
       outval=((data[8].to_f*mdata.MTE_RATE_OUT.to_f)/10).to_i
@@ -245,39 +409,42 @@ class Machinedata < ActiveRecord::Base
   private
   def calculate_short_extra
 
-          Group.find_all_by_ClusterName_and_ShopName(self.CLUSTER_NAME,self.SHOP_NAME).each do |key|
+    Group.find_all_by_ClusterName_and_ShopName(self.CLUSTER_NAME,self.SHOP_NAME).each do |key|
 
-        machine_data = Machinedata.find_all_by_CLUSTER_NAME_and_SHOP_NAME_and_TRANS_DATE_and_GROUP_ID(self.CLUSTER_NAME,self.SHOP_NAME,(self.TRANS_DATE).strftime("%Y-%m-%d"),key.GroupID)
+      machine_data = Machinedata.find_all_by_CLUSTER_NAME_and_SHOP_NAME_and_TRANS_DATE_and_GROUP_ID(self.CLUSTER_NAME,self.SHOP_NAME,(self.TRANS_DATE).strftime("%Y-%m-%d"),key.GroupID)
 
-          @tot_short_extra=0
-          machine_data.each do |data|
-            if data.CALCULATEBY.eql?('S')
-              short_extra = (((((data.TSRIN.to_f*data.SCREEN_RATE_IN.to_f)-(data.TSROUT.to_f*data.SCREEN_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f).round
-              @tot_short_extra = @tot_short_extra + short_extra
-            else
-              short_extra =(((((data.TMTRIN.to_f*data.MTR_RATE_IN.to_f)-(data.TMTROUT.to_f*data.MTE_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f).round
-              @tot_short_extra = @tot_short_extra + short_extra
-            end
-          end
-          keys = Counterdata.find(:first,:conditions=>["ClusterName=? and ShopName=? and DATE=?",
-              self.CLUSTER_NAME,self.SHOP_NAME,self.TRANS_DATE])
-          if keys!= nil
-            if key.GroupID.eql?('KEY 1')
-              keyval=keys.KEY1.to_i
-            end
-            if key.GroupID=='KEY 2'
-              keyval=keys.KEY2.to_i
-            end
-            if key.GroupID=='KEY 3'
-              keyval=keys.KEY3.to_i
-            end
-            if key.GroupID=='KEY 4'
-              keyval=keys.KEY4.to_i
-            end
-          end
-          short_extra = (keyval.to_i - @tot_short_extra.to_i)
-          ShortExtra.find_or_create_by_date_and_cluster_name_and_shop_name_and_group_id_and_short_extra((self.TRANS_DATE).strftime("%Y-%m-%d"),self.CLUSTER_NAME,self.SHOP_NAME,"#{key.GroupID}",short_extra)
+      @tot_short_extra=0
+      machine_data.each do |data|
+        if data.CALCULATEBY.eql?('S')
+          short_extra = (((((data.TSRIN.to_f*data.SCREEN_RATE_IN.to_f)-(data.TSROUT.to_f*data.SCREEN_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f).round
+          @tot_short_extra = @tot_short_extra + short_extra
+        else
+          short_extra =(((((data.TMTRIN.to_f*data.MTR_RATE_IN.to_f)-(data.TMTROUT.to_f*data.MTE_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f).round
+          @tot_short_extra = @tot_short_extra + short_extra
         end
+      end
+      keys = Counterdata.find(:first,:conditions=>["ClusterName=? and ShopName=? and DATE=?",
+          self.CLUSTER_NAME,self.SHOP_NAME,self.TRANS_DATE])
+      if keys!= nil
+        if key.GroupID.eql?('KEY 1')
+          keyval=keys.KEY1.to_i
+        end
+        if key.GroupID=='KEY 2'
+          keyval=keys.KEY2.to_i
+        end
+        if key.GroupID=='KEY 3'
+          keyval=keys.KEY3.to_i
+        end
+        if key.GroupID=='KEY 4'
+          keyval=keys.KEY4.to_i
+        end
+      end
+      short_extra = (keyval.to_i - @tot_short_extra.to_i)
+      ShortExtra.find_or_create_by_date_and_cluster_name_and_shop_name_and_group_id_and_short_extra((self.TRANS_DATE).strftime("%Y-%m-%d"),self.CLUSTER_NAME,self.SHOP_NAME,"#{key.GroupID}",short_extra)
+    end
   end
 
 end
+
+
+
