@@ -190,8 +190,6 @@
       <% end  %>
       <% submit_to_remote 'Upload','Upload',:url => {:controller=>'shops',:action => "uploaddata" }%>
       <% @oldmdata1=Machinedata.find(:first,:conditions=>['SHOP_NAME=?',a[1]],:order => "TRANS_DATE desc" ) %>
-        <% debugger %>
-        <% puts "hello" %>
       <% unless @oldmdata1.nil? %>
         <% @olddate=Date.parse("#{@oldmdata1.TRANS_DATE}")%>
         <% @currdate=Date.parse("#{a[2]}")%>
