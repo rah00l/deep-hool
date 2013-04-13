@@ -77,7 +77,7 @@
         IO.foreach("#{@session['filename']}"){|block| values<<block}
         d=values.to_s.split('COUNTER')
       %>
-        <% data=d[0].to_a %>
+        <% data=d[0].gsub(/\n\n+/, "\n").to_a %>
         <% for i in 0..(data.length-1)%>
           <%  sep_char = data[i].match(/\t/)  %>
           <%  col_seprator = sep_char.nil? ? "," : "\t" %>
@@ -190,6 +190,8 @@
       <% end  %>
       <% submit_to_remote 'Upload','Upload',:url => {:controller=>'shops',:action => "uploaddata" }%>
       <% @oldmdata1=Machinedata.find(:first,:conditions=>['SHOP_NAME=?',a[1]],:order => "TRANS_DATE desc" ) %>
+        <% debugger %>
+        <% puts "hello" %>
       <% unless @oldmdata1.nil? %>
         <% @olddate=Date.parse("#{@oldmdata1.TRANS_DATE}")%>
         <% @currdate=Date.parse("#{a[2]}")%>
