@@ -37,19 +37,17 @@ class ShopsController < ApplicationController
   def getfilename
     begin
       files=params[:shop]
-      @con=Configuration.find(1)
-      @folderpath=@con.FilesFolderPath
-      @backupfolder=@con.BackupFolderPath
-      basedir = "#{@folderpath}/"
+      basedir = session[:folder_path] 
       targetdir="#{@backupfolder}/"
       pw=Dir.pwd()
       Dir.chdir(basedir)
-      @files=params[:shop][:FileName]
-      i=0
-      @files.each { |file|
-        @session['filename']=basedir+file
-        @session['file']=file
-      }
+      file=params[:shop][:FileName]
+      session['full_file_path'] = basedir+file.to_s
+#      i=0
+#      file.each { |file|
+#        session['filename'] = basedir+file
+#        session['file']=file
+#      }
       Dir.chdir(pw)
       render :update do |page|
         page.redirect_to url_for(:controller=>'shops', :action=>'viewdata')

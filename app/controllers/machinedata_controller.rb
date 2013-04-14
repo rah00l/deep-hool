@@ -568,7 +568,7 @@ class MachinedataController < ApplicationController
   end
 
   def data_upload
-    file_path = @session['filename']
+    file_path = session['full_file_path']
     if File.extname(file_path)==".csv"
       @csv_records = parse_csv_file(file_path)
       @csv_records.each do |data|
@@ -626,8 +626,12 @@ class MachinedataController < ApplicationController
     sep = data.match(/\t/)
     col_seprator = sep.nil? ? "," : "\t"
     rows = CSV.read(file_path)
-    rows.collect {|row| [@csv_records << row.to_s.split(col_seprator) ]}
-    @csv_records
+    if col_seprator.eql?(",")
+      @csv_records = rows
+    else
+      rows.collect {|row| [@csv_records << row.to_s.split(col_seprator) ]}
+    end
+    return @csv_records
 #    rows = CSV.read(file_path, {:col_sep => col_seprator})
 #    rows.each do |row|
 #    a = row.to_s.split(col_seprator)

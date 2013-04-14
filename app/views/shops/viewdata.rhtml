@@ -70,11 +70,9 @@
           <th  nowrap width="10%" height="22">
             <font color=white face="Zurich BT" >SHORTREASON </font></th>
         </tr>
-
-        <%@session['filename']%>
         <%
         values=[]
-        IO.foreach("#{@session['filename']}"){|block| values<<block}
+        IO.foreach("#{session['full_file_path']}"){|block| values<<block}
         d=values.to_s.split('COUNTER')
       %>
         <% data=d[0].gsub(/\n\n+/, "\n").to_a %>

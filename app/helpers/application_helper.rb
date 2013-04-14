@@ -339,6 +339,8 @@ module ApplicationHelper
     @pw=Dir.pwd()
     Dir.chdir(basedir)
     @files = Dir.glob("*")
+    @folder_path = basedir
+    return @files,@folder_path
   end
 
 end
