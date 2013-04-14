@@ -53,8 +53,9 @@
             <b><font face="Arial" size="2">
                 RECEIVED DATA</font></b><BR><BR>
             <select id="shop_FileName" name="shop[FileName][]"  size=20>
-              <% get_filefolder_infomation(params[:type]) %>
-              <%@files.sort.each { |file| %>
+              <% files,session[:folder_path] = get_filefolder_infomation(params[:type]) %>
+          
+              <%  files.sort.each { |file| %>
                 <%= file %>
                 <option value="<%= file %>"><%= file %></option>
 
@@ -66,7 +67,7 @@
       </table>
       <br/><br/>
       <% submit_to_remote 'Upload','Upload',:url => {:controller=>'shops',:action => "uploaddata" }%>
-      <%= submit_to_remote 'View','Viewdata',:url => {:controller=>'shops',:action => "getfilename" }%>
+      <%= submit_to_remote 'View','Viewdata',:url => {:controller=>'shops',:action => "getfilename",:type => params[:type] }%>
       <br/>
       <div id="aux_div" style=" visibility:hidden; align:center; width:333;
            border: 2px solid white;
