@@ -576,7 +576,12 @@ class MachinedataController < ApplicationController
       end
     end
 
+    
+
     move_file_at_backup_location
+
+    
+    
     render :update do |page|
       
       page << "document.getElementById('aux_div').style.visibility = 'visible'"
@@ -591,6 +596,9 @@ class MachinedataController < ApplicationController
   end
 
   def move_file_at_backup_location
+#    debugger
+#    puts "dfhsgdhgsjhg"
+
     @con=Configuration.find(1)
     @folderpath=@con.filefolder_imp
     @backupfolder=@con.backupfolder_imp
@@ -602,14 +610,15 @@ class MachinedataController < ApplicationController
     targetdir="#{@backupfolder}/"
     pw=Dir.pwd()
     Dir.chdir(basedir)
-    @files=@session['file']
-    i=0
+#    file_name = session['full_file_path'].split("/")
+#    i=0
     begin
-      @files.each { |file|
-        if File.file?(basedir + file)
-          File.move(basedir + file, targetdir + file)
+#      @files.each { |file|
+        if File.file?(session['full_file_path'])
+          File.move(session['full_file_path'], targetdir  )
         end
-      }
+#      }
+      session['full_file_path'] = nil
       Dir.chdir(pw)
     end
   end
@@ -631,6 +640,8 @@ class MachinedataController < ApplicationController
     else
       rows.collect {|row| [@csv_records << row.to_s.split(col_seprator) ]}
     end
+#    debugger
+#    puts "a"
     return @csv_records
 #    rows = CSV.read(file_path, {:col_sep => col_seprator})
 #    rows.each do |row|
