@@ -5,6 +5,8 @@ class Machinedata < ActiveRecord::Base
   def self.update_machinedata(data)
     Machinedata.transaction do
       mdata = Machinedata.find_by_CLUSTER_NAME_and_SHOP_NAME_and_TRANS_DATE_and_GROUP_ID_and_MACHINE_NO(data[0],data[1],data[2],data[3],data[4])
+#      debugger
+#      puts "234"
       unless mdata.blank?
         pmcndata = Machinedata.find_by_CLUSTER_NAME_and_SHOP_NAME_and_TRANS_DATE_and_GROUP_ID_and_MACHINE_NO(data[0],data[1],(Date.parse(data[2])-1).to_s,data[3],data[4])
         oldsrin=pmcndata.PSRINVALUE
@@ -60,7 +62,7 @@ class Machinedata < ActiveRecord::Base
 
     condition = false
     if mdata.SETTING!=pmcndata.SETTING
-      if mdata.SRIN!=pmcndata.SRIN  || pmcndata.PSRINVALUE.value==0 && pmcndata.SRIN==0
+      if mdata.SRIN!=pmcndata.SRIN  || pmcndata.PSRINVALUE == 0 && pmcndata.SRIN==0
         sr_avg = curcoll*mdata.MULTIPLY_BY
         condition=true
       else

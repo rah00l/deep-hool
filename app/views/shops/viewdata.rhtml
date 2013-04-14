@@ -70,6 +70,7 @@
           <th  nowrap width="10%" height="22">
             <font color=white face="Zurich BT" >SHORTREASON </font></th>
         </tr>
+        <% if File.file?(session['full_file_path']) %>
         <%
         values=[]
         IO.foreach("#{session['full_file_path']}"){|block| values<<block}
@@ -210,6 +211,7 @@
        <% else %>
           <%= link_to 'BACK', :controller => 'shops', :action => 'receiveddata'    %>
 
+        <% end %>
         <% end %>
     </form>
   </body>
