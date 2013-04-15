@@ -41,7 +41,7 @@ class ShopsController < ApplicationController
       targetdir="#{@backupfolder}/"
       pw=Dir.pwd()
       Dir.chdir(basedir)
-      file=params[:shop][:FileName]
+      @session['file'] = file=params[:shop][:FileName]
       session['full_file_path'] = basedir+file.to_s
 #      i=0
 #      file.each { |file|
