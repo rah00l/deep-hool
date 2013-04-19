@@ -3,6 +3,7 @@ class MachinedataController < ApplicationController
   layout 'adminlayout'
 #  before_filter :login_required,:machine_and_key_collection
 #  require 'ruby-debug'
+  before_filter :edit_restiction, :only => :showmachinedata
   
 
   class Time
@@ -301,12 +302,11 @@ class MachinedataController < ApplicationController
 
 
   def showmachinedata
-#raise params[:machinedata][:ShopName].inspect
-
-#collection_data = machine_and_key_collection(params[:machinedata][:ClusterName],params[:machinedata][:ShopName],params[:MachineNo],params[:date])
-# -----------------------------------------------------------------------------------------------------------------------------------------
-
-
+    
+  if @session['user'].usertype.eql?('Admin')  && !@date_diff.blank? && @date_diff>2
+      flash[:notice] ='<font color=red size=4><b>Sorry! You are not able to edit this entry.</b></font>'
+      render :action=>'dailydata'
+  else
     @colldata = Machinedata.find_all(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID='KEY 1'",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]])
     @totalcoll=0
     @colldata.each do |data|
@@ -353,6 +353,7 @@ class MachinedataController < ApplicationController
     rescue Exception=>ex
       puts ex.message
     end
+  end
   end
 
   def cancelcounterdata
@@ -713,4 +714,12 @@ class MachinedataController < ApplicationController
     key = Machinedata.find_first(["Cluster_Name=? and Shop_Name=? and TRANS_Date=? and Machine_No=?",cluster_name,shop_name,date,machine_no])
     return key,tot_coll
   end
+
+  private
+
+  def edit_restiction
+      @machinedata = Machinedata.find_first(["Cluster_Name=? and Shop_Name=? and TRANS_Date=? and Machine_No=?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate],@session[:ttmachineno]])
+      @date_diff = (Date.today - @machinedata.created_at.to_date).to_i
+  end
+
 end
