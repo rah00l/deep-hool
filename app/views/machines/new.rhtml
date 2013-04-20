@@ -281,7 +281,8 @@
                         <label for="machine_MachineName">MACHINE NAME </label></font></b>
                   </td>
                   <td width="174" height="1" align=left>
-                    <%= text_field 'machine', 'MachineName' ,:value=>'',:onKeyDown=>"if(event.keyCode==13)  this.form.machine_SrateIn.focus();"  %>
+                    <%= select :machine,:MachineName, get_machine_names,:onKeyDown=>"if(event.keyCode==13)  this.form.machine_SrateIn.focus();"%>
+                    <% text_field 'machine', 'MachineName' ,:value=>'',:onKeyDown=>"if(event.keyCode==13)  this.form.machine_SrateIn.focus();"  %>
                   </td>
                 </tr>
                 <tr>
