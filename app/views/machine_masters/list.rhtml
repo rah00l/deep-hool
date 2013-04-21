@@ -1,0 +1,29 @@
+<h1>Listing machine_masters</h1>
+
+<table>
+  <tr>
+  <%# for column in MachineType.content_columns %>
+    <th><%= "Machine Short Name" %></th>
+    <th><%= "Machine Name" %></th>
+  <%# end %>
+  </tr>
+  
+<% for machine_master in @machine_masters %>
+  <tr>
+  <%# for column in MachineType.content_columns %>
+    <td><%=h machine_master.short_name %></td>
+    <td><%=h machine_master.name %></td>
+  <%# end %>
+    <td><%= link_to 'Show', :action => 'show', :id => machine_master %></td>
+    <td><%= link_to 'Edit', :action => 'edit', :id => machine_master %></td>
+    <td><%= link_to 'Destroy', { :action => 'destroy', :id => machine_master }, :confirm => 'Are you sure?', :method => :post %></td>
+  </tr>
+<% end %>
+</table>
+
+<%= link_to 'Previous page', { :page => @machine_master_pages.current.previous } if @machine_master_pages.current.previous %>
+<%= link_to 'Next page', { :page => @machine_master_pages.current.next } if @machine_master_pages.current.next %>
+
+<br />
+
+<%= link_to 'New machine_master', :action => 'new' %>
