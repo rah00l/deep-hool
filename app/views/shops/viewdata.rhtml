@@ -73,10 +73,21 @@
         <% if File.file?(session['full_file_path']) %>
         <%
         values=[]
+        data = []
         IO.foreach("#{session['full_file_path']}"){|block| values<<block}
-        d=values.to_s.split('COUNTER')
+        #d = session[:type].eql?("imp") ? values.to_s : values.to_s.split('COUNTER')
+        if session[:type].eql?("imp")
+          values.collect{|a| data << a.to_s.gsub(/^[\s]*$\n/, "").strip}
+          data.reject! { |c| c.empty? }
+        else
+          d = values.to_s.split('COUNTER')
+          data = d[0].to_a
+        end
       %>
-        <% data=d[0].gsub(/\n\n+/, "\n").to_a %>
+        <%# data=d[0].gsub(/\n\n+/, "\n").to_a %>
+       <%# debugger %>
+        <%# puts "a" %>
+        
         <% for i in 0..(data.length-1)%>
           <%  sep_char = data[i].match(/\t/)  %>
           <%  col_seprator = sep_char.nil? ? "," : "\t" %>
