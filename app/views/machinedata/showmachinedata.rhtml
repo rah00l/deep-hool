@@ -162,8 +162,9 @@ function SRAVG()
 	   					totalcount=1;
 	   				else
 	   					totalcount=parseInt(totalcount)-1;
+                                              
  	   				totalavg=(parseInt(lastval)+parseInt(totalsum))/(parseInt(totalcount));
-       				today_SRAVG.value=Math.round(totalavg)*parseInt(mulby);
+                                        today_SRAVG.value=Math.round((totalavg)*parseInt(mulby));
    				<%rescue%>
 				<%end%>
 				}

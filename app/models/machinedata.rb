@@ -115,8 +115,9 @@ class Machinedata < ActiveRecord::Base
           totalcount=1
         else
           totalcount=totalcount-1
-          totalavg = (curcoll.to_i + totalsum.to_i)/totalcount.to_i
-          return roundval(totalavg.to_f)*mdata.MULTIPLY_BY
+          totalavg = (curcoll.to_f + totalsum.to_f)/totalcount.to_f
+          return ((totalavg.to_f)*mdata.MULTIPLY_BY).round
+#          return roundval
           #            rescue
         end
       end
