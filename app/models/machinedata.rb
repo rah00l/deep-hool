@@ -34,6 +34,8 @@ class Machinedata < ActiveRecord::Base
         
         sravg = sr_avg(data,mdata,curcoll,pmcndata)
 
+
+
         cal_by_value = check_cal_by(tsrin,tsrout)
       
         mdata.update_attributes(:SRIN=>data[5],:SROUT=>data[6],:MTRIN=>data[7],:MTROUT=>data[8],
@@ -71,7 +73,6 @@ class Machinedata < ActiveRecord::Base
     else
       sr_avg = curcoll
     end
-
     
     if condition!=false
       condition=false
@@ -82,7 +83,7 @@ class Machinedata < ActiveRecord::Base
       srvalues=0
       valcount=2
       machinevalues.each do |item|
-        if mdata.SETTING==item.SETTING and item.T_DATE!=nil
+        if(pmcndata.SETTING==item.SETTING and item.T_DATE!=nil)
           valcount=valcount+1
           if item.CALCULATEBY=='S'
             srvalues=srvalues+item.SRCOLL.to_i
@@ -90,8 +91,8 @@ class Machinedata < ActiveRecord::Base
             srvalues=srvalues+item.MTRCOLL.to_i
           end
         else
-          if item.SRIN!=0 && item.PSRINVALUE!=0 || item.SROUT!=0 and item.PSROUTVALUE!=0
-            if item.SRIN==item.PSRINVALUE   || item.SROUT==item.PSROUTVALUE
+          if ((item.SRIN!=0 and item.PSRINVALUE!=0) or (item.SROUT!=0 and item.PSROUTVALUE!=0))
+            if ((item.SRIN==item.PSRINVALUE )   or (item.SROUT==item.PSROUTVALUE ))
               valcount=valcount+1
               if item.CALCULATEBY=='S'
                 srvalues=srvalues+item.SRCOLL.to_i
@@ -104,6 +105,7 @@ class Machinedata < ActiveRecord::Base
           else
             break
           end
+
         end
       end
       begin
