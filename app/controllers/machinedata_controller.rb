@@ -719,7 +719,7 @@ class MachinedataController < ApplicationController
 
   def edit_restiction
       @machinedata = Machinedata.find_first(["Cluster_Name=? and Shop_Name=? and TRANS_Date=? and Machine_No=?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate],@session[:ttmachineno]])
-      @date_diff = (Date.today - @machinedata.created_at.to_date).to_i
+      @date_diff = (Date.today - @machinedata.created_at.to_date).to_i unless @machinedata.created_at.blank?
   end
 
 end
