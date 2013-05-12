@@ -1,6 +1,6 @@
 class AddAllowEditDailyDataToConfigurations < ActiveRecord::Migration
   def self.up
-    add_column :configurations ,:allow_edit_daily_data ,:boolean ,:default => true
+    add_column :configurations ,:allow_edit_daily_data ,:boolean ,:default => false
   end
 
   def self.down
