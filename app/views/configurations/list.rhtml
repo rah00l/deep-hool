@@ -8,6 +8,7 @@
     <th>Filesfolderpath For Auto</th>
     <th>Backupfolderpath For Auto</th>
     <th>Continue Copy</th>
+    <th>Allow Edit Daily Data</th>
   </tr>
   
 <% @configurations.each do |configuration| %>
@@ -18,7 +19,7 @@
     <td><%=h configuration.filefolder_imp %></td>
     <td><%=h configuration.backupfolder_imp %></td>
     <td><%=h configuration.copy_continue? ? 'Activated' : 'Deactivated' %></td>
-    <td><%#=h configuration.Continue Copy %></td>
+    <td><%=h configuration.allow_edit_daily_data? ? 'Activated' : 'Deactivated' %></td>
     <td><%= link_to 'Edit', :action => 'edit', :id => configuration %></td>
     <td><%= link_to 'Destroy', { :action => 'destroy', :id => configuration }, :confirm => 'Are you sure?', :method => :post %></td>
   </tr>
