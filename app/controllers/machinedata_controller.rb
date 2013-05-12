@@ -302,8 +302,7 @@ class MachinedataController < ApplicationController
 
 
   def showmachinedata
-    
-  if @session['user'].usertype.eql?('Admin')  && !@date_diff.blank? && @date_diff>2
+  if (@signal_for_restriction == false) && (@session['user'].usertype.eql?('Admin')  && !@date_diff.blank? && @date_diff>2)
       flash[:notice] ='<font color=red size=4><b>Sorry! You are not able to edit this entry.</b></font>'
       render :action=>'dailydata'
   else
@@ -718,6 +717,7 @@ class MachinedataController < ApplicationController
   private
 
   def edit_restiction
+      @signal_for_restriction = Configuration.find(1).allow_edit_daily_data unless Configuration.find(1).blank?
       @machinedata = Machinedata.find_first(["Cluster_Name=? and Shop_Name=? and TRANS_Date=? and Machine_No=?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate],@session[:ttmachineno]])
       @date_diff = (Date.today - @machinedata.created_at.to_date).to_i unless @machinedata.created_at.blank?
   end
