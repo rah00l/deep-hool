@@ -17,8 +17,8 @@ every 1.day, :at=> '1am'  do
 end
 
 every :friday, :at=> '8.30am'  do
-  command "find /home/UpCCndM9Q/shivraj_backup/ -type f -mtime +3 -exec rm {} \;"
-  command "find /home/UpCCndM9Q/anand_backup/ -type f -mtime +3 -exec rm {} \;"
+#  command "find /home/UpCCndM9Q/shivraj_backup/ -type f -mtime +3 -exec rm {} \;"
+#  command "find /home/UpCCndM9Q/anand_backup/ -type f -mtime +3 -exec rm {} \;"
 end
 
 every 2.day, :at => "5am" do
