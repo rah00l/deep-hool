@@ -487,9 +487,9 @@
                                                             <BR/><BR/>
                                                           <% end %>
                                                           <%  if @TotalMCSHORT.to_i >= 0 %>
-                                                            <% @TOTALSHOPPER=((@total_tsrout.to_f*100)/(@total_tsrin.to_f+@TotalMCSHORT.to_i)).round %>
+                                                            <% @TOTALSHOPPER=((@total_tsrout.to_f*100)/(@total_tsrin.to_f+@TotalMCSHORT.to_i)).round unless (@total_tsrin.to_f+@TotalMCSHORT.to_i).zero?%>
                                                           <% else %>
-                                                            <% @TOTALSHOPPER=(((@total_tsrout.to_f-@TotalMCSHORT.to_i)*100)/(@total_tsrin.to_f)).round %>
+                                                            <% @TOTALSHOPPER=(((@total_tsrout.to_f-@TotalMCSHORT.to_i)*100)/(@total_tsrin.to_f)).round unless (@total_tsrin.to_f).zero? %>
                                                           <% end %>
                                                           <%= render :partial => 'daily_report_total_percent' ,:locals => {:shopcount => shopcount}%>
                                                           </body>
