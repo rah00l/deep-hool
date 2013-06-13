@@ -93,7 +93,7 @@
 
           <td bgcolor="#FFA500" width="50" height="19" ALIGN="CENTER">DIFF CR</td>
           <td width="60" height="19" ALIGN="CENTER" >
-            <B><%= data.Credit.to_i-ycredit.to_i%></B>
+            <B><%= data.Credit.to_i-ycredit.to_i unless data.blank? %></B>
           </td>
           <td bgcolor="#FFA500" width="50" height="19" ALIGN="CENTER">M/S </td>
 
