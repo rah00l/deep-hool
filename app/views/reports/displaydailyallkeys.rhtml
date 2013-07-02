@@ -428,9 +428,10 @@
                                                                   <td></td>
                                                                   <td><b>COLL</b></td>
                                                                   <%@keydata= Counterdata.find(:first,:conditions=>["ClusterName in (?) and ShopName=? and Date=? ",@session[:clustarray],@session[:shoparray1][i].to_s,session[:dailyvalue]])%>
-
+                                                                   <% unless @keydata.blank? %>
                                                                   <td><%= (@keydata.KEY1.to_i+@keydata.KEY2.to_i+@keydata.KEY3.to_i+@keydata.KEY4.to_i)%>&nbsp;</td>
                                                                   <% @keyd= (@keydata.KEY1.to_i+@keydata.KEY2.to_i+@keydata.KEY3.to_i+@keydata.KEY4.to_i)%>
+                                                                 <%end %>
                                                                 </tr>
                                                                 <tr>
                                                                   <td></td>
