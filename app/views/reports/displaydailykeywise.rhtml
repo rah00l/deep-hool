@@ -442,6 +442,7 @@
                                                                     <td><b>KEY</b></td>
     <%# @keydata=Counterdata.find(:first,:conditions=>["ClusterName in (?) and SHOP_NAME=? AND GROUP_ID=? and TRANS_DATE=?",@session[:clustarray],@session[:shoparray1][i].to_s,key.GroupID,session[:dailyvalue]],:order => "MACHINE_NAME,digitno,charno") %>
                                                                     <%@keydata= Counterdata.find(:first,:conditions=>["ClusterName in (?) and ShopName=? and Date=? ",@session[:clustarray],@session[:shoparray1][i].to_s,session[:dailyvalue]])%>
+                                                                    <% unless @keydata.blank?  %>
                                                                     <% if key.GroupID== 'KEY 1'%>
                                                                       <td align=center><font size=3><b><%= @keydata.KEY1%>&nbsp;</b></font></td>
                                                                       <% @keyd= @keydata.KEY1 %>
@@ -458,6 +459,7 @@
                                                                     <% if key.GroupID== 'KEY 4'%>
                                                                       <td align=center><font size=3><%= @keydata.KEY4%>&nbsp;</b></font></td>
                                                                       <% @keyd= @keydata.KEY4 %>
+                                                                    <% end %>
                                                                     <% end %>
                                                                   </tr>
                                                                   <tr>
