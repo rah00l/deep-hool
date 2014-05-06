@@ -97,6 +97,13 @@ module ApplicationHelper
     Machinedata.count(:conditions=>["Shop_Name=? and Machine_Name=? and Trans_Date=?",shop_name,machine_name,date])
   end
 
+  def get_valid_trans_date(shop_name,from_date,to_date)
+    @machines1= Machinedata.find_by_sql("select trans_date
+          from machinedatas
+          where shop_name='#{shop_name}' and trans_date > '#{from_date}' and trans_date < '#{to_date}'
+          order by trans_date desc limit 1")
+  end
+
   def roundval(val)
     if (val<0)
       if ((val.to_f.to_s.split(".")[1]).to_i<=5)
