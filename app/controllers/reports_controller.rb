@@ -2,7 +2,7 @@ class ReportsController < ApplicationController
   layout 'adminlayout'
   require 'date'
   #require 'facets'
-#  require 'ruby-debug'
+  #require 'ruby-debug'
   before_filter :login_required
   def search
     begin
@@ -43,11 +43,11 @@ class ReportsController < ApplicationController
 
   def machine_listing
       if params[:machinedata][:ClusterName].eql?('ALL')
-        @shop_name = Shop.all_shop_name_list
+      @shop_name = Shop.all_shop_name_list_from_machinedata(params[:from_date],params[:to_date])
+
       else
-        @shop_name = Shop.selected_shop_name_list(params[:machinedata][:ClusterName])
+        @shop_name = Shop.selected_shop_name_list_from_machinedata(params[:from_date],params[:to_date],params[:machinedata][:ClusterName])
       end
-#      raise @shop_name.inspect
        @machine_name = Machine.find(:all,
                         :select=>"distinct MachineName",
                         :conditions=>["ShopName in (?)", @shop_name], :order => "MachineName")
