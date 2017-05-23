@@ -60,7 +60,7 @@
           }
           else
           {
-            var btsave1 = document.getElementById("save");
+            var btsave1 = document.getElementsByName('save')[0];
             btsave1.disabled=false;
             btsave1.focus();
           }
@@ -68,7 +68,6 @@
         if(code==49)
         {
           var btsave1 = document.getElementById("data");
-          var btsave = document.getElementById("save");
           document.getElementsByName('save')[0].disabled = 0;
           btsave1.focus();
         }
